@@ -45,6 +45,7 @@ updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with 
 ```
 
 💾 **TCPU Repa:** [View the repack using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
+📜 **Script:** View
 
 ## Used tool
 
