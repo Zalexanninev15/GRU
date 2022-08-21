@@ -1,0 +1,33 @@
+[package]
+name = "updater_application_from_github"
+version = "1.0.0"
+edition = "2021"
+authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
+license = "MIT License"
+
+[dependencies]
+execute = "0.2.11"
+press-btn-continue = "0.1.1"
+winconsole = "0.11.1"
+winapi = { version = "0.3.9", features = [
+  "handleapi",
+  "processthreadsapi",
+  "winnt",
+  "securitybaseapi",
+  "impl-default",
+] }
+arguments = "0.6.2"
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[build]
+target = "i686-pc-windows-msvc"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
