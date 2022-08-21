@@ -36,7 +36,7 @@ Updater for applications from GitHub
 updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-script --pause
 ```
 
-💾 **TCPU Repa:** [View the repack using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
+💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
 
 ### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
@@ -44,7 +44,7 @@ updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPort
 updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --script --pause
 ```
 
-💾 **TCPU Repa:** [View the repack using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
+💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
 
 ## Used tool
 
