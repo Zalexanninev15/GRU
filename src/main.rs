@@ -83,7 +83,7 @@ fn current_dir() -> String {
 fn run_post_script(current_dir: &str) {
     let script_file = String::from(format!("{}\\script.bat", current_dir));
     let mut command = Command::new(script_file);
-    command.execute_output().unwrap_err();
+    command.execute_output();
 }
 
 // Kill application processes
