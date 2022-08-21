@@ -133,8 +133,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5bd2fe26506023ed7b5e1e315add59d6f584c621d037f9368fea9cfb988f368c"
 
 [[package]]
-name = "updater_apps_from_github"
-version = "1.0.0"
+name = "updater"
+version = "1.0.1"
 dependencies = [
  "arguments",
  "execute",
