@@ -24,6 +24,7 @@ Updater for applications from GitHub
 ## System requirements
 
 - **OS:** Windows 7 or higher
+- **Additionally:** May require wget, aria2, or curl (your choice). You can install the utility(s) on the system or put it next to `updater.exe`. Curl can be installed with the [CurlMini](https://github.com/Zalexanninev15/CurlMini) utility, and in Windows 10 version 1803 the curl utility is already installed on the system.
 
 ## Usage
 
@@ -44,7 +45,8 @@ updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPort
 updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --script --pause
 ```
 
-💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
+💾 **TCPU Repa:** [View the repack using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
+📜 **Script:** [View](https://github.com/Zalexanninev15/updater/blob/main/script.bat)
 
 ## Used tool
 
