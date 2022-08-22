@@ -48,7 +48,7 @@ fn main() {
         }
     } else {
         println!("Updater for applications from GitHub
-Version: 1.0.1
+Version: 1.1
 Developer: Zalexanninev15 <blue.shark@disroot.org>
 GitHub: https://github.com/Zalexanninev15/updater\n
 USAGE:
@@ -82,8 +82,15 @@ fn current_dir() -> String {
 // Run script after updating application
 fn run_post_script(current_dir: &str) {
     let script_file = String::from(format!("{}\\script.bat", current_dir));
-    let mut command = Command::new(script_file);
-    command.execute_output();
+
+    let output = Command::new("cmd")
+        .args(&["/C", &script_file])
+        .output()
+        .expect("failed to execute process");
+
+    for out in String::from_utf8(output.stdout).iter() {
+        println!("{}", out);
+    }
 }
 
 // Kill application processes
