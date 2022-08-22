@@ -1,6 +1,6 @@
 [package]
-name = "updater_application_from_github"
-version = "1.0.0"
+name = "updater"
+version = "1.1.0"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
