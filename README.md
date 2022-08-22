@@ -45,7 +45,7 @@ updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPort
 updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --script --pause
 ```
 
-💾 **TCPU Repa:** [View the repack using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
+💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
 📜 **Script:** [View](https://github.com/Zalexanninev15/updater/blob/main/script.bat)
 
 ## Used tool
