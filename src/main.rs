@@ -16,7 +16,7 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap();
         let is_pause = arguments.get::<bool>("pause").unwrap();
         winconsole::console::set_title("Updater for applications from GitHub").unwrap();
-        println!("Updater for applications from GitHub v1.0.1 by Zalexanninev15");
+        println!("Updater for applications from GitHub v1.1 by Zalexanninev15");
         if windows::is_app_elevated() {
             let current_dir = current_dir();
             task_kill(&launcher_exe);
