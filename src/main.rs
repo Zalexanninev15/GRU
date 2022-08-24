@@ -57,6 +57,7 @@ fn main() {
 Description: {}
 Version: v{}
 Developer: Zalexanninev15 <blue.shark@disroot.org>
+License: MIT License
 GitHub: https://github.com/Zalexanninev15/GRU\n
 USAGE:
     gru.exe --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{leave folders value}} {{script value}} {{pause value}}\n
