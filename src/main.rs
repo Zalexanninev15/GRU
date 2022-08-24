@@ -7,20 +7,25 @@ mod windows;
 
 fn main() {
     let arguments = std::env::args();
-    if arguments.len() >= 6 {
+    const VERSION: &str = env!("CARGO_PKG_VERSION");
+    if arguments.len() >= 7 {
         let arguments = arguments::parse(arguments).unwrap();
         let repo = arguments.get::<String>("repo").unwrap();
         let is_zip = arguments.get::<bool>("extract").unwrap();
         let launcher_exe = arguments.get::<String>("app").unwrap();
         let part = arguments.get::<String>("with").unwrap();
+        let is_leave_folders = arguments.get::<bool>("leave").unwrap();
         let is_script_after = arguments.get::<bool>("script").unwrap();
         let is_pause = arguments.get::<bool>("pause").unwrap();
-        winconsole::console::set_title("Updater for applications from GitHub").unwrap();
-        println!("Updater for applications from GitHub v1.1 by Zalexanninev15");
+        winconsole::console::set_title("Github Releases Updater").unwrap();
+        println!(
+            "Github Releases Updater v{} by Zalexanninev15 <blue.shark@disroot.org>",
+            VERSION
+        );
         if windows::is_app_elevated() {
             let current_dir = current_dir();
             task_kill(&launcher_exe);
-            delete_file(&current_dir);
+            delete_file(&current_dir, &is_leave_folders);
             println!("Downloading...");
             downloading_by_redl(&repo, &part);
             if is_zip {
@@ -31,7 +36,7 @@ fn main() {
                 updating(&current_dir, &launcher_exe);
             }
             // Delete the EXE file of the portable installer
-            delete_file(&current_dir);
+            delete_file(&current_dir, &is_leave_folders);
             if is_script_after {
                 println!("Running script.bat...");
                 run_post_script(&current_dir);
@@ -47,22 +52,26 @@ fn main() {
             process::exit(1);
         }
     } else {
-        println!("Updater for applications from GitHub
-Version: 1.1
+        const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
+        println!("Github Releases Updater
+Description: {}
+Version: v{}
 Developer: Zalexanninev15 <blue.shark@disroot.org>
-GitHub: https://github.com/Zalexanninev15/updater\n
+License: MIT License
+GitHub: https://github.com/Zalexanninev15/GRU\n
 USAGE:
-    updater --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{script value}} {{pause value}}\n
+    gru.exe --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{leave folders value}} {{script value}} {{pause value}}\n
 ARGUMENTS:
     --repo {{user/repository}} — Set the repository of application
     {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy exe of launcher/main app
     --app {{application.exe}} — Set the exe of launcher/main application
     --with {{value}} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
+    {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR
     {{script value}} → --script or --no-script — Run script or not after update of application (file \"script.bat\")
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
-    updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-script --pause
-    updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --script --pause\n");
+    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --no-script --pause
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --script --pause\n", DESCRIPTION, VERSION);
     }
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }
@@ -195,10 +204,12 @@ fn extracting(current_dir: &str) {
 }
 
 // Delete portable installer
-fn delete_file(current_dir: &str) -> std::io::Result<()> {
+fn delete_file(current_dir: &str, is_leave_folders: &bool) -> std::io::Result<()> {
     let file_dir = String::from(format!("{}app.dat", current_dir));
     fs::remove_file(file_dir)?;
-    let dir_dir = String::from(format!("{}..\\$PLUGINSDIR", current_dir));
-    fs::remove_dir_all(dir_dir)?;
+    if (!is_leave_folders) {
+        let dir_dir = String::from(format!("{}..\\$PLUGINSDIR", current_dir));
+        fs::remove_dir_all(dir_dir)?;
+    }
     Ok(())
 }
