@@ -1,14 +1,15 @@
 USAGE:
-    updater --repo {user/repository} {extract value} --app {application.exe} --with {value} {script value} {pause value}
+    gru.exe --repo {user/repository} {extract value} --app {application.exe} --with {value} {leave folders value} {script value} {pause value}
 
 ARGUMENTS:
     --repo {user/repository} — Set the repository of application
     {extract value} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy exe of launcher/main app
     --app {application.exe} — Set the exe of launcher/main application
     --with {value} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: "win amd64 portable")
+    {leave folders value} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR
     {script value} → --script or --no-script — Run script or not after update of application (file "script.bat")
     {pause value} → --pause or --no-pause — Set pause on finish of update
 
 EXAMPLES:
-    updater.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-script --pause
-    updater.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --script --pause
+    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --leave --no-script --pause
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --leave --script --pause
