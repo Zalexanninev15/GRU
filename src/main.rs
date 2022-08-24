@@ -8,7 +8,7 @@ mod windows;
 fn main() {
     let arguments = std::env::args();
     const VERSION: &str = env!("CARGO_PKG_VERSION");
-    if arguments.len() >= 6 {
+    if arguments.len() >= 7 {
         let arguments = arguments::parse(arguments).unwrap();
         let repo = arguments.get::<String>("repo").unwrap();
         let is_zip = arguments.get::<bool>("extract").unwrap();
