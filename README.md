@@ -23,7 +23,7 @@ Updater for applications from GitHub
 ## System requirements
 
 - **OS:** Windows 7 or higher
-- **Additionally:** May require wget, aria2, or curl (your choice). You can install the utility(s) on the system or put it next to `gru.exe`. Curl can be installed with the [CurlMini](https://github.com/Zalexanninev15/CurlMini) utility, and in Windows 10 version 1803 the curl utility is already installed on the system.
+- **Additionally:** May require `wget`, `aria2`, or `curl` (your choice). You can install the utility(s) on the system or put it next to `gru.exe`. `curl` can be installed with the [CurlMini](https://github.com/Zalexanninev15/CurlMini) utility, and in Windows 10 version 1803 the curl utility is already installed on the system.
 
 ## Usage
 
