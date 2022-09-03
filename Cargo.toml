@@ -22,6 +22,8 @@ curl = "0.4.44"
 pelite = "0.9.1"
 isahc = "1.0.0"
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+trauma = "2.0.0"
+console = "0.15.1"
 
 [target.x86_64-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]
