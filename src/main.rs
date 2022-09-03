@@ -2,11 +2,13 @@ use std::process;
 
 mod downloader;
 mod get_version;
+mod json;
 mod main_func;
 mod windows;
 
 fn main() {
     let arguments = std::env::args();
+    let current_dir = main_func::current_dir();
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     if arguments.len() >= 7 {
         let arguments = arguments::parse(arguments).unwrap();
@@ -23,17 +25,16 @@ fn main() {
             "Github Releases Updater v{} by Zalexanninev15 <blue.shark@disroot.org>",
             VERSION
         );
-
-        // if (check_version_file_info != "0") {
-        // Getting the new version release
-
-        // Json parser
-
-        // Checker for PE version and new version
-        //     get_version::is_new_version();
-        // }
         if windows::is_app_elevated() {
-            let current_dir = main_func::current_dir();
+            // if (check_version_file_info != "0") {
+            // Getting the new version release
+
+            // Json parser
+            // let (v_list_version, v_list_asset) = json::parse_data(&repo, &part);
+
+            // Checker for PE version and new version
+            // get_version::is_new_version(&v_list_version, &current_dir);
+            // }
             main_func::task_kill(&launcher_exe);
             main_func::delete_file(&current_dir, &is_leave_folders);
             println!("Downloading...");
