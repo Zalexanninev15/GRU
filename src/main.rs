@@ -10,14 +10,15 @@ fn main() {
     let arguments = std::env::args();
     let current_dir = main_func::current_dir();
     const VERSION: &str = env!("CARGO_PKG_VERSION");
-    if arguments.len() >= 7 {
+    let mut update_now = true;
+    if arguments.len() >= 8 {
         let arguments = arguments::parse(arguments).unwrap();
         let repo = arguments.get::<String>("repo").unwrap();
         let is_zip = arguments.get::<bool>("extract").unwrap();
         let launcher_exe = arguments.get::<String>("app").unwrap();
         let part = arguments.get::<String>("with").unwrap();
         let is_leave_folders = arguments.get::<bool>("leave").unwrap();
-        // let check_version_file_info = arguments.get::<String>("fv").unwrap();
+        let real_app_name_bin_with_path = arguments.get::<String>("rv").unwrap();
         let is_script_after = arguments.get::<bool>("script").unwrap();
         let is_pause = arguments.get::<bool>("pause").unwrap();
         winconsole::console::set_title("Github Releases Updater").unwrap();
@@ -26,38 +27,54 @@ fn main() {
             VERSION
         );
         if windows::is_app_elevated() {
-            // if (check_version_file_info != "0") {
             // Getting the new version release
+            let (v_list_version, v_list_asset) = json::parse_data(&repo, &part);
 
-            // Json parser
-            // let (v_list_version, v_list_asset) = json::parse_data(&repo, &part);
+            if real_app_name_bin_with_path != "0" {
+                // Checker for PE version and new version
+                let version_status_code =
+                    get_version::is_new_version(&v_list_version, &real_app_name_bin_with_path);
+                if version_status_code != 1 {
+                    println!("New version ({}) is available!", v_list_version);
+                    if version_status_code == -1 {
+                        println!("However, it may be inaccurate, since. the original version was not correctly defined!")
+                    }
+                } else {
+                    update_now = false;
+                    press_btn_continue::wait("No updates detected!");
+                }
+            }
+            if update_now {
+                main_func::task_kill(&launcher_exe);
+                main_func::delete_file(&current_dir, &is_leave_folders);
+                println!("Downloading...");
 
-            // Checker for PE version and new version
-            // get_version::is_new_version(&v_list_version, &current_dir);
-            // }
-            main_func::task_kill(&launcher_exe);
-            main_func::delete_file(&current_dir, &is_leave_folders);
-            println!("Downloading...");
-            main_func::downloading_by_redl(&repo, &part);
-            if is_zip {
-                println!("Extracting...");
-                main_func::extracting(&current_dir);
-            } else {
-                println!("Updating...");
-                main_func::updating(&current_dir, &launcher_exe);
+                // Old downloader by redl
+                // main_func::downloading_by_redl(&repo, &part);
+
+                // New native downloader
+                downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+
+                if is_zip {
+                    println!("Extracting...");
+                    main_func::extracting(&current_dir);
+                } else {
+                    println!("Updating...");
+                    main_func::updating(&current_dir, &launcher_exe);
+                }
+                // Delete the EXE file of the portable installer
+                main_func::delete_file(&current_dir, &is_leave_folders);
+                if is_script_after {
+                    println!("Running script.bat...");
+                    main_func::run_post_script(&current_dir);
+                }
+                if is_pause {
+                    press_btn_continue::wait("Update completed successfully!");
+                } else {
+                    println!("Update completed successfully!");
+                }
+                process::exit(0);
             }
-            // Delete the EXE file of the portable installer
-            main_func::delete_file(&current_dir, &is_leave_folders);
-            if is_script_after {
-                println!("Running script.bat...");
-                main_func::run_post_script(&current_dir);
-            }
-            if is_pause {
-                press_btn_continue::wait("Update completed successfully!");
-            } else {
-                println!("Update completed successfully!");
-            }
-            process::exit(0);
         } else {
             press_btn_continue::wait("Administrator rights are required to run!").unwrap();
             process::exit(1);
