@@ -32,8 +32,8 @@ fn main() {
 
             if real_app_name_bin_with_path != "0" {
                 // Checker for PE version and new version
-                let version_status_code =
-                    get_version::is_new_version(&v_list_version, &real_app_name_bin_with_path);
+                let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin_with_path);
+                let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
                 if version_status_code != 1 {
                     println!("New version ({}) is available!", v_list_version);
                     if version_status_code == -1 {
