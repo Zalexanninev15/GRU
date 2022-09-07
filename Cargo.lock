@@ -454,7 +454,6 @@ version = "1.3.0"
 dependencies = [
  "arguments",
  "console",
- "curl",
  "execute",
  "isahc",
  "pelite",
