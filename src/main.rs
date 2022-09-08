@@ -12,16 +12,34 @@ fn main() {
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
     if arguments.len() >= 8 {
-        let arguments = arguments::parse(arguments).unwrap();
-        let repo = arguments.get::<String>("repo").unwrap();
-        let is_zip = arguments.get::<bool>("extract").unwrap();
-        let launcher_exe = arguments.get::<String>("app").unwrap();
-        let part = arguments.get::<String>("with").unwrap();
-        let is_leave_folders = arguments.get::<bool>("leave").unwrap();
-        let real_app_name_bin_with_path = arguments.get::<String>("rv").unwrap();
-        let is_script_after = arguments.get::<bool>("script").unwrap();
-        let is_pause = arguments.get::<bool>("pause").unwrap();
-        winconsole::console::set_title("Github Releases Updater").unwrap();
+        let arguments = arguments::parse(arguments)
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let repo = arguments
+            .get::<String>("repo")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let is_zip = arguments
+            .get::<bool>("extract")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let launcher_exe = arguments
+            .get::<String>("app")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let part = arguments
+            .get::<String>("with")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let is_leave_folders = arguments
+            .get::<bool>("leave")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let real_app_name_bin_with_path = arguments
+            .get::<String>("rv")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let is_script_after = arguments
+            .get::<bool>("script")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        let is_pause = arguments
+            .get::<bool>("pause")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+        winconsole::console::set_title("Github Releases Updater")
+            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         println!(
             "Github Releases Updater v{} by Zalexanninev15 <blue.shark@disroot.org>",
             VERSION
@@ -53,7 +71,11 @@ fn main() {
                 // main_func::downloading_by_redl(&repo, &part);
 
                 // New native downloader
-                downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+                let result =
+                    downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+                if result.is_err() {
+                    println!("Failed to download!");
+                }
 
                 if is_zip {
                     println!("Extracting...");

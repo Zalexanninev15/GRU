@@ -1,4 +1,5 @@
 use std::{fs, path::PathBuf};
+use tokio;
 use trauma::{
     download::Download,
     downloader::{DownloaderBuilder, StyleOptions},
@@ -6,6 +7,7 @@ use trauma::{
 };
 
 // Download the asset
+#[tokio::main]
 pub async fn download(
     repo: &str,
     ver_tag: &str,

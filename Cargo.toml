@@ -23,6 +23,7 @@ isahc = "1.0.0"
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 trauma = "2.0.0"
 console = "0.15.1"
+tokio = "1.0.0"
 
 [profile.release]
 strip = true      # Comment this if cargo-bloat: cargo bloat --release --crates
