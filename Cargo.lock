@@ -459,6 +459,7 @@ dependencies = [
  "pelite",
  "press-btn-continue",
  "serde_json",
+ "tokio",
  "trauma",
  "winapi",
  "winconsole",
