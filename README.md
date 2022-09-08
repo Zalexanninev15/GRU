@@ -23,14 +23,13 @@ Updater for applications from GitHub
 ## System requirements
 
 - **OS:** Windows 7 or higher
-- **Additionally:** May require `wget`, `aria2`, or `curl` (your choice). You can install the utility(s) on the system or put it next to `gru.exe`. `curl` can be installed with the [CurlMini](https://github.com/Zalexanninev15/CurlMini) utility, and in Windows 10 version 1803 the curl utility is already installed on the system.
 
 ## Usage
 
 1. Copy the `UpdateTools` folder from the archive to the application folder
 2. Run the `gru.exe` file with the arguments. [Read more about existing arguments](https://github.com/Zalexanninev15/GRU/blob/main/arguments.txt)
 
-### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
+### Old example without the `--rv` argument, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
 gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --no-script --pause
@@ -38,7 +37,7 @@ gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable
 
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
 
-### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
+### Old example without the `--rv` argument, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
 gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --script --pause
