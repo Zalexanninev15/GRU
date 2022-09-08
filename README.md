@@ -15,10 +15,10 @@ Updater for applications from GitHub
 
 ## Features
 
-- Convenient data transfer for third-party utilities
 - Features of fine-tuning the update process
 - Support for a custom script that runs after an application update (`script.bat` file)
 - Clear and sufficiently self-sufficient documentation (run `gru.exe` without arguments)
+- Support for determining the current version when using a specific argument for a more fine-grained application update process
 
 ## System requirements
 
