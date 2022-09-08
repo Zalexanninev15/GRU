@@ -110,13 +110,14 @@ Developer: Zalexanninev15 <blue.shark@disroot.org>
 License: MIT License
 GitHub: https://github.com/Zalexanninev15/GRU\n
 USAGE:
-    gru.exe --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{leave folders value}} {{script value}} {{pause value}}\n
+    gru.exe --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{leave folders value}} --rv {{value}} {{script value}} {{pause value}}\n
 ARGUMENTS:
     --repo {{user/repository}} — Set the repository of application
     {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy exe of launcher/main app
     --app {{application.exe}} — Set the exe of launcher/main application
     --with {{value}} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
     {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR
+    --rv {{value}} — Update or not update the application. If an update is needed, then specify the executable file from which you want to take the current version of the application. If no update is required, then specify \"0\"
     {{script value}} → --script or --no-script — Run script or not after update of application (file \"script.bat\")
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
