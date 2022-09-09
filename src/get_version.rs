@@ -17,6 +17,18 @@ pub fn is_new_version(new_version: &str, application_path: &str) -> i32 {
     }
 }
 
+// fn get_bin_version(bin: PeFile<'_>) -> String {
+//     let resources = bin
+//         .resources()
+//         .expect("Error with extract the bin resources!");
+//     let version_info = resources
+//         .version_info()
+//         .expect("Error with extract the bin info!");
+//     let lang = version_info.translation()[0];
+//     let pe_version = version_info.value(lang, "FileVersion");
+//     (pe_version.unwrap())
+// }
+
 // Function for getting the file version from PE file
 fn get_file_version(bin: PeFile<'_>) -> String {
     let resources = bin.resources().expect("Resources not found!");
@@ -33,9 +45,7 @@ fn get_file_version(bin: PeFile<'_>) -> String {
     }
     .expect("Version info not found!");
     let lang = version_info.translation()[0];
-    let file_version = String::from(format!(
-        "{}",
-        version_info.value(lang, "ProductVersion").unwrap()
-    ));
+    // TODO Fix this error (?)
+    let file_version = format!("{:?}", version_info.value(lang, "ProductVersion"));
     file_version
 }
