@@ -47,10 +47,10 @@ fn main() {
         if windows::is_app_elevated() {
             // Getting the new version release
             let (v_list_version, v_list_asset) = json::parse_data(&repo, &part);
-
             if real_app_name_bin_with_path != "0" {
                 // Checker for PE version and new version
                 let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin_with_path);
+
                 let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
                 if version_status_code != 1 {
                     println!("New version ({}) is available!", v_list_version);
@@ -77,11 +77,10 @@ fn main() {
                     println!("Failed to download!");
                 }
 
+                println!("Updating...");
                 if is_zip {
-                    println!("Extracting...");
                     main_func::extracting(&current_dir);
                 } else {
-                    println!("Updating...");
                     main_func::updating(&current_dir, &launcher_exe);
                 }
                 // Delete the EXE file of the portable installer
@@ -121,8 +120,8 @@ ARGUMENTS:
     {{script value}} → --script or --no-script — Run script or not after update of application (file \"script.bat\")
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --script --pause\n", DESCRIPTION, VERSION);
+    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv 0 --no-script --pause
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause\n", DESCRIPTION, VERSION);
     }
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }
