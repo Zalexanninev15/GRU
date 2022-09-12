@@ -12,5 +12,5 @@ ARGUMENTS:
     {pause value} → --pause or --no-pause — Set pause on finish of update
 
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --script --pause
+    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv 0 --no-script --pause
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv 0 --script --pause
