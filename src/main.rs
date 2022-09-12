@@ -46,7 +46,13 @@ fn main() {
         );
         if windows::is_app_elevated() {
             // Getting the new version release
-            let (v_list_version, v_list_asset) = json::parse_data(&repo, &part);
+            let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
+            v_list_asset = v_list_asset
+                .replace(".sha256sum", "")
+                .replace(".md5sum", "")
+                .replace(".md5", "")
+                .replace(".sha256", "")
+                .to_string();
             if real_app_name_bin_with_path != "0" {
                 // Checker for PE version and new version
                 let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin_with_path);
