@@ -29,18 +29,18 @@ Updater for applications from GitHub
 1. Copy the `UpdateTools` folder from the archive to the application folder
 2. Run the `gru.exe` file with the arguments. [Read more about existing arguments](https://github.com/Zalexanninev15/GRU/blob/main/arguments.txt)
 
-### Old example without the `--rv` argument, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
+### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
-gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --no-script --pause
+gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv 0 --no-script --pause
 ```
 
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
 
-### Old example without the `--rv` argument, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
+### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
-gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --script --pause
+gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv 0 --script --pause
 ```
 
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)

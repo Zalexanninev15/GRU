@@ -29,7 +29,7 @@ fn main() {
         let is_leave_folders = arguments
             .get::<bool>("leave")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let real_app_name_bin_with_path = arguments
+        let real_app_name_bin = arguments
             .get::<String>("rv")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let is_script_after = arguments
@@ -52,20 +52,25 @@ fn main() {
                 .replace(".md5sum", "")
                 .replace(".md5", "")
                 .replace(".sha256", "")
+                .replace(".sha-1", "")
+                .replace(".sha-1sum", "")
+                .replace(".sha1sum", "")
+                .replace(".sha1", "")
+                .replace(".hash", "")
                 .to_string();
-            if real_app_name_bin_with_path != "0" {
+            if real_app_name_bin != "0" {
                 // Checker for PE version and new version
-                let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin_with_path);
+                let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin);
 
                 let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
                 if version_status_code != 1 {
-                    println!("New version ({}) is available!", v_list_version);
+                    println!("\nNew version ({}) is available!", v_list_version);
                     if version_status_code == -1 {
-                        println!("However, it may be inaccurate, since. the original version was not correctly defined!")
+                        println!("\nHowever, it may be inaccurate, since. the original version was not correctly defined!")
                     }
                 } else {
                     update_now = false;
-                    press_btn_continue::wait("No updates detected!");
+                    println!("\nNo updates detected!");
                 }
             }
             if update_now {
@@ -127,7 +132,7 @@ ARGUMENTS:
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv 0 --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause\n", DESCRIPTION, VERSION);
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv 0 --script --pause\n", DESCRIPTION, VERSION);
     }
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }
