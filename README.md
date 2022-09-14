@@ -46,6 +46,3 @@ gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
 📜 **Script:** [View](https://github.com/Zalexanninev15/GRU/blob/main/script.bat)
 
-## Used tool
-
-- [redl](https://github.com/gek64/redl) ([GPLv3](https://github.com/gek64/redl/blob/main/LICENSE))
