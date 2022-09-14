@@ -103,7 +103,10 @@ fn main() {
                 if is_zip {
                     main_func::extracting(&current_dir);
                 } else {
-                    main_func::updating(&current_dir, &launcher_exe);
+                    let ue = main_func::updating(&current_dir, &launcher_exe);
+                    if ue.is_err() {
+                        println!("File replacement error!")
+                    }
                 }
 
                 // Delete the EXE file of the portable installer
