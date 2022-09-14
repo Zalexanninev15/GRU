@@ -37,7 +37,7 @@ pub fn run_post_script(current_dir: &str) {
 }
 
 // Kill application processes
-pub fn task_kill(application_exe: &str) -> std::io::Result<()> {
+pub fn task_kill(application_exe: &str) {
     const TASKKILL_TOOL: &str = "taskkill";
     let mut command = Command::new(TASKKILL_TOOL);
 
@@ -55,7 +55,6 @@ pub fn task_kill(application_exe: &str) -> std::io::Result<()> {
         press_btn_continue::wait("Press any key to exit...").unwrap();
         process::exit(1);
     }
-    Ok(())
 }
 
 // Downloading github release by redl
@@ -145,11 +144,5 @@ pub fn delete_file(current_dir: &str, is_leave_folders: &bool) -> std::io::Resul
         let dir_dir = String::from(format!("{}..\\$PLUGINSDIR", current_dir));
         fs::remove_dir_all(dir_dir)?;
     }
-    let file_dir_zip = String::from(format!("{}*.zip", current_dir));
-    fs::remove_file(file_dir_zip)?;
-    let file_dir_7z = String::from(format!("{}*.7z", current_dir));
-    fs::remove_file(file_dir_7z)?;
-    let file_dir_rar = String::from(format!("{}*.rar", current_dir));
-    fs::remove_file(file_dir_rar)?;
     Ok(())
 }
