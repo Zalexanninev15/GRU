@@ -15,15 +15,14 @@ Updater for applications from GitHub
 
 ## Features
 
-- Convenient data transfer for third-party utilities
 - Features of fine-tuning the update process
 - Support for a custom script that runs after an application update (`script.bat` file)
 - Clear and sufficiently self-sufficient documentation (run `gru.exe` without arguments)
+- Support for determining the current version when using a specific argument for a more fine-grained application update process
 
 ## System requirements
 
 - **OS:** Windows 7 or higher
-- **Additionally:** May require `wget`, `aria2`, or `curl` (your choice). You can install the utility(s) on the system or put it next to `gru.exe`. `curl` can be installed with the [CurlMini](https://github.com/Zalexanninev15/CurlMini) utility, and in Windows 10 version 1803 the curl utility is already installed on the system.
 
 ## Usage
 
@@ -33,7 +32,7 @@ Updater for applications from GitHub
 ### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
-gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --no-script --pause
+gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv App\GitHubDesktop\GitHubDesktop.exe --no-script --pause
 ```
 
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
@@ -41,7 +40,7 @@ gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable
 ### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
-gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --script --pause
+gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv flameshot.exe --script --pause
 ```
 
 💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
