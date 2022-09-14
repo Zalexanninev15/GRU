@@ -45,8 +45,17 @@ fn main() {
             VERSION
         );
         if windows::is_app_elevated() {
+            // Checking the Internet connection
+            let ic = main_func::test_iconnection();
+            if ic.is_err() {
+                println!("Error connecting to GitHub!");
+                update_now = false;
+            }
+
             // Getting the new version release
             let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
+
+            // Delete the hash-files from string
             v_list_asset = v_list_asset
                 .replace(".sha256sum", "")
                 .replace(".md5sum", "")
@@ -58,48 +67,53 @@ fn main() {
                 .replace(".sha1", "")
                 .replace(".hash", "")
                 .to_string();
-            if real_app_name_bin != "0" {
-                // Checker for PE version and new version
-                let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin);
 
-                let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
-                if version_status_code != 1 {
-                    println!("\nNew version ({}) is available!", v_list_version);
-                    if version_status_code == -1 {
-                        println!("\nHowever, it may be inaccurate, since. the original version was not correctly defined!")
-                    }
-                } else {
-                    update_now = false;
-                    println!("\nNo updates detected!");
+            // Checker for PE version and new version
+            let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin);
+            let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
+            if version_status_code != 1 {
+                println!("\nNew version ({}) is available!", v_list_version);
+                if version_status_code == -1 {
+                    println!("\nHowever, it may be inaccurate, since. the original version was not correctly defined!")
                 }
+            } else {
+                update_now = false;
+                println!("\nNo updates detected!");
             }
+
+            // Updater
             if update_now {
+                // Deleting unnecessary data
                 main_func::task_kill(&launcher_exe);
                 main_func::delete_file(&current_dir, &is_leave_folders);
-                println!("Downloading...");
 
                 // Old downloader by redl
                 // main_func::downloading_by_redl(&repo, &part);
 
                 // New native downloader
+                println!("Downloading...");
                 let result =
                     downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
                 if result.is_err() {
                     println!("Failed to download!");
                 }
 
+                // The updating process itself
                 println!("Updating...");
                 if is_zip {
                     main_func::extracting(&current_dir);
                 } else {
                     main_func::updating(&current_dir, &launcher_exe);
                 }
+
                 // Delete the EXE file of the portable installer
                 main_func::delete_file(&current_dir, &is_leave_folders);
                 if is_script_after {
                     println!("Running script.bat...");
                     main_func::run_post_script(&current_dir);
                 }
+
+                // Should I pause the console after work or not?
                 if is_pause {
                     press_btn_continue::wait("Update completed successfully!");
                 } else {
@@ -127,12 +141,12 @@ ARGUMENTS:
     --app {{application.exe}} — Set the exe of launcher/main application
     --with {{value}} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
     {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR
-    --rv {{value}} — Update or not update the application. If an update is needed, then specify the executable file from which you want to take the current version of the application. If no update is required, then specify \"0\"
+    --rv {{value}} — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. \"0\"
     {{script value}} → --script or --no-script — Run script or not after update of application (file \"script.bat\")
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv 0 --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv 0 --script --pause\n", DESCRIPTION, VERSION);
+    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv App\\GitHubDesktop\\GitHubDesktop.exe --no-script --pause
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause\n", DESCRIPTION, VERSION);
     }
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }
