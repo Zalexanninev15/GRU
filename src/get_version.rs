@@ -3,9 +3,16 @@ use pelite::FileMap;
 // Checker for the versions
 pub fn is_new_version(new_version: &str, application_path: &str) -> i32 {
     let mut current_version = parse_pe_version(application_path);
-    current_version = current_version.replace(", ", ".");
     println!("\nCurrent version of app: {}", current_version);
-    if current_version.contains(&new_version) {
+    current_version = current_version
+        .replace(",", ".")
+        .replace(" ", "")
+        .replace(".", "");
+    let new_version_c = &new_version
+        .replace(".", "")
+        .replace("v", "")
+        .replace("build", "");
+    if current_version.contains(new_version_c) {
         0
     } else {
         if current_version == "" {
