@@ -127,9 +127,9 @@ fn main() {
 
                 // Should I pause the console after work or not?
                 if is_pause {
-                    press_btn_continue::wait("Update completed successfully!");
+                    press_btn_continue::wait("Upgrade completed successfully!");
                 } else {
-                    println!("Update completed successfully!");
+                    println!("Upgrade completed successfully!");
                 }
                 process::exit(0);
             }

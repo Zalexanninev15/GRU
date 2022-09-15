@@ -5,6 +5,8 @@ edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
 description = "Updater for applications from GitHub"
+repository = "https://github.com/Zalexanninev15/GRU"
+documentation = "https://github.com/Zalexanninev15/GRU#usage"
 
 [dependencies]
 execute = "0.2.11"
