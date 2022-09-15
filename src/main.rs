@@ -158,7 +158,8 @@ ARGUMENTS:
     {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv App\\GitHubDesktop\\GitHubDesktop.exe --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause\n", DESCRIPTION, VERSION);
+    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause
+    gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with \"-windows-32bit-no-installer.exe\" --no-leave --rv app.exe --no-script --pause\n", DESCRIPTION, VERSION);
     }
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }

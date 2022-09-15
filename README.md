@@ -28,6 +28,7 @@ Updater for applications from GitHub
 
 1. Copy the `UpdateTools` folder from the archive to the application folder
 2. Run the `gru.exe` file with the arguments. [Read more about existing arguments](https://github.com/Zalexanninev15/GRU/blob/main/arguments.txt)
+3. The file/archive will be downloaded. If it is an archive, then it will be unzipped to a folder a level higher than the current one (i.e. you need to remove `UpdateTools` from the path). If it is a single file, then it will simply be moved (also to a higher level). The archive will be deleted automatically after unpacking
 
 ### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
@@ -35,14 +36,16 @@ Updater for applications from GitHub
 gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv App\GitHubDesktop\GitHubDesktop.exe --no-script --pause
 ```
 
-💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Work/GitHub%20Desktop/info.html)
-
 ### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
 gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv flameshot.exe --script --pause
 ```
 
-💾 **TCPU Repa:** [View the addon using this example](https://tcpu.ru/info/REPA/Multimedia/Flameshot/info.html)
 📜 **Script:** [View](https://github.com/Zalexanninev15/GRU/blob/main/script.bat)
 
+### Example, [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
+
+```batch
+gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with "-windows-32bit-no-installer.exe" --no-leave --rv app.exe --no-script --pause
+```
