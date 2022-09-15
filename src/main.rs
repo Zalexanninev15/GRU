@@ -57,6 +57,7 @@ fn main() {
 
             // Delete the hash-files from string
             v_list_asset = v_list_asset
+                .to_lowercase()
                 .replace(".sha256sum", "")
                 .replace(".md5sum", "")
                 .replace(".md5", "")

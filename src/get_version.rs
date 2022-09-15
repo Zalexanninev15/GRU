@@ -5,13 +5,22 @@ pub fn is_new_version(new_version: &str, application_path: &str) -> i32 {
     let mut current_version = parse_pe_version(application_path);
     println!("\nCurrent version of app: {}", current_version);
     current_version = current_version
+        .to_lowercase()
         .replace(",", ".")
         .replace(" ", "")
-        .replace(".", "");
+        .replace(".", "")
+        .replace("build", "")
+        .replace("v", "")
+        .replace("-", "");
     let new_version_c = &new_version
+        .to_lowercase()
         .replace(".", "")
         .replace("v", "")
-        .replace("build", "");
+        .replace("build", "")
+        .replace("ersion", "")
+        .replace(" ", "")
+        .replace("_", "")
+        .replace("-", "");
     if current_version.contains(new_version_c) {
         0
     } else {
