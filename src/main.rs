@@ -57,16 +57,24 @@ fn main() {
 
             // Delete the hash-files from string
             v_list_asset = v_list_asset
-                .to_lowercase()
                 .replace(".sha256sum", "")
+                .replace(".SHA256SUM", "")
                 .replace(".md5sum", "")
+                .replace(".MD5SUM", "")
                 .replace(".md5", "")
+                .replace(".MD5", "")
                 .replace(".sha256", "")
+                .replace(".SHA256", "")
                 .replace(".sha-1", "")
+                .replace(".SHA-1", "")
                 .replace(".sha-1sum", "")
+                .replace(".SHA-1SUM", "")
                 .replace(".sha1sum", "")
+                .replace(".SHA1SUM", "")
                 .replace(".sha1", "")
+                .replace(".SHA1", "")
                 .replace(".hash", "")
+                .replace(".HASH", "")
                 .to_string();
 
             // Checker for PE version and new version
