@@ -137,12 +137,13 @@ pub fn extracting(current_dir: &str) {
 }
 
 // Delete portable installer
-pub fn delete_file(current_dir: &str, is_leave_folders: &bool) -> std::io::Result<()> {
+pub fn delete_file(current_dir: &str, is_leave_folders: &bool) {
     let file_dir = String::from(format!("{}app.dat", current_dir));
-    fs::remove_file(file_dir)?;
+    fs::remove_file(file_dir).expect("Temporary file \"app.dat\" not found.");
     if !is_leave_folders {
-        let dir_dir = String::from(format!("{}..\\$PLUGINSDIR", current_dir));
-        fs::remove_dir_all(dir_dir)?;
+        fs::remove_dir_all(format!("{}..\\$PLUGINSDIR", current_dir))
+            .expect("Unnecessary folder \"$PLUGINSDIR\" was not found.");
+        fs::remove_dir_all(format!("{}..\\Other", current_dir))
+            .expect("Unnecessary folder \"Other\" was not found.");
     }
-    Ok(())
 }
