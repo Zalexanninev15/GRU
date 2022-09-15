@@ -13,8 +13,9 @@ fn parse_text(json: &str, word: &str) -> (String, String) {
     let release: Value = serde_json::from_str(json).expect("Error parsing JSON");
     let mut slob = String::from("app.zip");
     for rs in release["assets"].as_array().unwrap() {
-        if rs["name"].to_string().contains(&word) {
-            slob = rs["name"].to_string().replace("\"", "");
+        let mut name = rs["name"].to_string().replace("\"", "");
+        if name.contains(&word) {
+            slob = name;
         }
     }
     (release["tag_name"].to_string().replace("\"", ""), slob)
