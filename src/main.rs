@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::process;
 
 mod downloader;
@@ -9,6 +10,7 @@ mod windows;
 fn main() {
     let arguments = std::env::args();
     let current_dir = main_func::current_dir();
+    let mut first_launch = true;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
     if arguments.len() >= 8 {
@@ -52,15 +54,16 @@ fn main() {
                 update_now = false;
             }
 
+            // TODO: Is this the first download?
+
+
             // Getting the new version release
             let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
 
             // Delete the hash-files from string
             v_list_asset = v_list_asset
                 .replace(".sha256sum", "")
-                .replace(".SHA256SUM", "")
                 .replace(".md5sum", "")
-                .replace(".MD5SUM", "")
                 .replace(".md5", "")
                 .replace(".MD5", "")
                 .replace(".sha256", "")
@@ -68,9 +71,6 @@ fn main() {
                 .replace(".sha-1", "")
                 .replace(".SHA-1", "")
                 .replace(".sha-1sum", "")
-                .replace(".SHA-1SUM", "")
-                .replace(".sha1sum", "")
-                .replace(".SHA1SUM", "")
                 .replace(".sha1", "")
                 .replace(".SHA1", "")
                 .replace(".hash", "")
@@ -108,7 +108,12 @@ fn main() {
                 }
 
                 // The updating process itself
-                println!("Updating...");
+                if first_launch {
+                    println!("Adding file(s)...");
+                }
+                else {
+                    println!("Updating...");
+                }
                 if is_zip {
                     main_func::extracting(&current_dir);
                 } else {
@@ -127,9 +132,23 @@ fn main() {
 
                 // Should I pause the console after work or not?
                 if is_pause {
-                    press_btn_continue::wait("Upgrade completed successfully!");
+                    if first_launch {
+                        main_func::set_new_version(&v_list_version);
+                        press_btn_continue::wait("Download completed successfully!");
+                    }
+                    else {
+                        main_func::set_new_version(&v_list_version);
+                        press_btn_continue::wait("Upgrade completed successfully!");
+                    }
                 } else {
-                    println!("Upgrade completed successfully!");
+                    if first_launch {
+                        main_func::set_new_version(&v_list_version);
+                        println!("Download completed successfully!");
+                    }
+                    else {
+                        main_func::set_new_version(&v_list_version);
+                        println!("Upgrade completed successfully!");
+                    }
                 }
                 process::exit(0);
             }
