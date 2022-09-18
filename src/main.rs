@@ -10,7 +10,7 @@ mod windows;
 fn main() {
     let arguments = std::env::args();
     let current_dir = main_func::current_dir();
-    let mut first_launch = true;
+    let mut first_launch = false;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
     if arguments.len() >= 8 {
@@ -30,23 +30,23 @@ fn main() {
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let is_leave_folders = arguments
             .get::<bool>("leave")
-            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
+            .unwrap_or(false);
         let real_app_name_bin = arguments
             .get::<String>("rv")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let is_script_after = arguments
             .get::<bool>("script")
-            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let is_pause = arguments
-            .get::<bool>("pause")
-            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        winconsole::console::set_title("Github Releases Updater")
+            .unwrap_or(false);
+        let silent_mode = arguments
+            .get::<bool>("silent").unwrap_or(false);
+        winconsole::console::set_title("Github Release Updater")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         println!(
-            "Github Releases Updater v{} by Zalexanninev15 <blue.shark@disroot.org>",
+            "Github Release Updater v{} by Zalexanninev15 <blue.shark@disroot.org>",
             VERSION
         );
         if windows::is_app_elevated() {
+
             // Checking the Internet connection
             let ic = main_func::test_iconnection();
             if ic.is_err() {
@@ -54,8 +54,12 @@ fn main() {
                 update_now = false;
             }
 
-            // TODO: Is this the first download?
+            let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin).to_string();
 
+            // Is this the first download?
+            if Path::new("app.version").exists() == false || Path::new(&app_path).exists() == false {
+                first_launch = true;
+            }
 
             // Getting the new version release
             let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
@@ -78,7 +82,6 @@ fn main() {
                 .to_string();
 
             // Checker for PE version and new version
-            let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin);
             let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
             if version_status_code != 0 {
                 println!("\nNew version ({}) is available!", v_list_version);
@@ -131,7 +134,7 @@ fn main() {
                 }
 
                 // Should I pause the console after work or not?
-                if is_pause {
+                if !silent_mode {
                     if first_launch {
                         main_func::set_new_version(&v_list_version);
                         press_btn_continue::wait("Download completed successfully!");
@@ -158,23 +161,24 @@ fn main() {
         }
     } else {
         const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
-        println!("Github Releases Updater
+        println!("Github Release Updater
 Description: {}
 Version: v{}
 Developer: Zalexanninev15 <blue.shark@disroot.org>
 License: MIT License
 GitHub: https://github.com/Zalexanninev15/GRU\n
 USAGE:
-    gru.exe --repo {{user/repository}} {{extract value}} --app {{application.exe}} --with {{value}} {{leave folders value}} --rv {{value}} {{script value}} {{pause value}}\n
+    gru.exe --repo <user/repository> {{extract value}} --app <application.exe> --with <value for search> {{leave folders value}} --rv <value> {{script value}} {{pause value}}\n
 ARGUMENTS:
-    --repo {{user/repository}} — Set the repository of application
-    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy exe of launcher/main app
-    --app {{application.exe}} — Set the exe of launcher/main application
-    --with {{value}} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
-    {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other
-    --rv {{value}} — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. \"0\"
-    {{script value}} → --script or --no-script — Run script or not after update of application (file \"script.bat\")
-    {{pause value}} → --pause or --no-pause — Set pause on finish of update\n
+    --repo <user/repository> — Set the repository of application
+    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main app
+    --app <application.exe> — Set the EXE of launcher/main application
+    --with <value for search> — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
+    --rv <value> — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. \"0\"\n
+OPTIONAL:
+    {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
+    {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after downloading the application or not [Default value: --no-script]
+    {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]\n
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv App\\GitHubDesktop\\GitHubDesktop.exe --no-script --pause
     gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause
