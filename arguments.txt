@@ -1,17 +1,19 @@
 USAGE:
-    gru.exe --repo {user/repository} {extract value} --app {application.exe} --with {value} {leave folders value} --rv {value} {script value} {pause value}
+    gru.exe --repo <user/repository> --app <application.exe> --with <value for search>
 
 ARGUMENTS:
-    --repo {user/repository} — Set the repository of application
-    {extract value} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy exe of launcher/main app
-    --app {application.exe} — Set the exe of launcher/main application
-    --with {value} — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: "win amd64 portable")
-    {leave folders value} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other
-	--rv {value} — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. "0"
-    {script value} → --script or --no-script — Run script or not after update of application (file "script.bat")
-    {pause value} → --pause or --no-pause — Set pause on finish of update
+    --repo <user/repository> — Set the repository of application
+    --app <application.exe> — Set the EXE of launcher/main application. The executable file must be located in a folder at a higher level, otherwise you need to set the '--main' argument with the correct path to the file
+    --with <value for search> — Set the part of name of asset in GitHub release for download, for example: "win-amd64-portable.zip"
+
+OPTIONAL:
+    --main <target> - Set the main part of the application, the path to the application located at the level above [Default value = value of the '--app' argument]
+    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
+    {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
+    {{script value}} → --script or --no-script — Run the script (file "script.bat") after downloading the application or not [Default value: --no-script]
+    {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
 
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv App\GitHubDesktop\GitHubDesktop.exe --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv flameshot.exe --script --pause
-    gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with "-windows-32bit-no-installer.exe" --no-leave --rv app.exe --no-script --pause
+    gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe
+    gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --script
+    gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-32bit-no-installer.exe" --no-extract

@@ -13,14 +13,11 @@ fn main() {
     let mut first_launch = false;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
-    if arguments.len() >= 8 {
+    if arguments.len() >= 3 {
         let arguments = arguments::parse(arguments)
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let repo = arguments
             .get::<String>("repo")
-            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let is_zip = arguments
-            .get::<bool>("extract")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let launcher_exe = arguments
             .get::<String>("app")
@@ -28,17 +25,19 @@ fn main() {
         let part = arguments
             .get::<String>("with")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let is_leave_folders = arguments
-            .get::<bool>("leave")
-            .unwrap_or(false);
-        let real_app_name_bin = arguments
-            .get::<String>("rv")
-            .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let is_script_after = arguments
-            .get::<bool>("script")
-            .unwrap_or(false);
-        let silent_mode = arguments
-            .get::<bool>("silent").unwrap_or(false);
+        let real_app_path_bin = arguments
+            .get::<String>("main")
+            .unwrap_or(launcher_exe.to_string().parse().unwrap());
+
+        // TODO: Working directory
+        // let work_dir = arguments
+        //     .get::<String>("path")
+        //     .unwrap_or("\\..\\".to_string());
+
+        let is_zip = arguments.get::<bool>("extract").unwrap_or(true);
+        let is_leave_folders = arguments.get::<bool>("leave").unwrap_or(false);
+        let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
+        let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         winconsole::console::set_title("Github Release Updater")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         println!(
@@ -46,7 +45,6 @@ fn main() {
             VERSION
         );
         if windows::is_app_elevated() {
-
             // Checking the Internet connection
             let ic = main_func::test_iconnection();
             if ic.is_err() {
@@ -54,10 +52,11 @@ fn main() {
                 update_now = false;
             }
 
-            let app_path = format!("{}\\..\\{}", current_dir, real_app_name_bin).to_string();
+            let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
             // Is this the first download?
-            if Path::new("app.version").exists() == false || Path::new(&app_path).exists() == false {
+            if Path::new("app.version").exists() == false || Path::new(&app_path).exists() == false
+            {
                 first_launch = true;
             }
 
@@ -113,8 +112,7 @@ fn main() {
                 // The updating process itself
                 if first_launch {
                     println!("Adding file(s)...");
-                }
-                else {
+                } else {
                     println!("Updating...");
                 }
                 if is_zip {
@@ -138,8 +136,7 @@ fn main() {
                     if first_launch {
                         main_func::set_new_version(&v_list_version);
                         press_btn_continue::wait("Download completed successfully!");
-                    }
-                    else {
+                    } else {
                         main_func::set_new_version(&v_list_version);
                         press_btn_continue::wait("Upgrade completed successfully!");
                     }
@@ -147,8 +144,7 @@ fn main() {
                     if first_launch {
                         main_func::set_new_version(&v_list_version);
                         println!("Download completed successfully!");
-                    }
-                    else {
+                    } else {
                         main_func::set_new_version(&v_list_version);
                         println!("Upgrade completed successfully!");
                     }
@@ -168,21 +164,22 @@ Developer: Zalexanninev15 <blue.shark@disroot.org>
 License: MIT License
 GitHub: https://github.com/Zalexanninev15/GRU\n
 USAGE:
-    gru.exe --repo <user/repository> {{extract value}} --app <application.exe> --with <value for search> {{leave folders value}} --rv <value> {{script value}} {{pause value}}\n
+    gru.exe --repo <user/repository> --app <application.exe> --with <value for search>\n
 ARGUMENTS:
     --repo <user/repository> — Set the repository of application
-    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main app
-    --app <application.exe> — Set the EXE of launcher/main application
-    --with <value for search> — Set the part of name of asset in GitHub release for download (several parts of the name can be used, as long as they are separated by a space and enclosed in quotation marks, for example: \"win amd64 portable\")
-    --rv <value> — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. \"0\"\n
+    --app <application.exe> — Set the EXE of launcher/main application. The executable file must be located in a folder at a higher level, otherwise you need to set the '--main' argument with the correct path to the file
+    --with <value for search> — Set the part of name of asset in GitHub release for download, for example: \"win-amd64-portable.zip\"\n
 OPTIONAL:
-    {{leave folders value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
+    --main <target> - Set the main part of the application, the path to the application located at the level above [Default value = value of the '--app' argument]
+    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
+    {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
     {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after downloading the application or not [Default value: --no-script]
     {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]\n
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with \"paf\" --no-leave --rv App\\GitHubDesktop\\GitHubDesktop.exe --no-script --pause
-    gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with \"win64.zip\" --no-leave --rv flameshot.exe --script --pause
-    gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with \"-windows-32bit-no-installer.exe\" --no-leave --rv app.exe --no-script --pause\n", DESCRIPTION, VERSION);
+    gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with \"paf\" --main App\\GitHubDesktop\\GitHubDesktop.exe
+    gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with \"win64.zip\" --script
+    gru.exe --repo jgraph/drawio-desktop --app app.exe --with \"-windows-32bit-no-installer.exe\" --no-extract\n", DESCRIPTION, VERSION);
     }
+    // --rv <value> — Set the executable from which you want to take the current version of the application. If you don't know exactly where to take it from, put any value, e.g. \"0\"\n
     press_btn_continue::wait("Press Enter to exit...").unwrap();
 }
