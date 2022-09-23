@@ -50,9 +50,9 @@ pub fn run_post_script(current_dir: &str) {
 pub fn task_kill(application_exe: &str) {
     const TASKKILL_TOOL: &str = "taskkill";
     let mut command = Command::new(TASKKILL_TOOL);
-
     command.arg("/F").arg("/T").arg("/IM").arg(application_exe);
     command.execute();
+
     // let output = command.execute_output().unwrap();
     // if let Some(exit_code) = output.status.code() {
     //     if exit_code == 0 {
