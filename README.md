@@ -49,3 +49,19 @@ gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win
 ```batch
 gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with "-windows-32bit-no-installer.exe" --no-leave --rv app.exe --no-script --pause
 ```
+
+## Build (with PowerShell)
+
+1. Install all dependencies as Admin (it is recommended to use packages from the [Chocolatey package manager](https://chocolatey.org))
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco install rust mingw git -y
+```
+
+2. Compile the GRU!
+
+```powershell
+git clone https://github.com/Zalexanninev15/GRU
+cd .\GRU\
+cargo build --release
+```
