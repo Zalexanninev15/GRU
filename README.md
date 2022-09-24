@@ -33,13 +33,13 @@ Updater for applications from GitHub
 ### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
-gru.exe --repo gek64/GitHubDesktopPortable --extract --app GitHubDesktopPortable.exe --with "paf" --no-leave --rv App\GitHubDesktop\GitHubDesktop.exe --no-script --pause
+gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe
 ```
 
 ### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
-gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win64.zip" --no-leave --rv flameshot.exe --script --pause
+gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --script
 ```
 
 📜 **Script:** [View](https://github.com/Zalexanninev15/GRU/blob/main/script.bat)
@@ -47,7 +47,7 @@ gru.exe --repo flameshot-org/flameshot --extract --app flameshot.exe --with "win
 ### Example, [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
 
 ```batch
-gru.exe --repo jgraph/drawio-desktop --no-extract --app app.exe --with "-windows-32bit-no-installer.exe" --no-leave --rv app.exe --no-script --pause
+gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-32bit-no-installer.exe" --no-extract
 ```
 
 ## Build (with PowerShell)
