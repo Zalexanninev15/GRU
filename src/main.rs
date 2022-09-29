@@ -11,6 +11,8 @@ fn main() {
     let arguments = std::env::args();
     let current_dir = main_func::current_dir();
     let mut first_launch = false;
+    let mut create_only_version_file = false;
+    let mut version_status_code = 1;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
     if arguments.len() >= 3 {
@@ -28,11 +30,6 @@ fn main() {
         let real_app_path_bin = arguments
             .get::<String>("main")
             .unwrap_or(launcher_exe.to_string().parse().unwrap());
-
-        // TODO: Working directory
-        // let work_dir = arguments
-        //     .get::<String>("path")
-        //     .unwrap_or("\\..\\".to_string());
 
         let is_zip = arguments.get::<bool>("extract").unwrap_or(true);
         let is_leave_folders = arguments.get::<bool>("leave").unwrap_or(false);
@@ -55,8 +52,13 @@ fn main() {
             let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
             // Is this the first download?
-            if Path::new("app.version").exists() == false || Path::new(&app_path).exists() == false
-            {
+            if Path::new(&app_path).exists() {
+                if Path::new("app.version").exists() == false {
+                    create_only_version_file = true;
+                } else {
+                    first_launch = false;
+                }
+            } else {
                 first_launch = true;
             }
 
@@ -81,15 +83,22 @@ fn main() {
                 .to_string();
 
             // Checker for PE version and new version
-            let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
-            if version_status_code != 0 {
-                println!("\nNew version ({}) is available!", v_list_version);
-                if version_status_code == -1 {
-                    println!("\nHowever, it may be inaccurate, since. the original version was not correctly defined!")
-                }
-            } else {
+            if create_only_version_file {
+                println!("\nCurrent version of app: {}", &v_list_version);
+                main_func::set_new_version(&v_list_version);
                 update_now = false;
                 println!("\nNo updates detected!");
+            } else {
+                version_status_code = get_version::is_new_version(&v_list_version, &app_path);
+                if version_status_code != 0 && create_only_version_file == false {
+                    println!("\nNew version ({}) is available!", v_list_version);
+                    if version_status_code == -1 {
+                        println!("\nHowever, it may be inaccurate, since. the original version was not correctly defined!")
+                    }
+                } else {
+                    update_now = false;
+                    println!("\nNo updates detected!");
+                }
             }
 
             // Updater
@@ -135,10 +144,12 @@ fn main() {
                 if !silent_mode {
                     if first_launch {
                         main_func::set_new_version(&v_list_version);
-                        press_btn_continue::wait("Download completed successfully!");
+                        press_btn_continue::wait("Download completed successfully!")
+                            .expect("Unknown error!");
                     } else {
                         main_func::set_new_version(&v_list_version);
-                        press_btn_continue::wait("Upgrade completed successfully!");
+                        press_btn_continue::wait("Upgrade completed successfully!")
+                            .expect("Unknown error!");
                     }
                 } else {
                     if first_launch {
