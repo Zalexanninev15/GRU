@@ -10,7 +10,8 @@ use std::process::Command;
 pub fn set_new_version(version: &str) {
     let path = "app.version";
     let mut file = File::create(path).expect("Error creating file with version information!");
-    file.write_all(version.as_bytes()).expect("Error writing version information to file!");
+    file.write_all(version.as_bytes())
+        .expect("Error writing version information to file!");
 }
 
 // Checking the Internet connection
@@ -51,7 +52,7 @@ pub fn task_kill(application_exe: &str) {
     const TASKKILL_TOOL: &str = "taskkill";
     let mut command = Command::new(TASKKILL_TOOL);
     command.arg("/F").arg("/T").arg("/IM").arg(application_exe);
-    command.execute();
+    command.execute().unwrap();
 
     // let output = command.execute_output().unwrap();
     // if let Some(exit_code) = output.status.code() {
@@ -153,15 +154,13 @@ pub fn delete_file(current_dir: &str, is_leave_folders: &bool) {
         fs::remove_file(file_dir).expect("Temporary file \"app.dat\" not found.");
     }
     if !is_leave_folders {
-        let mut dir  = format!("{}..\\$PLUGINSDIR", current_dir).to_string();
+        let mut dir = format!("{}..\\$PLUGINSDIR", current_dir).to_string();
         if Path::new(&dir).exists() {
-            fs::remove_dir_all(dir)
-                .expect("Unnecessary folder \"$PLUGINSDIR\" was not found.");
+            fs::remove_dir_all(dir).expect("Unnecessary folder \"$PLUGINSDIR\" was not found.");
         }
-        dir  = format!("{}..\\Other", current_dir).to_string();
+        dir = format!("{}..\\Other", current_dir).to_string();
         if Path::new(&dir).exists() {
-            fs::remove_dir_all(dir)
-                .expect("Unnecessary folder \"Other\" was not found.");
+            fs::remove_dir_all(dir).expect("Unnecessary folder \"Other\" was not found.");
         }
     }
 }
