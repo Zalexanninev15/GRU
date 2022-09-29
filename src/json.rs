@@ -13,7 +13,7 @@ fn parse_text(json: &str, word: &str) -> (String, String) {
     let release: Value = serde_json::from_str(json).expect("Error parsing JSON");
     let mut slob = String::from("app.zip");
     for rs in release["assets"].as_array().unwrap() {
-        let mut name = rs["name"].to_string().replace("\"", "");
+        let name = rs["name"].to_string().replace("\"", "");
         if name.contains(&word) {
             slob = name;
         }
