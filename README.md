@@ -1,4 +1,4 @@
-# Github Release Updater
+# Github Release Updater | [Latest release](https://github.com/Zalexanninev15/GRU/releases/latest)
 
 [![](https://img.shields.io/badge/OS-Windows-informational?logo=windows)](https://github.com/Zalexanninev15/GRU)
 [![](https://img.shields.io/badge/written_on-Rust-000000.svg?logo=rust)](https://github.com/Zalexanninev15/GRU)
