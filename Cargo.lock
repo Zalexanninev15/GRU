@@ -19,9 +19,9 @@ checksum = "a26fa4d7e3f2eebadf743988fc8aec9fa9a9e82611acafd77c1462ed6262440a"
 
 [[package]]
 name = "arguments"
-version = "0.6.2"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef446ba94fd640b51609759f5280d5d2927386b58a1a4946594b4145f5d4a4c8"
+checksum = "8d8b6590432235ca848cccae06397e642a4e984b37c546dc1b0dcb056b9dcd23"
 dependencies = [
  "options",
 ]
@@ -435,7 +435,7 @@ dependencies = [
 
 [[package]]
 name = "gru"
-version = "1.4.0"
+version = "1.5.0"
 dependencies = [
  "arguments",
  "console",
