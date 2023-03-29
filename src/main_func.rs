@@ -42,9 +42,6 @@ pub fn run_post_script(current_dir: &str) {
     for out in String::from_utf8(script.stdout).iter() {
         println!("{}", out);
     }
-
-    // script.arg(format!("/C {}", &script_file));
-    // script.execute_output().unwrap();
 }
 
 // Kill application processes
@@ -53,59 +50,7 @@ pub fn task_kill(application_exe: &str) {
     let mut command = Command::new(TASKKILL_TOOL);
     command.arg("/F").arg("/T").arg("/IM").arg(application_exe);
     command.execute().unwrap();
-
-    // let output = command.execute_output().unwrap();
-    // if let Some(exit_code) = output.status.code() {
-    //     if exit_code == 0 {
-    //         println!("The application processes are killed. (this is good)");
-    //     } else {
-    //         eprintln!("The process was not found. (this is good)");
-    //     }
-    // } else {
-    //     eprintln!("Interrupted!");
-    //     press_btn_continue::wait("Press any key to exit...").unwrap();
-    //     process::exit(1);
-    // }
 }
-
-// Downloading github release by redl
-// pub fn downloading_by_redl(github_repo_path: &str, part: &str) {
-//     const EGET_PATH: &str = "redl.exe";
-//     let mut command = Command::new(EGET_PATH);
-//     // let download_path = String::from(format!("{}app.dat", current_dir));
-//     if part.contains(" ") {
-//         command
-//             .arg("-r")
-//             .arg(github_repo_path)
-//             .arg("-p")
-//             .args(part.split(" "))
-//             .arg("-o")
-//             .arg("app.dat");
-//     } else {
-//         command
-//             .arg("-r")
-//             .arg(github_repo_path)
-//             .arg("-p")
-//             .arg(part)
-//             .arg("-o")
-//             .arg("app.dat");
-//     }
-
-//     let output = command.execute_output().unwrap();
-//     if let Some(exit_code) = output.status.code() {
-//         if exit_code == 0 {
-//             println!("Downloaded.");
-//         } else {
-//             eprintln!("Failed.");
-//             press_btn_continue::wait("Press any key to exit...").unwrap();
-//             process::exit(1);
-//         }
-//     } else {
-//         eprintln!("Interrupted!");
-//         press_btn_continue::wait("Press any key to exit...").unwrap();
-//         process::exit(1);
-//     }
-// }
 
 // Update by rename file
 pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
