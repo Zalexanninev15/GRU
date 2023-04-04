@@ -22,7 +22,7 @@ Updater for applications from GitHub
 
 ## System requirements
 
-- **OS:** Windows 10 or higher (may work on Windows 7/8/8.1, but the correct display of characters in the console is not guaranteed)
+- **OS:** Windows 10 (x64) or higher (may work on Windows 7/8/8.1, but the correct display of characters in the console is not guaranteed). The latest version for Windows 7/8/8.1 (x32 and x64) is [version 1.4-1 (1.4.0.1)](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1)
 
 ## Usage
 
