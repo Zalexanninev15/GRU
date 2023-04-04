@@ -22,7 +22,7 @@ Updater for applications from GitHub
 
 ## System requirements
 
-- **OS:** Windows 7 or higher
+- **OS:** Windows 10 or higher (may work on Windows 7/8/8.1, but the correct display of characters in the console is not guaranteed)
 
 ## Usage
 
