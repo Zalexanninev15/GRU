@@ -34,8 +34,8 @@ pub async fn download(
         ),
         ProgressBarOpts::new(
             Some(format!(
-                "{{bar:40.cyan}} {{percent:>2.magenta}}{} {{eta_precise:.green}}",
-                style("%").magenta(),
+                "{{bar:40.cyan}} {{bytes_per_sec:>13.green}} {{percent:>2.cyan}}{} {{bytes:>11.green}}/{{total_bytes:<11.green}}",
+                style("%").cyan(),
             )),
             Some("████ ".into()),
             true,
