@@ -1,8 +1,6 @@
 use std::path::Path;
 use std::process;
 
-use futures_lite::future;
-
 mod downloader;
 mod get_version;
 mod json;
@@ -108,17 +106,12 @@ fn main() {
                 main_func::task_kill(&launcher_exe);
                 main_func::delete_file(&current_dir, &is_leave_folders);
                 
-                // TODO Fix downloader
                 // Downloading the file
                 println!("Downloading...");
-                let result = future::block_on(downloader::download_file(&repo, &v_list_version, &v_list_asset, &current_dir));
-                match result {
-                    Ok(()) => {
-                        
-                    }
-                    Err(error) => {
-                        println!("Failed to download! Error: {}", error);
-                    }
+                let result =
+                    downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+                if result.is_err() {
+                        println!("Failed to download!");
                 }
 
                 // The updating process itself
