@@ -12,7 +12,6 @@ fn main() {
     let current_dir = main_func::current_dir();
     let mut first_launch = false;
     let mut create_only_version_file = false;
-    let mut version_status_code = 1;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     let mut update_now = true;
     if arguments.len() >= 3 {
@@ -89,7 +88,7 @@ fn main() {
                 update_now = false;
                 println!("\nNo updates detected!");
             } else {
-                version_status_code = get_version::is_new_version(&v_list_version, &app_path);
+                let version_status_code = get_version::is_new_version(&v_list_version, &app_path);
                 if version_status_code != 0 && create_only_version_file == false {
                     println!("\nNew version ({}) is available!", v_list_version);
                     if version_status_code == -1 {
@@ -106,16 +105,13 @@ fn main() {
                 // Deleting unnecessary data
                 main_func::task_kill(&launcher_exe);
                 main_func::delete_file(&current_dir, &is_leave_folders);
-
-                // Old downloader by redl
-                // main_func::downloading_by_redl(&repo, &part);
-
-                // New native downloader
+                
+                // Downloading the file
                 println!("Downloading...");
                 let result =
                     downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
                 if result.is_err() {
-                    println!("Failed to download!");
+                        println!("Failed to download!");
                 }
 
                 // The updating process itself
