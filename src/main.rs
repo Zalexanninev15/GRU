@@ -137,12 +137,10 @@ fn main() {
                         main_func::run_post_script(&current_dir);
                     }
 
-                    // Should I pause the console after work or not?
+                    main_func::set_new_version(&v_list_version);
                     if first_launch {
-                        main_func::set_new_version(&v_list_version);
                         println!("Download completed successfully!");
                     } else {
-                        main_func::set_new_version(&v_list_version);
                         println!("Upgrade completed successfully!");
                     }
                 }
@@ -150,12 +148,11 @@ fn main() {
                     press_btn_continue::wait("Press Enter to exit...").unwrap();
                 }
                 process::exit(0);
-            }
-        } else {
+            } else {
                 press_btn_continue::wait("Administrator rights are required to run!").unwrap();
                 process::exit(1);
             }
-    } else {
+        } else {
         const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
         println!("Github Release Updater
 Description: {}
