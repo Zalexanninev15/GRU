@@ -81,7 +81,7 @@ fn main() {
                 .replace(".HASH", "")
                 .to_string();
 
-            // Checker for PE version and new version
+            // Checker for сurrent and new version
             if create_only_version_file {
                 println!("\nCurrent version of app: {}", &v_list_version);
                 main_func::set_new_version(&v_list_version);
