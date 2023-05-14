@@ -16,11 +16,13 @@ winapi = { version = "0.3.9", features = [
   "handleapi",
   "processthreadsapi",
   "winnt",
-  "securitybaseapi"
+  "securitybaseapi",
 ] }
 arguments = "0.7.1"
 isahc = "1.7.2"
-serde_json = { version = "1.0.95", default-features = false, features = ["alloc"] }
+serde_json = { version = "1.0.95", default-features = false, features = [
+  "alloc",
+] }
 trauma = "2.2.1"
 console = "0.15.5"
 tokio = "1.27.0"
