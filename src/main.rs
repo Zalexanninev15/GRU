@@ -81,7 +81,7 @@ fn main() {
                 .replace(".HASH", "")
                 .to_string();
 
-            // Checker for PE version and new version
+            // Checker for сurrent and new version
             if create_only_version_file {
                 println!("\nCurrent version of app: {}", &v_list_version);
                 main_func::set_new_version(&v_list_version);
@@ -111,58 +111,48 @@ fn main() {
                 let result =
                     downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
                 if result.is_err() {
-                        println!("Failed to download!");
-                }
-
-                // The updating process itself
-                if first_launch {
-                    println!("Adding file(s)...");
-                } else {
-                    println!("Updating...");
-                }
-                if is_zip {
-                    main_func::extracting(&current_dir);
-                } else {
-                    let ue = main_func::updating(&current_dir, &launcher_exe);
-                    if ue.is_err() {
-                        println!("File replacement error!")
+                        println!("Failed to download!"); 
                     }
                 }
-
-                // Delete the EXE file of the portable installer
-                main_func::delete_file(&current_dir, &is_leave_folders);
-                if is_script_after {
-                    println!("Running script.bat...");
-                    main_func::run_post_script(&current_dir);
-                }
-
-                // Should I pause the console after work or not?
-                if !silent_mode {
+                else {
+                    // The updating process itself
                     if first_launch {
-                        main_func::set_new_version(&v_list_version);
-                        press_btn_continue::wait("Download completed successfully!")
-                            .expect("Unknown error!");
+                        println!("Adding file(s)...");
                     } else {
-                        main_func::set_new_version(&v_list_version);
-                        press_btn_continue::wait("Upgrade completed successfully!")
-                            .expect("Unknown error!");
+                        println!("Updating...");
                     }
-                } else {
+                    if is_zip {
+                        main_func::extracting(&current_dir);
+                    } else {
+                        let ue = main_func::updating(&current_dir, &launcher_exe);
+                        if ue.is_err() {
+                            println!("File replacement error!")
+                        }
+                    }
+
+                    // Delete the EXE file of the portable installer
+                    main_func::delete_file(&current_dir, &is_leave_folders);
+                    if is_script_after {
+                        println!("Running script.bat...");
+                        main_func::run_post_script(&current_dir);
+                    }
+
+                    main_func::set_new_version(&v_list_version);
                     if first_launch {
-                        main_func::set_new_version(&v_list_version);
                         println!("Download completed successfully!");
                     } else {
-                        main_func::set_new_version(&v_list_version);
                         println!("Upgrade completed successfully!");
                     }
                 }
+                if !silent_mode {
+                    press_btn_continue::wait("Press Enter to exit...").unwrap();
+                }
                 process::exit(0);
+            } else {
+                press_btn_continue::wait("Administrator rights are required to run!").unwrap();
+                process::exit(1);
             }
         } else {
-            press_btn_continue::wait("Administrator rights are required to run!").unwrap();
-            process::exit(1);
-        }
-    } else {
         const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
         println!("Github Release Updater
 Description: {}
