@@ -61,10 +61,9 @@ pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
     Ok(())
 }
 
-// Extract from EXE file of the portable installer
+// Extract from EXE file of the portable installer or archive
 pub fn extracting(current_dir: &str) {
-    const ZIPTOOL_PATH: &str = "7z.exe";
-    let mut command = Command::new(ZIPTOOL_PATH);
+    let mut command = Command::new("7z.exe");
     let extract_to = String::from(format!("-o{}..\\", current_dir));
     let exreact_file = String::from(format!("{}\\app.dat", current_dir));
 

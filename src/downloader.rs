@@ -15,7 +15,6 @@ pub async fn download(
     file: &str,
     application_path: &str,
 ) -> Result<(), Error> {
-    // println!("[DEBUG] {} {} {} {}", repo, ver_tag, file, application_path);
     let asset = &*String::from(format!(
         "https://github.com/{}/releases/download/{}/{}",
         repo, ver_tag, file
