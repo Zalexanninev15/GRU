@@ -52,6 +52,20 @@ fn main() {
 
             let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
+            if debug_mode {
+                println!("[Debug] repo = \"{}\"", repo);
+                println!("[Debug] launcher_exe = \"{}\"", launcher_exe);
+                println!("[Debug] part = \"{}\"", part);
+                println!("[Debug] real_app_path_bin = \"{}\"", real_app_path_bin);
+                println!("[Debug] is_extract = {}", is_extract);
+                println!("[Debug] is_leave_folders = {}", is_leave_folders);
+                println!("[Debug] is_script_after = {}", is_script_after);
+                println!("[Debug] is_pre = {}", is_pre);
+                println!("[Debug] silent_mode = {}", silent_mode);
+                println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
+                println!("[Debug] debug_mode = true");
+            }
+
             // Is this the first download?
             if Path::new(&app_path).exists() {
                 if Path::new("app.version").exists() == false {
@@ -63,8 +77,17 @@ fn main() {
                 first_launch = true;
             }
 
+            if debug_mode {
+                press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
+            }
+
             // Getting the new version release
             let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part, &is_pre);
+
+            if debug_mode {
+                println!("[Debug] v_list_version = \"{}\"", v_list_version);
+                println!("[Debug] v_list_asset = \"{}\"", v_list_asset);
+            }
 
             // Delete the hash-files from string
             v_list_asset = v_list_asset
@@ -168,7 +191,7 @@ fn main() {
             if debug_mode {
                 println!("[Debug] State 4");
             }
-            if !silent_mode {
+            if !silent_mode || debug_mode {
                 press_btn_continue::wait("Press Enter to exit...").unwrap();
             }
             process::exit(0);
