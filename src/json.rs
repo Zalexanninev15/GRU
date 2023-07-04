@@ -11,19 +11,20 @@ pub fn parse_data(repo: &str, search_words: &str, is_pre: &bool) -> (String, Str
 // Parse json with release data
 fn parse_text(json: &str, word: &str) -> (String, String) {
     let release: Value = serde_json::from_str(json).expect("GitHub API: Error parsing json");
-    let mut slob = String::from("app.zip");
+    let mut asset_name = String::from("app.zip");
     for rs in release["assets"].as_array().unwrap() {
         let name = rs["name"].to_string().replace("\"", "");
         if name.contains(&word) {
-            slob = name;
+            asset_name = name;
         }
     }
-    (release["tag_name"].to_string().replace("\"", ""), slob)
+    (release["tag_name"].to_string().replace("\"", ""), asset_name)
 }
 
 // Getting release information in json format
 fn get_text(repo: &str, is_pre: &bool) -> String {
 	let mut release_json : String = String::new();
+	// Not working!
 	if *is_pre {
 		release_json = isahc::get(String::from(format!(
 			"https://api.github.com/repos/{}/releases?per_page=1&page=1",
