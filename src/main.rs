@@ -64,6 +64,7 @@ fn main() {
                 println!("[Debug] silent_mode = {}", silent_mode);
                 println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
                 println!("[Debug] debug_mode = true");
+                press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
             }
 
             // Is this the first download?
@@ -77,16 +78,13 @@ fn main() {
                 first_launch = true;
             }
 
-            if debug_mode {
-                press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
-            }
-
             // Getting the new version release
             let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part, &is_pre);
 
             if debug_mode {
                 println!("[Debug] v_list_version = \"{}\"", v_list_version);
                 println!("[Debug] v_list_asset = \"{}\"", v_list_asset);
+                press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
             }
 
             // Delete the hash-files from string
@@ -107,6 +105,11 @@ fn main() {
                 .replace(".hash", "")
                 .replace(".HASH", "")
                 .to_string();
+
+            if debug_mode {
+                println!("[Debug] v_list_asset (after hash(s) deletion) = \"{}\"", v_list_asset);
+                press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
+            }
 
             // Checker for сurrent and new version
             if create_only_version_file {
