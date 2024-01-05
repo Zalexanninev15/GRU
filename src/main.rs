@@ -144,7 +144,7 @@ fn main() {
 
                 // Downloading the file
                 println!("Downloading...");
-                downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+                let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
 
                 if debug_mode {
                     println!("[Debug] State 2");
