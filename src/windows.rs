@@ -2,9 +2,9 @@ use std::io::Error;
 use std::ptr;
 
 use winapi::um::handleapi::CloseHandle;
-use winapi::um::processthreadsapi::{GetCurrentProcess, OpenProcessToken};
+use winapi::um::processthreadsapi::{ GetCurrentProcess, OpenProcessToken };
 use winapi::um::securitybaseapi::GetTokenInformation;
-use winapi::um::winnt::{TokenElevation, HANDLE, TOKEN_ELEVATION, TOKEN_QUERY};
+use winapi::um::winnt::{ TokenElevation, HANDLE, TOKEN_ELEVATION, TOKEN_QUERY };
 
 // Returns true if the current process has admin rights, otherwise false.
 pub fn is_app_elevated() -> bool {
@@ -43,13 +43,14 @@ impl QueryAccessToken {
             let size = std::mem::size_of::<TOKEN_ELEVATION>() as u32;
             let mut ret_size = size;
             // The weird looking repetition of `as *mut _` is casting the reference to a c_void pointer.
-            if GetTokenInformation(
-                self.0,
-                TokenElevation,
-                &mut elevation as *mut _ as *mut _,
-                size,
-                &mut ret_size,
-            ) != 0
+            if
+                GetTokenInformation(
+                    self.0,
+                    TokenElevation,
+                    &mut elevation as *mut _ as *mut _,
+                    size,
+                    &mut ret_size
+                ) != 0
             {
                 Ok(elevation.TokenIsElevated != 0)
             } else {
@@ -62,7 +63,9 @@ impl QueryAccessToken {
 impl Drop for QueryAccessToken {
     fn drop(&mut self) {
         if !self.0.is_null() {
-            unsafe { CloseHandle(self.0) };
+            unsafe {
+                CloseHandle(self.0);
+            }
         }
     }
 }
