@@ -24,9 +24,9 @@ isahc = "1.7.2"
 serde_json = { version = "1.0.111", default-features = false, features = [
   "alloc",
 ] }
-trauma = "2.2.4"
-console = "0.15.7"
-tokio = "1.35.1"
+# trauma = "2.2.4"
+# console = "0.15.7"
+# tokio = "1.35.1"
 
 [profile.release]
 strip = true

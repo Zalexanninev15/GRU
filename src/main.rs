@@ -36,6 +36,7 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let is_pre = arguments.get::<bool>("pre").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
+        let simple_progress_display = arguments.get::<bool>("spd").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
         winconsole::console
@@ -144,7 +145,7 @@ fn main() {
 
                 // Downloading the file
                 println!("Downloading...");
-                let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &current_dir);
+                let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &simple_progress_display);
 
                 if debug_mode {
                     println!("[Debug] State 2");
@@ -223,7 +224,9 @@ fn main() {
         {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
         {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
         {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after downloading the application or not [Default value: --no-script]
-        {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]\n
+        {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
+        {{simpleprogress display value}} → --spd or --no-spd - Use a simple progress bar with percentages or not [Default value: --no-spd]
+        {{debug value}} → --debug or --no-debug - Debug mode [Default value: --no-debug]\n
     EXAMPLES:
         gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with \"paf\" --main App\\GitHubDesktop\\GitHubDesktop.exe
         gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with \"win64.zip\" --script
