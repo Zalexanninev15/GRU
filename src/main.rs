@@ -210,12 +210,7 @@ fn main() {
     } else {
         const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
         println!(
-            "Github Release Updater
-    Description: {}
-    Version: v{}
-    Developer: Zalexanninev15 <blue.shark@disroot.org>
-    License: MIT License
-    GitHub: https://github.com/Zalexanninev15/GRU\n
+            "Github Release Updater\nDescription: {}\nVersion: v{}\nDeveloper: Zalexanninev15 <blue.shark@disroot.org>\nLicense: MIT License\nGitHub: https://github.com/Zalexanninev15/GRU\n
     USAGE:
         gru.exe --repo <user/repository> --app <application.exe> --with <value for search>\n
     ARGUMENTS:
