@@ -7,11 +7,13 @@ ARGUMENTS:
     --with <value for search> — Set the part of name of asset in GitHub release for download, for example: "win-amd64-portable.zip"
 
 OPTIONAL:
-    --main <target> - Set the main part of the application, the path to the application located at the level above [Default value = value of the '--app' argument]
+    --main <target> - Set the main part of the application, the path to the application located at the level above [Default value: value of the '--app' argument]
     {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
     {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
     {{script value}} → --script or --no-script — Run the script (file "script.bat") after downloading the application or not [Default value: --no-script]
     {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
+    {{simpleprogress display value}} → --spd or --no-spd - Use a simple progress bar with percentages or not [Default value: --no-spd]
+    {{debug value}} → --debug or --no-debug - Debug mode [Default value: --no-debug]
 
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe
