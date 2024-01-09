@@ -22,7 +22,11 @@ Updater for applications from GitHub
 
 ## System requirements
 
-- **OS:** Windows 10 (x64) or higher (may work on Windows 7/8/8.1, but the correct display of characters in the console is not guaranteed). The latest version for Windows 7/8/8.1 (x32 and x64) is [version 1.4-1 (1.4.0.1)](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1)
+**OS:**
+
+* Version 2.0 and possible new versions: Windows 10 build 1809+ (x64)/11
+* Version 1.5.0.1 (1.5-1) and 1.5: Windows 10 (x64)/11, had support Windows 7/8/8.1 (x64), but the correct display of characters in the console is not guaranteed
+* [Version 1.4-1 (1.4.0.1)](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1) and earlier versions: Windows 10 (maybe Windows 11), latest version for Windows 7/8/8.1 (x32 and x64)
 
 ## Usage
 
@@ -53,6 +57,7 @@ gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-32bit-no-ins
 ## Build (with PowerShell)
 
 1. Install all dependencies as Admin (it is recommended to use packages from the [Chocolatey package manager](https://chocolatey.org))
+
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco install rust mingw git -y
