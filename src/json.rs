@@ -2,8 +2,11 @@ use isahc::ReadResponseExt;
 use serde_json::Value;
 
 // Main function of parser
-pub fn parse_data(repo: &str, search_words: &str, is_pre: &bool) -> (String, String) {
-    let json = get_text(&repo, &is_pre);
+pub fn parse_data(repo: &str, search_words: &str) -> (String, String) {
+    let json = isahc::get(String::from(format!("https://api.github.com/repos/{}/releases/latest", repo)))
+            .expect("GitHub API: Error 404")
+            .text()
+            .expect("GitHub API: Json lost");
     let release_data = parse_text(&json, &search_words);
     release_data
 }
@@ -19,29 +22,4 @@ fn parse_text(json: &str, word: &str) -> (String, String) {
         }
     }
     (release["tag_name"].to_string().replace("\"", ""), asset_name)
-}
-
-// Getting release information in json format
-fn get_text(repo: &str, is_pre: &bool) -> String {
-	let mut release_json : String = String::new();
-	// Not working!
-	if *is_pre {
-		release_json = isahc::get(String::from(format!(
-			"https://api.github.com/repos/{}/releases?per_page=1&page=1",
-			repo
-		)))
-		.expect("GitHub API: Error 404")
-		.text()
-		.expect("GitHub API: Json lost");
-	}
-	else {
-		release_json = isahc::get(String::from(format!(
-			"https://api.github.com/repos/{}/releases/latest",
-			repo
-		)))
-		.expect("GitHub API: Error 404")
-		.text()
-		.expect("GitHub API: Json lost");
-	}
-    release_json
 }
