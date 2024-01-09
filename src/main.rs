@@ -34,7 +34,6 @@ fn main() {
         let is_extract = arguments.get::<bool>("extract").unwrap_or(true);
         let is_leave_folders = arguments.get::<bool>("leave").unwrap_or(false);
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
-        let is_pre = arguments.get::<bool>("pre").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let simple_progress_display = arguments.get::<bool>("spd").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
@@ -61,9 +60,9 @@ fn main() {
                 println!("[Debug] is_extract = {}", is_extract);
                 println!("[Debug] is_leave_folders = {}", is_leave_folders);
                 println!("[Debug] is_script_after = {}", is_script_after);
-                println!("[Debug] is_pre = {}", is_pre);
                 println!("[Debug] silent_mode = {}", silent_mode);
                 println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
+                println!("[Debug] spd = {}", simple_progress_display);
                 println!("[Debug] debug_mode = true");
                 press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
             }
@@ -80,7 +79,7 @@ fn main() {
             }
 
             // Getting the new version release
-            let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part, &is_pre);
+            let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
 
             if debug_mode {
                 println!("[Debug] v_list_version = \"{}\"", v_list_version);
@@ -145,7 +144,12 @@ fn main() {
 
                 // Downloading the file
                 println!("Downloading...");
-                let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &simple_progress_display);
+                let _ = downloader::download(
+                    &repo,
+                    &v_list_version,
+                    &v_list_asset,
+                    &simple_progress_display
+                );
 
                 if debug_mode {
                     println!("[Debug] State 2");
@@ -220,7 +224,6 @@ fn main() {
         --with <value for search> — Set the part of name of asset in GitHub release for download, for example: \"win-amd64-portable.zip\"\n
     OPTIONAL:
         --main <target> - Set the main part of the application, the path to the application located at the level above [Default value: value of the '--app' argument]
-        {{pre-release value}} → --pre or --no-pre - Use pre-releases when checking the latest version of an application  [Default value: --no-pre]
         {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
         {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
         {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after downloading the application or not [Default value: --no-script]
