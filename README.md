@@ -31,7 +31,7 @@ Updater for applications from GitHub
 ## Usage
 
 1. Copy the `UpdateTools` folder from the archive to the application folder
-2. Run the `gru.exe` file with the arguments. [Read more about existing arguments](https://github.com/Zalexanninev15/GRU/blob/main/arguments.txt)
+2. Run the `gru.exe` file with the arguments (the full list of arguments can be obtained by running `gru.exe`, even without console, just launching it
 3. The file/archive will be downloaded. If it is an archive, then it will be unzipped to a folder a level higher than the current one (i.e. you need to remove `UpdateTools` from the path). If it is a single file, then it will simply be moved (also to a higher level). The archive will be deleted automatically after unpacking
 
 ### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
@@ -63,7 +63,25 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 choco install rust mingw git -y
 ```
 
-2. Compile the GRU!
+2. Download the repository
+
+```powershell
+git clone https://github.com/Zalexanninev15/GRU
+cd .\GRU\
+```
+
+3. Compile the GRU! (option 1)
+
+3.1. Download Resource Hacker as ZIP and unzip it to the project folder.
+3.2. Compile the GRU with my script!
+
+```powershell
+./my_compiler.ps1
+```
+
+3.3. The resulting file will be in the project folder, not the release folder
+
+4 (maybe?). Compile the GRU! (option 2, without a manifest to request Admin rights)
 
 ```powershell
 git clone https://github.com/Zalexanninev15/GRU
