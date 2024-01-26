@@ -76,7 +76,7 @@ cd .\GRU\
 3.2. Compile the GRU with my script!
 
 ```powershell
-./my_compiler.ps1
+.\my_compiler.ps1
 ```
 
 3.3. The resulting file will be in the project folder, not the release folder
