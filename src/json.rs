@@ -3,10 +3,11 @@ use serde_json::Value;
 
 // Main function of parser
 pub fn parse_data(repo: &str, search_words: &str) -> (String, String) {
-    let json = isahc::get(String::from(format!("https://api.github.com/repos/{}/releases/latest", repo)))
-            .expect("GitHub API: Error 404")
-            .text()
-            .expect("GitHub API: Json lost");
+    let json = isahc
+        ::get(String::from(format!("https://api.github.com/repos/{}/releases/latest", repo)))
+        .expect("GitHub API: Error 404")
+        .text()
+        .expect("GitHub API: Json lost");
     let release_data = parse_text(&json, &search_words);
     release_data
 }

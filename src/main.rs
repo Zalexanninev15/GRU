@@ -45,8 +45,8 @@ fn main() {
         // if windows::is_app_elevated() {
         // if True {
         // Checking the Internet connection
-        let ic = main_func::test_iconnection();
-        if ic.is_err() {
+        let s = main_func::test_iconnection();
+        if s.is_err() {
             println!("Error connecting to GitHub!");
             update_now = false;
         }
