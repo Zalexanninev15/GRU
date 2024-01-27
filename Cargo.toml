@@ -21,7 +21,7 @@ press-btn-continue = "0.2.0"
 # ] }
 arguments = "0.7.2"
 isahc = "1.7.2"
-serde_json = { version = "1.0.111", default-features = false, features = [
+serde_json = { version = "1.0.112", default-features = false, features = [
   "alloc",
 ] }
 # trauma = "2.2.4"

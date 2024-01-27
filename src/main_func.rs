@@ -10,8 +10,7 @@ use std::process::Command;
 pub fn set_new_version(version: &str) {
     let path = "app.version";
     let mut file = File::create(path).expect("Error creating file with version information!");
-    file.write_all(version.as_bytes())
-        .expect("Error writing version information to file!");
+    file.write_all(version.as_bytes()).expect("Error writing version information to file!");
 }
 
 // Checking the Internet connection
@@ -22,10 +21,9 @@ pub fn test_iconnection() -> Result<(), isahc::Error> {
 
 // Get current working directory
 pub fn current_dir() -> String {
-    let mut current_dir = String::from(format!(
-        "{}\\",
-        std::env::current_dir().unwrap().display().to_string()
-    ));
+    let mut current_dir = String::from(
+        format!("{}\\", std::env::current_dir().unwrap().display().to_string())
+    );
     if !current_dir.contains("UpdateTools") {
         current_dir.push_str("UpdateTools\\");
     }
@@ -56,7 +54,7 @@ pub fn task_kill(application_exe: &str) {
 pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
     fs::rename(
         String::from(format!("{}\\app.dat", current_dir)),
-        String::from(format!("{}\\..\\{}", current_dir, launcher_exe)),
+        String::from(format!("{}\\..\\{}", current_dir, launcher_exe))
     )?;
     Ok(())
 }
@@ -67,13 +65,7 @@ pub fn extracting(current_dir: &str) {
     let extract_to = String::from(format!("-o{}..\\", current_dir));
     let exreact_file = String::from(format!("{}\\app.dat", current_dir));
 
-    command
-        .arg("x")
-        .arg(exreact_file)
-        .arg(extract_to)
-        .arg("-r")
-        .arg("-aoa")
-        .arg("-bso0");
+    command.arg("x").arg(exreact_file).arg(extract_to).arg("-r").arg("-aoa").arg("-bso0");
 
     let output = command.execute_output().unwrap();
     if let Some(exit_code) = output.status.code() {
