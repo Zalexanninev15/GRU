@@ -1,6 +1,6 @@
 [package]
 name = "gru"
-version = "1.5.0"
+version = "2.0.0"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
@@ -9,23 +9,24 @@ repository = "https://github.com/Zalexanninev15/GRU"
 documentation = "https://github.com/Zalexanninev15/GRU#usage"
 
 [dependencies]
-execute = "0.2.11"
-press-btn-continue = "0.1.1"
-winconsole = "0.11.1"
-winapi = { version = "0.3.9", features = [
-  "handleapi",
-  "processthreadsapi",
-  "winnt",
-  "securitybaseapi",
-] }
-arguments = "0.7.1"
+execute = "0.2.13"
+press-btn-continue = "0.2.0"
+# winconsole = "0.11.1"
+# winapi = { version = "0.3.9", features = [
+#   "handleapi",
+#   "processthreadsapi",
+#   "winnt",
+#   "securitybaseapi",
+#   "impl-default",
+# ] }
+arguments = "0.7.2"
 isahc = "1.7.2"
-serde_json = { version = "1.0.95", default-features = false, features = [
+serde_json = { version = "1.0.112", default-features = false, features = [
   "alloc",
 ] }
-trauma = "2.2.1"
-console = "0.15.5"
-tokio = "1.27.0"
+# trauma = "2.2.4"
+# console = "0.15.7"
+# tokio = "1.35.1"
 
 [profile.release]
 strip = true
