@@ -8,7 +8,7 @@ use std::process;
 
 // #[tokio::main]
 // pub async fn download(
-pub fn download(repo: &str, ver_tag: &str, file: &str, simple_mode: &bool) {
+pub fn download(repo: &str, ver_tag: &str, file: &str, details: &bool) {
     let asset = &*String::from(
         format!("https://github.com/{}/releases/download/{}/{}", repo, ver_tag, file)
     );
@@ -29,12 +29,11 @@ pub fn download(repo: &str, ver_tag: &str, file: &str, simple_mode: &bool) {
         command = Command::new(String::from(format!("{}\\curl.exe", current_dir)));
     }
 
-    if *simple_mode {
+    if *details {
         command
             .arg("-Lo")
             .arg(file_name)
             .arg(asset)
-            .arg("--progress-bar")
             .stdout(Stdio::inherit())
             .stderr(Stdio::inherit());
     } else {
@@ -42,6 +41,7 @@ pub fn download(repo: &str, ver_tag: &str, file: &str, simple_mode: &bool) {
             .arg("-Lo")
             .arg(file_name)
             .arg(asset)
+            .arg("--progress-bar")
             .stdout(Stdio::inherit())
             .stderr(Stdio::inherit());
     }
