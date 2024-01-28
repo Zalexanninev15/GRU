@@ -1,6 +1,8 @@
-use std::process::{Command, Stdio};
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+use std::process::{ Command, Stdio };
 use std::process;
-
 
 // Download the asset
 
@@ -16,22 +18,32 @@ pub fn download(repo: &str, ver_tag: &str, file: &str, simple_mode: &bool) {
 
     let mut command = Command::new("C:\\Windows\\System32\\curl.exe");
 
+    if Path::new(&String::from(format!("{}\\curl.txt", current_dir))).exists() {
+        let mut file = File::open(String::from(format!("{}\\curl.txt", current_dir))).unwrap();
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).unwrap();
+        command = Command::new(contents);
+    }
+
+    if Path::new(&String::from(format!("{}\\curl.exe", current_dir))).exists() {
+        command = Command::new(String::from(format!("{}\\curl.exe", current_dir)));
+    }
+
     if *simple_mode {
         command
-        .arg("-Lo")
-        .arg(file_name)
-        .arg(asset)
-        .arg("--progress-bar")
-        .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit());
-    }
-    else {
+            .arg("-Lo")
+            .arg(file_name)
+            .arg(asset)
+            .arg("--progress-bar")
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit());
+    } else {
         command
-        .arg("-Lo")
-        .arg(file_name)
-        .arg(asset)
-        .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit());
+            .arg("-Lo")
+            .arg(file_name)
+            .arg(asset)
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit());
     }
 
     let mut child = command.spawn().expect("Failed to start curl process");
