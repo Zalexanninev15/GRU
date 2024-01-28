@@ -24,7 +24,7 @@ Updater for applications from GitHub
 
 **OS:**
 
-* Version 2.0 and possible new versions: Windows 10 build 1809+ (x64)/11. However, there is a way to add support for Windows 10 (1803 and earlier builds), Windows 8.1, Windows 8, Windows 7
+* Version 2.0 and possible new versions: Windows 10 build 1809+ (x64)/11. However, there is a way to add support for Windows 10 (1803 and earlier builds), Windows 8.1, Windows 8, Windows 7 - [see here](https://github.com/Zalexanninev15/GRU/commit/46f780c4af4e000049ea812b2459d29c401058bf#commitcomment-137944434).
 * Version 1.5.0.1 (1.5-1) and 1.5: Windows 10 (x64)/11, had support Windows 7/8/8.1 (x64), but the correct display of characters in the console is not guaranteed
 * [Version 1.4-1 (1.4.0.1)](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1) and earlier versions: Windows 10 (maybe Windows 11), latest version for Windows 7/8/8.1 (x32 and x64)
 
