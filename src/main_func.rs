@@ -10,8 +10,7 @@ use std::process::Command;
 pub fn set_new_version(version: &str) {
     let path = "app.version";
     let mut file = File::create(path).expect("Error creating file with version information!");
-    file.write_all(version.as_bytes())
-        .expect("Error writing version information to file!");
+    file.write_all(version.as_bytes()).expect("Error writing version information to file!");
 }
 
 // Checking the Internet connection
@@ -22,10 +21,9 @@ pub fn test_iconnection() -> Result<(), isahc::Error> {
 
 // Get current working directory
 pub fn current_dir() -> String {
-    let mut current_dir = String::from(format!(
-        "{}\\",
-        std::env::current_dir().unwrap().display().to_string()
-    ));
+    let mut current_dir = String::from(
+        format!("{}\\", std::env::current_dir().unwrap().display().to_string())
+    );
     if !current_dir.contains("UpdateTools") {
         current_dir.push_str("UpdateTools\\");
     }
@@ -55,26 +53,19 @@ pub fn task_kill(application_exe: &str) {
 // Update by rename file
 pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
     fs::rename(
-        String::from(format!("{}\\app.dat", current_dir)),
-        String::from(format!("{}\\..\\{}", current_dir, launcher_exe)),
+        String::from(format!("{}\\app.downloading", current_dir)),
+        String::from(format!("{}\\..\\{}", current_dir, launcher_exe))
     )?;
     Ok(())
 }
 
-// Extract from EXE file of the portable installer
+// Extract from EXE file of the portable installer or archive
 pub fn extracting(current_dir: &str) {
-    const ZIPTOOL_PATH: &str = "7z.exe";
-    let mut command = Command::new(ZIPTOOL_PATH);
+    let mut command = Command::new("7z.exe");
     let extract_to = String::from(format!("-o{}..\\", current_dir));
-    let exreact_file = String::from(format!("{}\\app.dat", current_dir));
+    let exreact_file = String::from(format!("{}\\app.downloading", current_dir));
 
-    command
-        .arg("x")
-        .arg(exreact_file)
-        .arg(extract_to)
-        .arg("-r")
-        .arg("-aoa")
-        .arg("-bso0");
+    command.arg("x").arg(exreact_file).arg(extract_to).arg("-r").arg("-aoa").arg("-bso0");
 
     let output = command.execute_output().unwrap();
     if let Some(exit_code) = output.status.code() {
@@ -94,9 +85,9 @@ pub fn extracting(current_dir: &str) {
 
 // Delete portable installer
 pub fn delete_file(current_dir: &str, is_leave_folders: &bool) {
-    let file_dir = String::from(format!("{}app.dat", current_dir));
+    let file_dir = String::from(format!("{}\\app.downloading", current_dir));
     if Path::new(&file_dir).exists() {
-        fs::remove_file(file_dir).expect("Temporary file \"app.dat\" not found.");
+        fs::remove_file(file_dir).expect("Temporary file \"app.downloading\" not found.");
     }
     if !is_leave_folders {
         let mut dir = format!("{}..\\$PLUGINSDIR", current_dir).to_string();
