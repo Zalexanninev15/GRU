@@ -35,7 +35,7 @@ fn main() {
         let is_leave_folders = arguments.get::<bool>("leave").unwrap_or(false);
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
-        let simple_progress_display = arguments.get::<bool>("spd").unwrap_or(false);
+        let details = arguments.get::<bool>("details").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
         // winconsole::console
@@ -63,7 +63,7 @@ fn main() {
             println!("[Debug] is_script_after = {}", is_script_after);
             println!("[Debug] silent_mode = {}", silent_mode);
             println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
-            println!("[Debug] spd = {}", simple_progress_display);
+            println!("[Debug] details = {}", details);
             println!("[Debug] debug_mode = true");
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
@@ -145,12 +145,7 @@ fn main() {
 
             // Downloading the file
             println!("Downloading...");
-            let _ = downloader::download(
-                &repo,
-                &v_list_version,
-                &v_list_asset,
-                &simple_progress_display
-            );
+            let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &details);
 
             if debug_mode {
                 println!("[Debug] State 2");
@@ -215,17 +210,25 @@ fn main() {
 USAGE:
     gru.exe --repo <user/repository> --app <application.exe> --with <value for search>\n
 ARGUMENTS:
-    --repo <user/repository> — Set the repository of application
-    --app <application.exe> — Set the EXE of launcher/main application. The executable file must be located in a folder at a higher level, otherwise you need to set the '--main' argument with the correct path to the file
-    --with <value for search> — Set the part of name of asset in GitHub release for download, for example: \"win-amd64-portable.zip\"\n
+    * --repo <user/repository> — Set the repository of application
+    * --app <application.exe> — Set the EXE of launcher/main application.
+    The executable file must be located in a folder at a higher level,
+    otherwise you need to set the '--main' argument with the correct path to the file
+    * --with <value for search> — Set the part of name of asset in GitHub release for download,
+    for example: \"win-amd64-portable.zip\"\n
 OPTIONAL:
-    --main <target> - Set the main part of the application, the path to the application located at the level above [Default value: value of the '--app' argument]
-    {{extract value}} → --extract or --no-extract — Set the type of file, extract archivers (flag) or copy EXE of launcher/main application [Default value: --extract]
-    {{leave value}} → --leave or --no-leave - Not delete or delete the unnecessary folders: $PLUGINSDIR, Other [Default value: --no-leave]
-    {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after downloading the application or not [Default value: --no-script]
-    {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
-    {{simpleprogress display value}} → --spd or --no-spd - Use a simple progress bar with percentages or not [Default value: --no-spd]
-    {{debug value}} → --debug or --no-debug - Debug mode [Default value: --no-debug]\n
+    * --main <target> - Set the main part of the application,
+    the path to the application located at the level above [Default value: value of the '--app' argument]
+    * {{extract value}} → --extract or --no-extract — Set the type of file,
+    extract archivers (flag) or copy EXE of launcher/main application or not [Default value: --extract]
+    * {{leave value}} → --leave or --no-leave - Not delete or delete
+    the unnecessary folders: \"$PLUGINSDIR\", \"Other\" or not [Default value: --no-leave]
+    * {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after
+    downloading the application or not [Default value: --no-script]
+    * {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
+    * {{details value}} → --details or --no-details - Show more information when downloading (curl) or not
+    [Default value: --no-details]
+    * {{debug value}} → --debug or --no-debug - Debug mode or not [Default value: --no-debug]\n
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with \"paf\" --main App\\GitHubDesktop\\GitHubDesktop.exe
     gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with \"win64.zip\" --script
