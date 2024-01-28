@@ -1,3 +1,5 @@
 .idea/
 target/
 .vscode/settings.json
+Cargo.lock
+gru.exe
