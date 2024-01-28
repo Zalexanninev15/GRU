@@ -14,7 +14,7 @@ pub fn download(repo: &str, ver_tag: &str, file: &str, details: &bool) {
     );
 
     let current_dir = crate::main_func::current_dir();
-    let file_name = String::from(format!("{}\\app.dat", current_dir));
+    let file_name = String::from(format!("{}\\app.downloading", current_dir));
 
     let mut command = Command::new("C:\\Windows\\System32\\curl.exe");
 
@@ -83,7 +83,7 @@ pub fn download(repo: &str, ver_tag: &str, file: &str, details: &bool) {
     // downloader.download(&downloads).await;
     // fs::rename(
     //     &d_file,
-    //     String::from(format!("{}\\app.dat", application_path)),
+    //     String::from(format!("{}\\app.downloading", application_path)),
     // )?;
     // Ok(())
 }

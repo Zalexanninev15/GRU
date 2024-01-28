@@ -151,7 +151,11 @@ fn main() {
                 println!("[Debug] State 2");
             }
 
-            if let Ok(metadata) = metadata(String::from(format!("{}\\app.dat", &current_dir))) {
+            if
+                let Ok(metadata) = metadata(
+                    String::from(format!("{}\\app.downloading", &current_dir))
+                )
+            {
                 if metadata.is_file() {
                     if debug_mode {
                         println!("[Debug] State 3");
