@@ -1,6 +1,7 @@
 use std::fs::metadata;
 use std::path::Path;
 use std::process;
+use winconsole::console;
 
 mod downloader;
 mod get_version;
@@ -14,6 +15,8 @@ fn main() {
     let mut first_launch = false;
     let mut create_only_version_file = false;
     const VERSION: &str = env!("CARGO_PKG_VERSION");
+    let _ = console::set_title("Github Release Updater");
+
     let mut update_now = true;
     if arguments.len() >= 3 {
         let arguments = arguments
@@ -38,13 +41,7 @@ fn main() {
         let details = arguments.get::<bool>("details").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
-        // winconsole::console
-        //     ::set_title("Github Release Updater")
-        //     .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         println!("Github Release Updater v{} by Zalexanninev15 <blue.shark@disroot.org>", VERSION);
-        // if windows::is_app_elevated() {
-        // if True {
-        // Checking the Internet connection
         let s = main_func::test_iconnection();
         if s.is_err() {
             println!("Error connecting to GitHub!");
@@ -203,10 +200,6 @@ fn main() {
             press_btn_continue::wait("Press Enter to exit...").unwrap();
         }
         process::exit(0);
-        // } else {
-        //     press_btn_continue::wait("Administrator rights are required to run!").unwrap();
-        //     process::exit(1);
-        // }
     } else {
         const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
         println!(
