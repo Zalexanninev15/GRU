@@ -5,9 +5,6 @@ use std::process::{ Command, Stdio };
 use std::process;
 
 // Download the asset
-
-// #[tokio::main]
-// pub async fn download(
 pub fn download(repo: &str, ver_tag: &str, file: &str, details: &bool) {
     let asset = &*String::from(
         format!("https://github.com/{}/releases/download/{}/{}", repo, ver_tag, file)
