@@ -14,9 +14,12 @@ winconsole = "0.11.1"
 press-btn-continue = "0.2.0"
 arguments = "0.7.2"
 isahc = "1.7.2"
-serde_json = { version = "1.0.112", default-features = false, features = [
+serde_json = { version = "1.0.114", default-features = false, features = [
   "alloc",
 ] }
+trauma = "2.2.4"
+console = "0.15.8"
+tokio = "1.36.0"
 
 [profile.release]
 strip = true
