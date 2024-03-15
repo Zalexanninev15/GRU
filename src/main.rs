@@ -7,7 +7,6 @@ mod downloader;
 mod get_version;
 mod json;
 mod main_func;
-// mod windows;
 
 fn main() {
     let arguments = std::env::args();
@@ -39,6 +38,7 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let details = arguments.get::<bool>("details").unwrap_or(false);
+        let downloader_tool = arguments.get::<String>("downloader").unwrap_or("native".to_string());
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
         println!("Github Release Updater v{} by Zalexanninev15 <blue.shark@disroot.org>", VERSION);
@@ -142,7 +142,13 @@ fn main() {
 
             // Downloading the file
             println!("Downloading...");
-            let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &details);
+            let _ = downloader::download(
+                &repo,
+                &v_list_version,
+                &v_list_asset,
+                &details,
+                &downloader_tool
+            );
 
             if debug_mode {
                 println!("[Debug] State 2");
@@ -150,7 +156,7 @@ fn main() {
 
             if
                 let Ok(metadata) = metadata(
-                    String::from(format!("{}\\app.downloading", &current_dir))
+                    String::from(format!("{}\\app.downloaded", &current_dir))
                 )
             {
                 if metadata.is_file() {
@@ -223,8 +229,13 @@ OPTIONAL:
     * {{script value}} → --script or --no-script — Run the script (file \"script.bat\") after
     downloading the application or not [Default value: --no-script]
     * {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
-    * {{details value}} → --details or --no-details - Show more information when downloading (curl) or not
+    * {{details value}} → --details or --no-details - Show more information when downloading (curl/wget) or not
     [Default value: --no-details]
+    * --downloader <type> - Select a downloader to download the file (you can select \"curl\", \"wget\",
+    \"native\" (built-in downloader)). By default, curl.exe or wget.exe files are used for \"curl\" and 
+    \"wget\", respectively, in the path \"C:Windows/System32\". If there are installed utilities, the 
+    path to them (to executable files) can be specified in the files \"curl.txt\" and \"wget.txt\".
+    [Default value: native]
     * {{debug value}} → --debug or --no-debug - Debug mode or not [Default value: --no-debug]\n
 EXAMPLES:
     gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with \"paf\" --main App\\GitHubDesktop\\GitHubDesktop.exe
