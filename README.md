@@ -7,7 +7,7 @@
 [![](https://img.shields.io/github/last-commit/Zalexanninev15/GRU/main.svg)](https://github.com/Zalexanninev15/GRU/commits/main)
 [![](https://img.shields.io/github/stars/Zalexanninev15/GRU.svg)](https://github.com/Zalexanninev15/GRU/stargazers)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![](https://img.shields.io/badge/donate-Buy_Me_a_Coffee-F94400.svg)](https://zalexanninev15.jimdofree.com/buy-me-a-coffee)
+[![](https://img.shields.io/badge/donate-Buy_Me_a_Coffee-F94400.svg)](https://teletype.in/@zalexanninev15/donate)
 
 ## Description
 
@@ -22,7 +22,7 @@ Updater for applications from GitHub
 
 ## System requirements
 
-**OS:** Windows 10 build 1809+ (x64)/11.
+**OS:** Windows 10 build 1809+ (x64)/11
 
 > Support for early OS versions is possible when using the "native" downloader, as well as when specifying the path to the executable files for "curl" or "wget".
 > 
