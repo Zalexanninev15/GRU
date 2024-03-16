@@ -88,14 +88,12 @@ git clone https://github.com/Zalexanninev15/GRU
 cd .\GRU\
 ```
 
-3. Compile the GRU! (option 1)
+3. Download Resource Hacker as ZIP ([download](https://www.angusj.com/resourcehacker/resource_hacker.zip)) and unzip it to the project folder (required for embedding the manifest to request Administrator rights).
 
-3.1. Download Resource Hacker as ZIP ([download](https://www.angusj.com/resourcehacker/resource_hacker.zip)) and unzip it to the project folder (required for embedding the manifest to request Administrator rights).
-
-3.2. Compile the GRU with my script!
+4. Compile the GRU with my script in PowerShell!
 
 ```powershell
 .\my_compiler.ps1
 ```
 
-3.3. The resulting file will be in the project folder, not the release folder.
+5. The resulting file (`gru.exe`) will be in the project folder, not the release folder.
