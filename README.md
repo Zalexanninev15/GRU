@@ -96,4 +96,4 @@ cd .\GRU\
 .\my_compiler.ps1
 ```
 
-5. The resulting file (`gru.exe`) will be in the project folder, not the release folder.
+5. The resulting file `gru.exe` will be in the project folder, not the release folder.
