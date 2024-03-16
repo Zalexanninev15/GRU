@@ -53,7 +53,7 @@ pub fn task_kill(application_exe: &str) {
 // Update by rename file
 pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
     fs::rename(
-        String::from(format!("{}\\app.downloading", current_dir)),
+        String::from(format!("{}\\app.downloaded", current_dir)),
         String::from(format!("{}\\..\\{}", current_dir, launcher_exe))
     )?;
     Ok(())
@@ -63,7 +63,7 @@ pub fn updating(current_dir: &str, launcher_exe: &str) -> std::io::Result<()> {
 pub fn extracting(current_dir: &str) {
     let mut command = Command::new("7z.exe");
     let extract_to = String::from(format!("-o{}..\\", current_dir));
-    let exreact_file = String::from(format!("{}\\app.downloading", current_dir));
+    let exreact_file = String::from(format!("{}\\app.downloaded", current_dir));
 
     command.arg("x").arg(exreact_file).arg(extract_to).arg("-r").arg("-aoa").arg("-bso0");
 
@@ -85,9 +85,9 @@ pub fn extracting(current_dir: &str) {
 
 // Delete portable installer
 pub fn delete_file(current_dir: &str, is_leave_folders: &bool) {
-    let file_dir = String::from(format!("{}\\app.downloading", current_dir));
+    let file_dir = String::from(format!("{}\\app.downloaded", current_dir));
     if Path::new(&file_dir).exists() {
-        fs::remove_file(file_dir).expect("Temporary file \"app.downloading\" not found.");
+        fs::remove_file(file_dir).expect("Temporary file \"app.downloaded\" not found.");
     }
     if !is_leave_folders {
         let mut dir = format!("{}..\\$PLUGINSDIR", current_dir).to_string();
