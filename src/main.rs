@@ -21,7 +21,7 @@ fn main() {
         let arguments = arguments
             ::parse(arguments)
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
-        let repo = arguments
+        let mut repo = arguments
             .get::<String>("repo")
             .expect("Argument error! Check the arguments according to the \"help\" of the utility");
         let launcher_exe = arguments
@@ -38,7 +38,8 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let details = arguments.get::<bool>("details").unwrap_or(false);
-        let downloader_tool = arguments.get::<String>("downloader").unwrap_or("native".to_string());
+        let tool = arguments.get::<String>("tool").unwrap_or("native".to_string());
+        let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
         println!("Github Release Updater v{} by Zalexanninev15 <blue.shark@disroot.org>", VERSION);
@@ -48,8 +49,10 @@ fn main() {
             update_now = false;
         }
 
+        // Application path
         let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
+        // Debug mode
         if debug_mode {
             println!("[Debug] repo = \"{}\"", repo);
             println!("[Debug] launcher_exe = \"{}\"", launcher_exe);
@@ -61,6 +64,8 @@ fn main() {
             println!("[Debug] silent_mode = {}", silent_mode);
             println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
             println!("[Debug] details = {}", details);
+            println!("[Debug] tool = \"{}\"", tool);
+            println!("[Debug] d_link = {}", d_link);
             println!("[Debug] debug_mode = true");
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
@@ -142,16 +147,21 @@ fn main() {
 
             // Downloading the file
             println!("Downloading...");
-            let _ = downloader::download(
-                &repo,
-                &v_list_version,
-                &v_list_asset,
-                &details,
-                &downloader_tool
-            );
+            if v_list_asset.contains(&part) == false && d_link != "null" {
+                repo = d_link;
+            }
+            let _ = downloader::download(&repo, &v_list_version, &v_list_asset, &details, &tool);
 
             if debug_mode {
                 println!("[Debug] State 2");
+            }
+
+            // Fix for native downloader
+            if Path::new(&String::from(format!("{}\\download", &current_dir))).exists() {
+                let _ = std::fs::rename(
+                    String::from(format!("{}\\download", &current_dir)),
+                    String::from(format!("{}\\app.downloaded", &current_dir))
+                );
             }
 
             if
@@ -231,16 +241,16 @@ OPTIONAL:
     * {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
     * {{details value}} → --details or --no-details - Show more information when downloading (curl/wget) or not
     [Default value: --no-details]
-    * --downloader <type> - Select a downloader to download the file (you can select \"curl\", \"wget\",
+    * --tool <type> - Select a tool to download the file (you can select \"curl\", \"wget\",
     \"native\" (built-in downloader)). By default, curl.exe or wget.exe files are used for \"curl\" and 
     \"wget\", respectively, in the path \"C:Windows/System32\". If there are installed utilities, the 
     path to them (to executable files) can be specified in the files \"curl.txt\" and \"wget.txt\".
     [Default value: native]
+    * --link <url> - Sometimes releases may not contain file to download, but just be a place for a list of changes. 
+    Set the download link. [Default value: null]
     * {{debug value}} → --debug or --no-debug - Debug mode or not [Default value: --no-debug]\n
 EXAMPLES:
-    gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with \"paf\" --main App\\GitHubDesktop\\GitHubDesktop.exe
-    gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with \"win64.zip\" --script
-    gru.exe --repo jgraph/drawio-desktop --app app.exe --with \"-windows-32bit-no-installer.exe\" --no-extract\n",
+    Here: https://github.com/Zalexanninev15/GRU#usage",
             DESCRIPTION,
             VERSION
         );
