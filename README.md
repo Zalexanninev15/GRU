@@ -22,11 +22,11 @@ Updater for applications from GitHub
 
 ## System requirements
 
-**OS:**
+**OS:** Windows 10 build 1809+ (x64)/11.
 
-* Version 2.0 and new versions: Windows 10 build 1809+ (x64)/11. However, there is a way to add support for Windows 10 (1803 and earlier builds), Windows 8.1, Windows 8, Windows 7 - [see here](https://github.com/Zalexanninev15/GRU/commit/46f780c4af4e000049ea812b2459d29c401058bf#commitcomment-137944434).
-* Version 1.5.0.1 (1.5-1) and 1.5: Windows 10 (x64)/11, had support Windows 7/8/8.1 (x64), but the correct display of characters in the console is not guaranteed
-* [Version 1.4-1 (1.4.0.1)](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1) and earlier versions: Windows 10 (maybe Windows 11), latest version for Windows 7/8/8.1 (x32 and x64)
+> Support for early OS versions is possible when using the "native" downloader, as well as when specifying the path to the executable files for "curl" or "wget".
+> 
+> Support for Windows 7/8/8.1 is possible, but not guaranteed and not tested, it may be necessary to recompile the project for outdated systems.
 
 ## Usage
 
