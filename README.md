@@ -56,13 +56,13 @@ gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --
 ### Example, [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
 
 ```batch
-gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-32bit-no-installer.exe" --no-extract
+gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-no-installer.exe" --no-extract
 ```
 
 ### Example, [ScreenToGif](https://github.com/NickeManarin/ScreenToGif)
 
 ```batch
-gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Light.Portable.x86"
+gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.x64.zip"
 ```
 
 ### Example, [Visual Studio Code](https://github.com/microsoft/vscode)
