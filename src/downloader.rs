@@ -18,12 +18,19 @@ pub fn download(
     details: &bool,
     downloader: &str
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let asset = &*String::from(
-        format!("https://github.com/{}/releases/download/{}/{}", repo, ver_tag, file)
-    );
-
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
+
+    let mut asset = String::from(repo);
+    if repo.contains("://") == false {
+        let formatted_asset = format!(
+            "https://github.com/{}/releases/download/{}/{}",
+            repo,
+            ver_tag,
+            file
+        );
+        asset = formatted_asset;
+    }
 
     match downloader {
         "curl" => {
@@ -87,10 +94,11 @@ pub fn download(
         }
         "native" => {
             let rt = tokio::runtime::Runtime::new().unwrap();
-            rt.block_on(native(&current_dir, file, asset))?;
+            let _ = rt.block_on(native(&current_dir, &file, &asset));
         }
         _ => {}
     }
+
     Ok(())
 }
 

@@ -54,6 +54,19 @@ gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --
 gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-32bit-no-installer.exe" --no-extract
 ```
 
+### Example, [ScreenToGif](https://github.com/NickeManarin/ScreenToGif)
+
+```batch
+gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Light.Portable.x86"
+```
+
+### Example, [Visual Studio Code](https://github.com/microsoft/vscode)
+
+```batch
+gru.exe --repo microsoft/vscode --app Code.exe --with "null" --link "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive"
+```
+
+
 ## Build (with PowerShell)
 
 1. Install all dependencies as Admin (it is recommended to use packages from the [Chocolatey package manager](https://chocolatey.org))
