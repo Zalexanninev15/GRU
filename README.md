@@ -11,7 +11,7 @@
 
 ## Description
 
-Updater for applications from GitHub
+Updater for applications from GitHub. It has a huge number of convenient settings and it supports multiple downloaders, and can also download files not from GitHub based only on the release.
 
 ## Features
 
