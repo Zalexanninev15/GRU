@@ -17,7 +17,7 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 
 - Features of fine-tuning the update process, a huge number of arguments for incredibly fine-tuning asset downloads from GitHub and beyond...
 - Support for releases without assets, the file itself will be downloaded from another site via a direct link ([example](https://github.com/Zalexanninev15/GRU#example-visual-studio-code))
-- Using, at the user's choice, as many as three types of downloader: **curl**, **wget**, **native**.
+- Using, at the user's choice, as many as three types of downloader: **curl**, **wget**, **native** (built-in downloader).
 - Using the console **7-Zip** allows you to unpack almost all kinds of release archives.
 - Automatically kill the process of the updated application when updating, which eliminates possible difficulties when updating applications that are already running.
 - Support for a custom script that runs after an application update (`script.bat` file).
@@ -42,7 +42,7 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 ### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
-gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe
+gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe --tool wget
 ```
 
 ### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
@@ -62,7 +62,7 @@ gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-no-installer
 ### Example, [ScreenToGif](https://github.com/NickeManarin/ScreenToGif)
 
 ```batch
-gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.x64.zip"
+gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.x64.zip" --tool curl
 ```
 
 ### Example, [Visual Studio Code](https://github.com/microsoft/vscode)
