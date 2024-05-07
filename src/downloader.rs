@@ -16,7 +16,8 @@ pub fn download(
     ver_tag: &str,
     file: &str,
     details: &bool,
-    downloader: &str
+    downloader: &str,
+    ua: &str
 ) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
@@ -51,6 +52,7 @@ pub fn download(
 
             if *details {
                 command
+                    .arg(String::from(format!("-A \"{}\"", ua)))
                     .arg("-Lo")
                     .arg(file_name)
                     .arg(asset)
@@ -58,6 +60,7 @@ pub fn download(
                     .stderr(Stdio::inherit());
             } else {
                 command
+                    .arg(String::from(format!("-A \"{}\"", ua)))
                     .arg("-Lo")
                     .arg(file_name)
                     .arg(asset)
@@ -85,14 +88,24 @@ pub fn download(
             }
 
             if *details {
-                command.arg("-O").arg(file_name).arg(asset);
+                command
+                    .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                    .arg("-O")
+                    .arg(file_name)
+                    .arg(asset);
             } else {
-                command.arg("-q").arg("-O").arg(file_name).arg(asset).arg("--show-progress");
+                command
+                    .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                    .arg("-q")
+                    .arg("-O")
+                    .arg(file_name)
+                    .arg(asset)
+                    .arg("--show-progress");
             }
 
             execute_command(command);
         }
-        "native" => {
+        "bn" => {
             let rt = tokio::runtime::Runtime::new().unwrap();
             let _ = rt.block_on(native(&current_dir, &file, &asset));
         }

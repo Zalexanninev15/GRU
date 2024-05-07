@@ -17,7 +17,7 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 
 - Features of fine-tuning the update process, a huge number of arguments for incredibly fine-tuning asset downloads from GitHub and beyond...
 - Support for releases without assets, the file itself will be downloaded from another site via a direct link ([example](https://github.com/Zalexanninev15/GRU#example-visual-studio-code))
-- Using, at the user's choice, as many as three types of downloader: **curl**, **wget**, **native** (built-in downloader).
+- Using, at the user's choice, as many as three types of downloader: **curl**, **wget**, **integrated** (built-in downloader).
 - Using the console **7-Zip** allows you to unpack almost all kinds of release archives.
 - Automatically kill the process of the updated application when updating, which eliminates possible difficulties when updating applications that are already running.
 - Support for a custom script that runs after an application update (`script.bat` file).
@@ -29,9 +29,9 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 
 **OS:** Windows 10 build 1809+ (x64)/11. [Final version for x32](https://github.com/Zalexanninev15/GRU/releases/tag/1.4.0.1)
 
-> Support for early OS versions is possible when using the "native" downloader, as well as when specifying the path to the executable files for "curl" or "wget".
+> Support for early OS versions is possible when using the built-in downloader ("integrated"), as well as when specifying the path to the executable files for "curl" or "wget".
 > 
-> Support for Windows 7/8/8.1 is possible, but not guaranteed and not tested, it may be necessary to recompile the project for outdated systems.
+> Support for Windows 7/8/8.1 (x64) and old builds of Windows 10 (x64) is possible, but not guaranteed and not tested, it may be necessary to recompile the project for outdated systems.
 
 ## Usage
 
