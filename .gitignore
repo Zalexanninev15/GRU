@@ -1,5 +1,6 @@
 .idea/
 target/
 .vscode/settings.json
-Cargo.lock
-gru.exe
+*.exe
+.vscode/launch.json
+*.lock
