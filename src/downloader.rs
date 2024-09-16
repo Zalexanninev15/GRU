@@ -16,8 +16,9 @@ pub fn download(
     ver_tag: &str,
     file: &str,
     details: &bool,
-    downloader: &str,
-    ua: &str
+    mut downloader: &str,
+    ua: &str,
+    use_cfg: &bool
 ) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
@@ -45,31 +46,136 @@ pub fn download(
                 file.read_to_string(&mut contents).unwrap();
                 command = Command::new(contents.replace("\"", ""));
             }
-
-            if Path::new(&String::from(format!("{}\\curl.exe", current_dir))).exists() {
-                command = Command::new(String::from(format!("{}\\curl.exe", current_dir)));
+            else
+            {
+                if Path::new(&String::from(format!("{}\\curl.exe", current_dir))).exists() {
+                    command = Command::new(String::from(format!("{}\\curl.exe", current_dir)));
+                }
+                else {
+                    downloader = "bn";
+                    let rt = tokio::runtime::Runtime::new().unwrap();
+                    let _ = rt.block_on(native(&current_dir, &file, &asset));
+                }
             }
 
-            if *details {
-                command
-                    .arg(String::from(format!("-A \"{}\"", ua)))
-                    .arg("-Lo")
-                    .arg(file_name)
-                    .arg(asset)
-                    .stdout(Stdio::inherit())
-                    .stderr(Stdio::inherit());
-            } else {
-                command
-                    .arg(String::from(format!("-A \"{}\"", ua)))
-                    .arg("-Lo")
-                    .arg(file_name)
-                    .arg(asset)
-                    .arg("--progress-bar")
-                    .stdout(Stdio::inherit())
-                    .stderr(Stdio::inherit());
-            }
+            if downloader == "curl" {
+                if *details {
+                    command
+                        .arg("--user-agent")
+                        .arg(String::from(format!("\"{}\"", ua)))
+                        .arg(String::from(format!("-H \"User-Agent: {}\"", ua)))
+                        .arg("-Lo")
+                        .arg(file_name)
+                        .arg(asset)
+                        .stdout(Stdio::inherit())
+                        .stderr(Stdio::inherit());
+                } else {
+                    command
+                        .arg("--user-agent")
+                        .arg(String::from(format!("\"{}\"", ua)))
+                        .arg(String::from(format!("-H \"User-Agent: {}\"", ua)))
+                        .arg("-Lo")
+                        .arg(file_name)
+                        .arg(asset)
+                        .arg("--progress-bar")
+                        .stdout(Stdio::inherit())
+                        .stderr(Stdio::inherit());
+                }
 
-            execute_command(command);
+                execute_command(command);
+            }
+        }
+        "aria2c" => {
+                let mut command = Command::new("C:\\Windows\\System32\\aria2c.exe");
+
+                if Path::new(&String::from(format!("{}\\aria2c.txt", current_dir))).exists() {
+                    let mut file = File::open(
+                        String::from(format!("{}\\aria2c.txt", current_dir))
+                    ).unwrap();
+                    let mut contents = String::new();
+                    file.read_to_string(&mut contents).unwrap();
+                    command = Command::new(contents.replace("\"", ""));
+                }
+                else
+                {
+                    if Path::new(&String::from(format!("{}\\aria2c.exe", current_dir))).exists() {
+                        command = Command::new(String::from(format!("{}\\aria2c.exe", current_dir)));
+                    }
+                    else {
+                        downloader = "bn";
+                        let rt = tokio::runtime::Runtime::new().unwrap();
+                        let _ = rt.block_on(native(&current_dir, &file, &asset));
+                    }
+                }
+                if downloader == "aria2c" {
+                    if *details {
+                        command
+                            .arg(asset)
+                            .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                            .arg("--console-log-level=error")
+                            .arg("--split=8") 
+                            .arg("--max-connection-per-server=16")
+                            .arg("--min-split-size=4M")
+                            .arg("--piece-length=4M")
+                            .arg("--continue=false")
+                            .arg("--remote-time=true")
+                            .arg("--auto-file-renaming=false")
+                            .arg("--allow-overwrite=true")
+                            .arg("--connect-timeout=5")
+                            .arg("--lowest-speed-limit=5K")
+                            .arg("--max-tries=12")
+                            .arg("--max-file-not-found=12")
+                            .arg("--no-netrc=false")
+                            .arg("--timeout=60")
+                            .arg("--check-certificate=false")
+                            .arg("--http-accept-gzip=true")
+                            .arg("--http-no-cache=true")
+                            .arg("--enable-http-keep-alive=true")
+                            .arg("--allow-piece-length-change=false")
+                            .arg("--conditional-get=true")
+                            .arg("--disable-ipv6=true")
+                            .arg("--disk-cache=4M")
+                            .arg("--download-result=hide")
+                            .arg("--file-allocation=falloc")
+                            .arg("--summary-interval=0")
+                            .arg("-o")
+                            .arg(file_name);
+                    } else {
+                        command
+                            .arg(asset)
+                            .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                            .arg("--console-log-level=error")
+                            .arg("--split=8") 
+                            .arg("--max-connection-per-server=16")
+                            .arg("--min-split-size=4M")
+                            .arg("--piece-length=4M")
+                            .arg("--continue=false")
+                            .arg("--remote-time=true")
+                            .arg("--auto-file-renaming=false")
+                            .arg("--allow-overwrite=true")
+                            .arg("--connect-timeout=5")
+                            .arg("--lowest-speed-limit=5K")
+                            .arg("--max-tries=12")
+                            .arg("--max-file-not-found=12")
+                            .arg("--no-netrc=false")
+                            .arg("--timeout=60")
+                            .arg("--check-certificate=false")
+                            .arg("--http-accept-gzip=true")
+                            .arg("--http-no-cache=true")
+                            .arg("--enable-http-keep-alive=true")
+                            .arg("--allow-piece-length-change=false")
+                            .arg("--conditional-get=true")
+                            .arg("--disable-ipv6=true")
+                            .arg("--disk-cache=4M")
+                            .arg("--download-result=hide")
+                            .arg("--file-allocation=falloc")
+                            .arg("--summary-interval=0")
+                            .arg("-o")
+                            .arg(file_name);
+                    }
+    
+                    execute_command(command);
+                }
         }
         "wget" => {
             let mut command = Command::new("C:\\Windows\\System32\\wget.exe");
@@ -82,28 +188,46 @@ pub fn download(
                 file.read_to_string(&mut contents).unwrap();
                 command = Command::new(contents.replace("\"", ""));
             }
-
-            if Path::new(&String::from(format!("{}\\wget.exe", current_dir))).exists() {
-                command = Command::new(String::from(format!("{}\\wget.exe", current_dir)));
+            else
+            {
+                if Path::new(&String::from(format!("{}\\wget.exe", current_dir))).exists() {
+                    command = Command::new(String::from(format!("{}\\wget.exe", current_dir)));
+                }
+                else {
+                    downloader = "bn";
+                    let rt = tokio::runtime::Runtime::new().unwrap();
+                    let _ = rt.block_on(native(&current_dir, &file, &asset));
+                }
             }
+            if downloader == "wget" {
+                if *details {
+                    command
+                        .arg(String::from(format!("-U=\"{}\"", ua)))
+                        .arg("--tries=2")
+                        .arg("--no-check-certificate")
+                        .arg("--cache=off")
+                        .arg("--header")
+                        .arg(String::from(format!("\"{}\"", ua)))
+                        .arg("-O")
+                        .arg(file_name)
+                        .arg(asset);
+                } else {
+                    command
+                        .arg(String::from(format!("-U=\"{}\"", ua)))
+                        .arg("--tries=2")
+                        .arg("--no-check-certificate")
+                        .arg("--cache=off")
+                        .arg("--header")
+                        .arg(String::from(format!("\"{}\"", ua)))
+                        .arg("-q")
+                        .arg("-O")
+                        .arg(file_name)
+                        .arg(asset)
+                        .arg("--show-progress");
+                }
 
-            if *details {
-                command
-                    .arg(String::from(format!("--user-agent=\"{}\"", ua)))
-                    .arg("-O")
-                    .arg(file_name)
-                    .arg(asset);
-            } else {
-                command
-                    .arg(String::from(format!("--user-agent=\"{}\"", ua)))
-                    .arg("-q")
-                    .arg("-O")
-                    .arg(file_name)
-                    .arg(asset)
-                    .arg("--show-progress");
+                execute_command(command);
             }
-
-            execute_command(command);
         }
         "bn" => {
             let rt = tokio::runtime::Runtime::new().unwrap();

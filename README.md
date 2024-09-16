@@ -71,14 +71,16 @@ gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.
 gru.exe --repo microsoft/vscode --app Code.exe --with "null" --link "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive"
 ```
 
+## Build
 
-## Build (with PowerShell)
-
-1. Install all dependencies with Administrator rights (it is recommended to use packages from the [Chocolatey package manager](https://chocolatey.org))
+1. Install all dependencies with Administrator rights (it is recommended to use packages from the [Scoop package manager](https://scoop.sh/))
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-choco install rust mingw git -y
+Set-ExecutionPolicy -Scope CurrentUser  -ExecutionPolicy Bypass -Force
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+scoop install git rust-gnu gcc
+scoop bucket add extras
+scoop install extras/resource-hacker rustup-gnu
 ```
 
 2. Download the repository
@@ -88,12 +90,24 @@ git clone https://github.com/Zalexanninev15/GRU
 cd .\GRU\
 ```
 
-3. Download Resource Hacker as ZIP ([download](https://www.angusj.com/resourcehacker/resource_hacker.zip)) and unzip it to the project folder (required for embedding the manifest to request Administrator rights).
+3. 
 
-4. Compile the GRU with my script in PowerShell!
+3.9 Close PowerShell :)
+
+1. Copy the path (from **pwd** output) and replace `C:\\msys2\\` on your in the file **cargo.toml** (section `target.x86_64-pc-windows-gnu`)
+
+Example:
+
+```toml
+[target.x86_64-pc-windows-gnu]
+linker = "C:\\Users\\Den\\scoop\\apps\\msys2\\current\\mingw64\\bin\\gcc.exe"
+ar = "C:\\Users\\Den\\scoop\\apps\\msys2\\mingw64\\bin\\ar.exe"
+```
+
+5. Compile the GRU with my script in PowerShell!
 
 ```powershell
 .\my_compiler.ps1
 ```
 
-5. The resulting file `gru.exe` will be in the project folder, not the release folder.
+6. The resulting file `gru.exe` will be in the project folder, not the release folder.

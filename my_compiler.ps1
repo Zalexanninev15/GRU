@@ -1,6 +1,9 @@
+Remove-Item .\gru.exe -Force
+
 cargo build --release
 
-ResourceHacker.exe -open .\target\release\gru.exe -save .\target\release\gru1.exe -action add -res .\ADMIN_MANIFEST.res -mask MANIFEST, -log CONSOLE
-move .\target\release\gru1.exe .\gru.exe -Force
+ResourceHacker -open .\target\release\gru.exe -save .\target\release\gru1.exe -action add -res .\ADMIN_MANIFEST.res -mask MANIFEST, -log CONSOLE
+Move-Item .\target\release\gru1.exe .\gru.exe -Force
 
-echo "Done!"
+Write-Host Done!
+Write-Host File: gru.exe

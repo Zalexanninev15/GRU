@@ -43,8 +43,9 @@ fn main() {
         let ua = arguments
             .get::<String>("ua")
             .unwrap_or(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36".to_string()
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36".to_string()
             );
+        let use_cfg = arguments.get::<bool>("config").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
         println!("Github Release Updater v{} by Zalexanninev15 <blue.shark@disroot.org>", VERSION);
@@ -162,7 +163,8 @@ fn main() {
                 &v_list_asset,
                 &details,
                 &tool,
-                &ua
+                &ua,
+                &use_cfg
             );
 
             if debug_mode {
@@ -254,15 +256,17 @@ OPTIONAL:
     * {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
     * {{details value}} → --details or --no-details - Show more information when downloading (curl/wget) or not
     [Default value: --no-details]
-    * --tool <type> - Select a tool to download the file (you can select \"curl\", \"wget\",
-    \"integrated\" (built-in downloader). By default, curl.exe or wget.exe files are used for \"curl\" and 
-    \"wget\", respectively, in the path \"C:Windows\\System32\". If there are installed utilities, the 
-    path to them (to executable files) can be specified in the files \"curl.txt\" and \"wget.txt\".
+    * --tool <type> - Select a tool to download the file (you can select \"curl\", \"wget\", \"aria2c\" \"built-in downloader\" (bn)).
+	By default, 'curl.exe' or 'wget.exe' or 'aria2c.exe' files are used for \"curl\", \"wget\" and \"aria2c\" respectively,
+	in the path \"C:\\Windows\\System32\". If there are installed utilities, the path to 
+	them (to executable files) can be specified in the files \"curl.txt\", \"wget.txt\", \"aria2c.txt\".
+    If there is an error finding an executable file, the built-in file downloader will be invoked.
     [Default value: curl]
     * --link <url> - Sometimes releases may not contain file to download, but just be a place for a list of changes. 
     Set the download link. [Default value: null]
     * --ua <user-agent> - A user-agent to pretend to be a browser and try to download the file at a higher speed (can sometimes help). 
-    The argument applies only to the “curl” and “wget” tools. [Default value: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36]
+    The argument applies only to the “curl”, “wget”, “aria2c” tools. [Default value: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36]
+    * {{config value}} → --config or --no-config - Loading a configuration file for all downloaders except the built-in one (this argument takes precedence over all others, so use only a fully configured configuration file (except for the user-agent)). The configuration file is \".curlrc\" or \".wgetrc\" or \"aria2.conf\" is always located next to the executable file of similar utilities.
     * {{debug value}} → --debug or --no-debug - Debug mode or not [Default value: --no-debug]\n
 EXAMPLES:
     Here: https://github.com/Zalexanninev15/GRU#usage",
