@@ -256,7 +256,7 @@ OPTIONAL:
     * {{pause value}} → --silent or --no-silent — Hide the console after work or not [Default value: --no-silent]
     * {{details value}} → --details or --no-details - Show more information when downloading (curl/wget) or not
     [Default value: --no-details]
-    * --tool <type> - Select a tool to download the file (you can select \"curl\", \"wget\", \"aria2c\" \"built-in downloader\" (bn)).
+    * --tool <type> - Select a tool to download the file (you can select \"curl\", \"wget\", \"aria2c\", \"bn\" (built-in downloader), \"tcpu\").
 	By default, 'curl.exe' or 'wget.exe' or 'aria2c.exe' files are used for \"curl\", \"wget\" and \"aria2c\" respectively,
 	in the path \"C:\\Windows\\System32\". If there are installed utilities, the path to 
 	them (to executable files) can be specified in the files \"curl.txt\", \"wget.txt\", \"aria2c.txt\".
