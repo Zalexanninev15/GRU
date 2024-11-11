@@ -37,7 +37,7 @@ pub fn download(
     }
 
     if downloader == "tcpu" {
-        execute_tcpu_download_script(main_func::read_downloadtool_config());
+        execute_tcpu_download_script(main_func::read_downloadtool_config(), &asset, &current_dir);
     } else {
         match downloader {
             "curl" => {
@@ -237,12 +237,23 @@ pub fn download(
     Ok(())
 }
 
-fn execute_tcpu_download_script(tool_name: &str) -> io::Result<()> {
+fn execute_tcpu_download_script(
+    tool_name: &str,
+    asset: &str,
+    application_path: &str
+) -> io::Result<()> {
     let script_path: PathBuf = ["..", "..", "..", "Scripts", &format!("download_{}.bat", tool_name)]
         .iter()
         .collect();
     Command::new("cmd")
-        .args(&["/C", script_path.to_str().unwrap()])
+        .args(
+            &[
+                "/C",
+                script_path.to_str().unwrap(),
+                asset,
+                &format!("{}app.downloaded", application_path),
+            ]
+        )
         .current_dir(std::env::current_dir()?)
         .spawn()?
         .wait()?;
