@@ -4,3 +4,4 @@ target/
 *.exe
 .vscode/launch.json
 *.lock
+new.txt

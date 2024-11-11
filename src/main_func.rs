@@ -5,6 +5,20 @@ use std::io::Write;
 use std::path::Path;
 use std::process;
 use std::process::Command;
+use std::io::{ self, BufRead };
+
+pub fn read_downloadtool_config() -> &'static str {
+    let path = Path::new(r"..\..\..\Scripts\downloadtool.cfg");
+
+    if let Ok(file) = File::open(&path) {
+        let mut lines = io::BufReader::new(file).lines();
+        if let Some(Ok(line)) = lines.next() {
+            return Box::leak(line.into_boxed_str());
+        }
+    }
+
+    "curl"
+}
 
 // Writing version information to file
 pub fn set_new_version(version: &str) {
