@@ -112,7 +112,7 @@ ar = "C:\\Users\\Den\\scoop\\apps\\msys2\\mingw64\\bin\\ar.exe"
 5. Compile the GRU with my script in PowerShell!
 
 ```powershell
-.\my_compiler.ps1
+.\build.ps1
 ```
 
 6. The resulting file `gru.exe` will be in the project folder, not the release folder.
