@@ -5,3 +5,4 @@ target/
 .vscode/launch.json
 *.lock
 new.txt
+Cargo.lock
