@@ -2,7 +2,6 @@ use std::fs::metadata;
 use std::path::Path;
 use std::process;
 use winconsole::console;
-use std::fs;
 
 mod downloader;
 mod get_version;
@@ -61,6 +60,24 @@ fn main() {
         // Application path
         let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
+        if debug_mode {
+            println!("[Debug] repo = \"{}\"", repo);
+            println!("[Debug] launcher_exe = \"{}\"", launcher_exe);
+            println!("[Debug] part = \"{}\"", part);
+            println!("[Debug] real_app_path_bin = \"{}\"", real_app_path_bin);
+            println!("[Debug] is_extract = {}", is_extract);
+            println!("[Debug] is_leave_folders = {}", is_leave_folders);
+            println!("[Debug] is_script_after = {}", is_script_after);
+            println!("[Debug] silent_mode = {}", silent_mode);
+            println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
+            println!("[Debug] details = {}", details);
+            println!("[Debug] tool = \"{}\"", tool);
+            println!("[Debug] d_link = {}", d_link);
+            println!("[Debug] ua = \"{}\"", ua);
+            println!("[Debug] use_cfg = {}", use_cfg);
+            press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
+        }
+
         // Is this the first download?
         if Path::new(&app_path).exists() {
             if Path::new("app.version").exists() == false {
@@ -76,7 +93,7 @@ fn main() {
         let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part);
 
         if debug_mode {
-            println!("[Debug] v_list_version = \"{}\"", v_list_version);
+            println!("\n[Debug] v_list_version = \"{}\"", v_list_version);
             println!("[Debug] v_list_asset = \"{}\"", v_list_asset);
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
@@ -101,7 +118,7 @@ fn main() {
             .to_string();
 
         if debug_mode {
-            println!("[Debug] v_list_asset (after hash(s) deletion) = \"{}\"", v_list_asset);
+            println!("\n[Debug] v_list_asset (after hash(s) deletion) = \"{}\"", v_list_asset);
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
 

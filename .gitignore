@@ -3,6 +3,4 @@ target/
 .vscode/settings.json
 *.exe
 .vscode/launch.json
-*.lock
 new.txt
-Cargo.lock
