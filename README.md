@@ -97,22 +97,10 @@ git clone https://github.com/Zalexanninev15/GRU
 cd .\GRU\
 ```
 
-3. Close PowerShell :)
-
-4. Copy the path (from **pwd** output) and replace `C:\\msys2\\` on your in the file **cargo.toml** (section `target.x86_64-pc-windows-gnu`)
-
-Example:
-
-```toml
-[target.x86_64-pc-windows-gnu]
-linker = "C:\\Users\\Den\\scoop\\apps\\msys2\\current\\mingw64\\bin\\gcc.exe"
-ar = "C:\\Users\\Den\\scoop\\apps\\msys2\\mingw64\\bin\\ar.exe"
-```
-
-5. Compile the GRU with my script in PowerShell!
+3. Compile the GRU with my script in PowerShell!
 
 ```powershell
 .\build.ps1
 ```
 
-6. The resulting file `gru.exe` will be in the project folder, not the release folder.
+4. The resulting file `gru.exe` will be in the project folder, not the release folder.
