@@ -1,6 +1,6 @@
 [package]
 name = "gru"
-version = "2.3.0-2025.23"
+version = "2.3.0-2025.24"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
@@ -34,7 +34,7 @@ strip = true
 opt-level = "z"
 lto = true
 codegen-units = 1
-#debug = false
+debug = false
 
 #[package.metadata.winres]
 #FileDescription = "Updater for applications from GitHub"

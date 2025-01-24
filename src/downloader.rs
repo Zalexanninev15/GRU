@@ -20,7 +20,7 @@ pub fn download(
     details: &bool,
     mut downloader: &str,
     ua: &str,
-    mut use_cfg: &bool
+    use_cfg: &bool
 ) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
@@ -53,7 +53,7 @@ pub fn download(
                     ).unwrap();
                     let mut contents = String::new();
                     file.read_to_string(&mut contents).unwrap();
-                    command = Command::new(contents.replace("\"", ""));
+                    command = Command::new(contents.replace("\"", "").replace("/", "\\"));
                 } else {
                     if Path::new(&String::from(format!("{}\\curl.exe", current_dir))).exists() {
                         command = Command::new(String::from(format!("{}\\curl.exe", current_dir)));
@@ -75,21 +75,21 @@ pub fn download(
                 if downloader == "curl" {
                     if *details {
                         command
-                            .arg("--user-agent")
-                            .arg(String::from(format!("\"{}\"", ua)))
-                            .arg(String::from(format!("-H \"User-Agent: {}\"", ua)))
-                            .arg("-Lo")
+                            .arg("-L")
+                            .arg("-o")
                             .arg(file_name)
+                            .arg("-A")
+                            .arg(String::from(format!("\"{}\"", ua)))
                             .arg(asset)
                             .stdout(Stdio::inherit())
                             .stderr(Stdio::inherit());
                     } else {
                         command
-                            .arg("--user-agent")
-                            .arg(String::from(format!("\"{}\"", ua)))
-                            .arg(String::from(format!("-H \"User-Agent: {}\"", ua)))
-                            .arg("-Lo")
+                            .arg("-L")
+                            .arg("-o")
                             .arg(file_name)
+                            .arg("-A")
+                            .arg(String::from(format!("\"{}\"", ua)))
                             .arg(asset)
                             .arg("--progress-bar")
                             .stdout(Stdio::inherit())
@@ -110,7 +110,7 @@ pub fn download(
                     ).unwrap();
                     let mut contents = String::new();
                     file.read_to_string(&mut contents).unwrap();
-                    let aria2_exe = contents.replace("\"", "");
+                    let aria2_exe = contents.replace("\"", "").replace("/", "\\");
                     if *use_cfg {
                         cfg_path = String::from(
                             format!("{}", aria2_exe.replace("aria2c.exe", "aria2.conf"))
@@ -136,48 +136,30 @@ pub fn download(
                         command
                             .arg(asset)
                             .arg(String::from(format!("--conf-path=\"{}\"", cfg_path)))
-                            .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                            .arg("-U")
+                            .arg(String::from(format!("\"{}\"", ua)))
                             .arg("--check-certificate=false")
                             .arg("-o")
-                            .arg(file_name);
+                            .arg(file_name)
+                            .stdout(Stdio::inherit())
+                            .stderr(Stdio::inherit());
                     } else {
                         if *details {
                             command
                                 .arg(asset)
-                                .arg(String::from(format!("--user-agent=\"{}\"", ua)))
+                                .arg("-U")
+                                .arg(String::from(format!("\"{}\"", ua)))
                                 .arg("--console-log-level=error")
-                                .arg("--split=8")
-                                .arg("--max-connection-per-server=16")
-                                .arg("--min-split-size=4M")
-                                .arg("--piece-length=4M")
-                                .arg("--continue=false")
-                                .arg("--remote-time=true")
-                                .arg("--auto-file-renaming=false")
-                                .arg("--allow-overwrite=true")
-                                .arg("--connect-timeout=5")
-                                .arg("--lowest-speed-limit=5K")
-                                .arg("--max-tries=12")
-                                .arg("--max-file-not-found=12")
-                                .arg("--no-netrc=false")
-                                .arg("--timeout=60")
-                                .arg("--check-certificate=false")
-                                .arg("--http-accept-gzip=true")
-                                .arg("--http-no-cache=true")
-                                .arg("--enable-http-keep-alive=true")
-                                .arg("--allow-piece-length-change=false")
-                                .arg("--conditional-get=true")
-                                .arg("--disable-ipv6=true")
-                                .arg("--disk-cache=4M")
-                                .arg("--download-result=hide")
-                                .arg("--file-allocation=falloc")
-                                .arg("--summary-interval=0")
+                                .arg("--split=1")
                                 .arg("-o")
-                                .arg(file_name);
+                                .arg(file_name)
+                                .stdout(Stdio::inherit())
+                                .stderr(Stdio::inherit());
                         } else {
                             command
                                 .arg(asset)
-                                .arg(String::from(format!("--user-agent=\"{}\"", ua)))
-                                .arg("--console-log-level=error")
+                                .arg("-U")
+                                .arg(String::from(format!("\"{}\"", ua)))
                                 .arg("--split=8")
                                 .arg("--max-connection-per-server=16")
                                 .arg("--min-split-size=4M")
@@ -187,9 +169,10 @@ pub fn download(
                                 .arg("--auto-file-renaming=false")
                                 .arg("--allow-overwrite=true")
                                 .arg("--connect-timeout=5")
-                                .arg("--lowest-speed-limit=5K")
-                                .arg("--max-tries=12")
-                                .arg("--max-file-not-found=12")
+                                .arg("--no-want-digest-header")
+                                .arg("--quiet")
+                                .arg("--lowest-speed-limit=2K")
+                                .arg("--max-tries=15")
                                 .arg("--no-netrc=false")
                                 .arg("--timeout=60")
                                 .arg("--check-certificate=false")
@@ -204,7 +187,9 @@ pub fn download(
                                 .arg("--file-allocation=falloc")
                                 .arg("--summary-interval=0")
                                 .arg("-o")
-                                .arg(file_name);
+                                .arg(file_name)
+                                .stdout(Stdio::inherit())
+                                .stderr(Stdio::inherit());
                         }
                     }
 
@@ -222,7 +207,7 @@ pub fn download(
                     ).unwrap();
                     let mut contents = String::new();
                     file.read_to_string(&mut contents).unwrap();
-                    let wget_exe = contents.replace("\"", "");
+                    let wget_exe = contents.replace("\"", "").replace("/", "\\");
                     if *use_cfg {
                         cfg_path = String::from(
                             format!("{}", wget_exe.replace("wget.exe", ".wgetrc"))
@@ -247,36 +232,36 @@ pub fn download(
                             .arg(asset)
                             .arg(String::from(format!("--config=\"{}\"", cfg_path)))
                             .arg(String::from(format!("-U=\"{}\"", ua)))
-                            .arg("--header")
-                            .arg(String::from(format!("\"{}\"", ua)))
-                            .arg("--check-certificate=false")
-                            .arg("-o")
-                            .arg(file_name);
+                            .arg("--no-check-certificate")
+                            .arg("-O")
+                            .arg(file_name)
+                            .stdout(Stdio::inherit())
+                            .stderr(Stdio::inherit());
                     } else {
                         if *details {
                             command
                                 .arg(String::from(format!("-U=\"{}\"", ua)))
                                 .arg("--tries=2")
                                 .arg("--no-check-certificate")
-                                .arg("--cache=off")
-                                .arg("--header")
-                                .arg(String::from(format!("\"{}\"", ua)))
+                                .arg("--no-cache")
                                 .arg("-O")
                                 .arg(file_name)
-                                .arg(asset);
+                                .arg(asset)
+                                .stdout(Stdio::inherit())
+                                .stderr(Stdio::inherit());
                         } else {
                             command
                                 .arg(String::from(format!("-U=\"{}\"", ua)))
                                 .arg("--tries=2")
                                 .arg("--no-check-certificate")
-                                .arg("--cache=off")
-                                .arg("--header")
-                                .arg(String::from(format!("\"{}\"", ua)))
+                                .arg("--no-cache")
                                 .arg("-q")
                                 .arg("-O")
                                 .arg(file_name)
                                 .arg(asset)
-                                .arg("--show-progress=on");
+                                .arg("--show-progress=on")
+                                .stdout(Stdio::inherit())
+                                .stderr(Stdio::inherit());
                         }
                     }
                     execute_command(command);
