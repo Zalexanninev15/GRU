@@ -1,6 +1,6 @@
 [package]
 name = "gru"
-version = "2.3.0-2025.24"
+version = "2.3.0-2025.26"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
