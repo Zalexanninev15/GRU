@@ -7,14 +7,6 @@ license = "MIT License"
 description = "Updater for applications from GitHub"
 repository = "https://github.com/Zalexanninev15/GRU"
 documentation = "https://github.com/Zalexanninev15/GRU#usage"
-#build = "build.rs"
-
-#[[bin]]
-#name = "GRU"
-#path = "build.rs"
-
-# [target.'cfg(windows)'.build-dependencies]
-# winres = "0.1"
 
 [dependencies]
 execute = "0.2.13"
@@ -35,10 +27,3 @@ opt-level = "z"
 lto = true
 codegen-units = 1
 debug = false
-
-#[package.metadata.winres]
-#FileDescription = "Updater for applications from GitHub"
-#OriginalFilename = "GRU.exe"
-#LegalCopyright = "Copyright © 2022-2024"
-#ProductName = "GRU"
-#ProductVersion = "2.3.0"

@@ -36,7 +36,7 @@ pub fn download(
         asset = formatted_asset;
     }
 
-    if downloader == "tcpu" {
+    if downloader == "tcpud" {
         let _ = execute_tcpu_download_script(
             main_func::read_downloadtool_config(),
             &asset,
@@ -112,15 +112,19 @@ pub fn download(
                     file.read_to_string(&mut contents).unwrap();
                     let wget_exe = contents.replace("\"", "").replace("/", "\\");
                     if *use_cfg {
-                        cfg_path = String::from(
-                            format!("{}", wget_exe.replace("wget.exe", ".wgetrc"))
-                        );
+                        cfg_path = if Path::new(&format!("{}\\.wgetrc", current_dir)).exists() {
+                            format!("{}\\.wgetrc", current_dir)
+                        } else {
+                            wget_exe.replace("wget.exe", ".wgetrc")
+                        };
                     }
                     command = Command::new(wget_exe);
                 } else {
-                    if Path::new(&String::from(format!("{}\\wget.exe", current_dir))).exists() {
+                    if Path::new(&format!("{}\\wget.exe", current_dir)).exists() {
                         if *use_cfg {
-                            cfg_path = String::from(format!("{}\\.wgetrc", current_dir));
+                            if Path::new(&format!("{}\\.wgetrc", current_dir)).exists() {
+                                cfg_path = format!("{}\\.wgetrc", current_dir);
+                            }
                         }
                         command = Command::new(String::from(format!("{}\\wget.exe", current_dir)));
                     } else {
@@ -133,13 +137,14 @@ pub fn download(
                     if *use_cfg {
                         command
                             .arg(asset)
-                            .arg(String::from(format!("--config=\"{}\"", cfg_path)))
                             .arg(String::from(format!("-U=\"{}\"", ua)))
-                            .arg("--no-check-certificate")
                             .arg("-O")
                             .arg(file_name)
                             .stdout(Stdio::inherit())
                             .stderr(Stdio::inherit());
+                        if !cfg_path.is_empty() {
+                            command.arg(format!("--config={}", cfg_path));
+                        }
                     } else {
                         if *details {
                             command
