@@ -186,10 +186,13 @@ pub fn download(
 }
 
 fn execute_tcpu_download_script(
-    tool_name: &str,
+    mut tool_name: &str,
     asset: &str,
     application_path: &str
 ) -> io::Result<()> {
+    if tool_name != "curl" {
+        tool_name = "curl";
+    }
     let script_path: PathBuf = ["..", "..", "..", "Scripts", &format!("download_{}.bat", tool_name)]
         .iter()
         .collect();
