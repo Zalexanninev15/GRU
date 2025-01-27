@@ -169,6 +169,7 @@ fn main() {
             );
 
             if debug_mode {
+                press_btn_continue::wait("Press Enter to continue...").unwrap();
                 println!("[Debug] State 2");
             }
 
@@ -259,11 +260,11 @@ OPTIONS:
     --script / --no-script        Run 'script.bat' after download. Default: --no-script.
     --silent / --no-silent        Hide console after execution. Default: --no-silent.
     --details / --no-details      Show detailed download information. Default: --no-details.
-    --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'tcpud'). 
+    --tool <type>                 File downloader tool ('curl', 'wget', 'gru' (based on curl), 'tcpu'). 
                                   Default: 'curl'.
     --link <url>                  Direct download URL if release lacks assets. Default: null.
     --ua <user-agent>             Specify a user-agent for better download speed. Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36.
-    --config / --no-config        Use config files for 'wget' (.wgetrc). Default: --no-config.
+    --config / --no-config        Use config file for 'wget' (.wgetrc). Default: --no-config.
 
 EXAMPLES:
     Detailed examples available at: 
