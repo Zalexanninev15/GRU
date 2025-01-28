@@ -8,6 +8,53 @@ mod get_version;
 mod json;
 mod main_func;
 
+use std::ptr;
+use winapi::um::securitybaseapi::AllocateAndInitializeSid;
+use winapi::um::securitybaseapi::CheckTokenMembership;
+use winapi::um::winnt::{
+    SECURITY_BUILTIN_DOMAIN_RID,
+    DOMAIN_ALIAS_RID_ADMINS,
+    SID_IDENTIFIER_AUTHORITY,
+};
+
+fn is_admin() -> bool {
+    unsafe {
+        let mut authority = SID_IDENTIFIER_AUTHORITY {
+            Value: [0, 0, 0, 0, 0, 5], // 5 is SECURITY_NT_AUTHORITY
+        };
+        let mut sid = ptr::null_mut();
+
+        // Create a SID for the BUILTIN\Administrators group
+        let success = AllocateAndInitializeSid(
+            &mut authority,
+            2,
+            SECURITY_BUILTIN_DOMAIN_RID,
+            DOMAIN_ALIAS_RID_ADMINS,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            &mut sid
+        );
+
+        if success == 0 {
+            return false;
+        }
+
+        let mut is_member = 0;
+        // Check if the current token is a member of the admin SID
+        let status = CheckTokenMembership(ptr::null_mut(), sid, &mut is_member);
+
+        if status != 0 {
+            is_member != 0
+        } else {
+            false
+        }
+    }
+}
+
 fn main() {
     let arguments = std::env::args();
     let current_dir = main_func::current_dir();
@@ -16,7 +63,6 @@ fn main() {
     const VERSION: &str = env!("CARGO_PKG_VERSION");
     const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
     let _ = console::set_title("Github Release Updater");
-
     let mut update_now = true;
 
     if arguments.len() >= 3 {
@@ -62,7 +108,9 @@ fn main() {
         // Application path
         let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
 
+        let admin = is_admin();
         if debug_mode {
+            println!("[DEBUG] is_admin = {}", admin);
             println!("[Debug] repo = \"{}\"", repo);
             println!("[Debug] launcher_exe = \"{}\"", launcher_exe);
             println!("[Debug] part = \"{}\"", part);
@@ -156,17 +204,17 @@ fn main() {
 
         // Updater
         if update_now {
+            if is_script_before {
+                println!("Running prepare.bat...");
+                main_func::run_script(&current_dir, &true);
+            }
+
             // Deleting unnecessary data
-            main_func::task_kill(&launcher_exe, &true);
+            main_func::task_kill(&launcher_exe, &admin);
             main_func::delete_file(&current_dir, &is_leave_folders);
 
             if debug_mode {
                 println!("[Debug] State 1");
-            }
-
-            if is_script_before {
-                println!("Running prepare.bat...");
-                main_func::run_script(&current_dir, &true);
             }
 
             // Downloading the file
@@ -283,7 +331,8 @@ OPTIONS:
     --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'tcpud'). 
                                   Default: 'gru'.
     --link <url>                  Direct download URL if release lacks assets. Default: null.
-    --ua <user-agent>             Specify a user-agent for better download speed. Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36.
+    --ua <user-agent>             Specify a user-agent for better download speed.
+                                  Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36.
     --wgetrc / --no-wgetrc        Use config file for 'wget' (.wgetrc). Default: --no-wgetrc.
     --pre / --no-pre              Use a pre-release instead of a stable release (if there are no stable releases or the unstable release was released after the stable release and is the most recent).
                                   Default: --no-pre.
