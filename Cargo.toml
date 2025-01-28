@@ -1,6 +1,6 @@
 [package]
 name = "gru"
-version = "2.3.0-2025.27-2"
+version = "2.3.0-pre-beta2"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
@@ -14,7 +14,7 @@ winconsole = "0.11.1"
 press-btn-continue = "0.2.0"
 arguments = "0.8.0"
 isahc = "1.7.2"
-serde_json = { version = "1.0.114", default-features = false, features = [
+serde_json = { version = "1.0.137", default-features = false, features = [
   "alloc",
 ] }
 trauma = "2.2.4"

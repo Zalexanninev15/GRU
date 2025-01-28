@@ -73,29 +73,17 @@ pub fn download(
                 }
 
                 if downloader == "curl" {
-                    if *details {
-                        command
-                            .arg("-L")
-                            .arg("-o")
-                            .arg(file_name)
-                            .arg("-A")
-                            .arg(String::from(format!("\"{}\"", ua)))
-                            .arg(asset)
-                            .stdout(Stdio::inherit())
-                            .stderr(Stdio::inherit());
-                    } else {
-                        command
-                            .arg("-L")
-                            .arg("-o")
-                            .arg(file_name)
-                            .arg("-A")
-                            .arg(String::from(format!("\"{}\"", ua)))
-                            .arg(asset)
-                            .arg("--progress-bar")
-                            .stdout(Stdio::inherit())
-                            .stderr(Stdio::inherit());
+                    command
+                        .arg("-L")
+                        .arg("-o")
+                        .arg(file_name)
+                        .arg("-A")
+                        .arg(String::from(format!("\"{}\"", ua)))
+                        .arg(asset);
+                    if *details == false {
+                        command.arg("--progress-bar");
                     }
-
+                    command.stdout(Stdio::inherit()).stderr(Stdio::inherit());
                     execute_command(command);
                 }
             }
@@ -139,39 +127,28 @@ pub fn download(
                             .arg(asset)
                             .arg(String::from(format!("-U=\"{}\"", ua)))
                             .arg("-O")
-                            .arg(file_name)
-                            .stdout(Stdio::inherit())
-                            .stderr(Stdio::inherit());
+                            .arg(file_name);
                         if !cfg_path.is_empty() {
                             command.arg(format!("--config={}", cfg_path));
                         }
                     } else {
+                        command
+                            .arg(String::from(format!("-U=\"{}\"", ua)))
+                            .arg("--tries=2")
+                            .arg("--no-check-certificate")
+                            .arg("--no-cache");
                         if *details {
-                            command
-                                .arg(String::from(format!("-U=\"{}\"", ua)))
-                                .arg("--tries=2")
-                                .arg("--no-check-certificate")
-                                .arg("--no-cache")
-                                .arg("-O")
-                                .arg(file_name)
-                                .arg(asset)
-                                .stdout(Stdio::inherit())
-                                .stderr(Stdio::inherit());
+                            command.arg("-O").arg(file_name).arg(asset);
                         } else {
                             command
-                                .arg(String::from(format!("-U=\"{}\"", ua)))
-                                .arg("--tries=2")
-                                .arg("--no-check-certificate")
-                                .arg("--no-cache")
                                 .arg("-q")
                                 .arg("-O")
                                 .arg(file_name)
                                 .arg(asset)
-                                .arg("--show-progress=on")
-                                .stdout(Stdio::inherit())
-                                .stderr(Stdio::inherit());
+                                .arg("--show-progress=on");
                         }
                     }
+                    command.stdout(Stdio::inherit()).stderr(Stdio::inherit());
                     execute_command(command);
                 }
             }
