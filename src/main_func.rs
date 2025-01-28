@@ -10,11 +10,16 @@ use std::io::{ self, BufRead };
 pub fn read_downloadtool_config() -> &'static str {
     let path = Path::new(r"..\..\..\Scripts\downloadtool.cfg");
 
-    if let Ok(file) = File::open(&path) {
-        let mut lines = io::BufReader::new(file).lines();
-        if let Some(Ok(line)) = lines.next() {
-            return Box::leak(line.into_boxed_str());
+    if path.exists() {
+        if let Ok(file) = File::open(&path) {
+            let mut lines = io::BufReader::new(file).lines();
+            if let Some(Ok(line)) = lines.next() {
+                return Box::leak(line.into_boxed_str());
+            }
         }
+    } else {
+        println!("Error: \"downloadtool.cfg\" not found.");
+        process::exit(1);
     }
 
     "curl"
@@ -45,8 +50,13 @@ pub fn current_dir() -> String {
 }
 
 // Run script after updating application
-pub fn run_post_script(current_dir: &str) {
-    let script_file = String::from(format!("{}\\script.bat", current_dir));
+pub fn run_script(current_dir: &str, before: &bool) {
+    let script_file = if *before {
+        String::from(format!("{}\\prepare.bat", current_dir))
+    } else {
+        String::from(format!("{}\\script.bat", current_dir))
+    };
+
     let script = Command::new("cmd")
         .args(&["/C", &script_file])
         .output()
@@ -57,10 +67,17 @@ pub fn run_post_script(current_dir: &str) {
 }
 
 // Kill application processes
-pub fn task_kill(application_exe: &str) {
-    const TASKKILL_TOOL: &str = "taskkill";
-    let mut command = Command::new(TASKKILL_TOOL);
-    command.arg("/F").arg("/T").arg("/IM").arg(application_exe);
+pub fn task_kill(application_exe: &str, manifest_exists: &bool) {
+    let killer = if *manifest_exists { "taskkill" } else { "tskill" };
+
+    let mut command = Command::new(killer);
+
+    if *manifest_exists {
+        command.args(&["/F", "/T", "/IM", application_exe]);
+    } else {
+        command.arg(application_exe);
+    }
+
     command.execute().unwrap();
 }
 
