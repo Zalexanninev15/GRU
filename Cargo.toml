@@ -1,6 +1,6 @@
 [package]
 name = "gru"
-version = "2.3.0-pre-beta2"
+version = "2.3.0-pre2-beta2"
 edition = "2021"
 authors = ["Zalexanninev15 <blue.shark@disroot.org>"]
 license = "MIT License"
@@ -20,6 +20,13 @@ serde_json = { version = "1.0.137", default-features = false, features = [
 trauma = "2.2.4"
 console = "0.15.8"
 tokio = "1.36.0"
+winapi = { version = "0.3", features = [
+  "winnt",
+  "handleapi",
+  "processthreadsapi",
+  "winbase",
+  "securitybaseapi",
+] }
 
 [profile.release]
 strip = true
