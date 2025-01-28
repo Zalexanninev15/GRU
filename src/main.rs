@@ -37,6 +37,7 @@ fn main() {
             .unwrap_or(launcher_exe.to_string().parse().unwrap());
         let is_extract = arguments.get::<bool>("extract").unwrap_or(true);
         let is_leave_folders = arguments.get::<bool>("leave").unwrap_or(false);
+        let is_script_before = arguments.get::<bool>("before").unwrap_or(false);
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let details = arguments.get::<bool>("details").unwrap_or(false);
@@ -47,7 +48,7 @@ fn main() {
             .unwrap_or(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36".to_string()
             );
-        let use_cfg = arguments.get::<bool>("config").unwrap_or(false);
+        let wgetrc = arguments.get::<bool>("wgetrc").unwrap_or(false);
         let show_pre = arguments.get::<bool>("pre").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
 
@@ -68,6 +69,7 @@ fn main() {
             println!("[Debug] real_app_path_bin = \"{}\"", real_app_path_bin);
             println!("[Debug] is_extract = {}", is_extract);
             println!("[Debug] is_leave_folders = {}", is_leave_folders);
+            println!("[Debug] is_script_before = {}", is_script_before);
             println!("[Debug] is_script_after = {}", is_script_after);
             println!("[Debug] silent_mode = {}", silent_mode);
             println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
@@ -75,7 +77,7 @@ fn main() {
             println!("[Debug] tool = \"{}\"", tool);
             println!("[Debug] d_link = {}", d_link);
             println!("[Debug] ua = \"{}\"", ua);
-            println!("[Debug] use_cfg = {}", use_cfg);
+            println!("[Debug] wgetrc = {}", wgetrc);
             println!("[Debug] show_pre = {}", show_pre);
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
@@ -136,13 +138,14 @@ fn main() {
                 if v_list_version != "" {
                     println!("\nNew version {} is available!", v_list_version);
                 } else {
+                    update_now = false;
                     println!(
                         "\nNo new versions were found. If you are sure that they exist, use '--debug' or '--pre'."
                     );
                 }
                 if version_status_code == -1 {
                     println!(
-                        "\nHowever, it may be inaccurate, since. the original version was not correctly defined!"
+                        "\nHowever, this may be inaccurate because the version may have been determined incorrectly!"
                     );
                 }
             } else {
@@ -154,11 +157,16 @@ fn main() {
         // Updater
         if update_now {
             // Deleting unnecessary data
-            main_func::task_kill(&launcher_exe);
+            main_func::task_kill(&launcher_exe, &true);
             main_func::delete_file(&current_dir, &is_leave_folders);
 
             if debug_mode {
                 println!("[Debug] State 1");
+            }
+
+            if is_script_before {
+                println!("Running prepare.bat...");
+                main_func::run_script(&current_dir, &true);
             }
 
             // Downloading the file
@@ -173,7 +181,7 @@ fn main() {
                 &details,
                 &tool,
                 &ua,
-                &use_cfg
+                &wgetrc
             );
 
             if debug_mode {
@@ -218,7 +226,7 @@ fn main() {
 
                     if is_script_after {
                         println!("Running script.bat...");
-                        main_func::run_post_script(&current_dir);
+                        main_func::run_script(&current_dir, &false);
                     }
 
                     main_func::set_new_version(&v_list_version);
@@ -232,7 +240,10 @@ fn main() {
                 }
             }
         } else {
-            println!("The file, for some reason, was not downloaded!");
+            println!("You don't need to download anything.");
+            println!(
+                "Or check the arguments if you are sure that the download should have started at 100%."
+            );
         }
         if debug_mode {
             println!("[Debug] State 4");
@@ -265,14 +276,15 @@ OPTIONS:
     --main <path>                 Path to the main application. Defaults to '--app' value.
     --extract / --no-extract      Extract archive files or just copy the EXE. Default: --extract.
     --leave / --no-leave          Keep or delete unnecessary folders (e.g., $PLUGINSDIR). Default: --no-leave.
-    --script / --no-script        Run 'script.bat' after download. Default: --no-script.
+    --before / --no-before        Run 'prepare.bat' before download. Default: --no-before.
+    --script / --no-script        Run 'script.bat' after download and extraction (or move). Default: --no-script.
     --silent / --no-silent        Hide console after execution. Default: --no-silent.
-    --details / --no-details      Show detailed download information. Default: --no-details.
-    --tool <type>                 File downloader tool ('curl', 'wget', 'gru' (based on curl), 'tcpud'). 
+    --details / --no-details      Show detailed download information ('curl', 'wget'). Default: --no-details.
+    --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'tcpud'). 
                                   Default: 'gru'.
     --link <url>                  Direct download URL if release lacks assets. Default: null.
     --ua <user-agent>             Specify a user-agent for better download speed. Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36.
-    --config / --no-config        Use config file for 'wget' (.wgetrc). Default: --no-config.
+    --wgetrc / --no-wgetrc        Use config file for 'wget' (.wgetrc). Default: --no-wgetrc.
     --pre / --no-pre              Use a pre-release instead of a stable release (if there are no stable releases or the unstable release was released after the stable release and is the most recent).
                                   Default: --no-pre.
     --debug / --no-debug          Enable debug mode. Default: --no-debug.
