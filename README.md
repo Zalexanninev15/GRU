@@ -16,6 +16,8 @@
 
 Updater for applications from GitHub. It has a huge number of convenient settings and it supports multiple downloaders, and can also download files not from GitHub based only on the release.
 
+🔥🦄 [Version 3.0 beta 2](https://github.com/Zalexanninev15/GRU/releases/tag/3.0-beta2)
+
 ## Features (version 2.2)
 
 - Features of fine-tuning the update process, a huge number of arguments for incredibly fine-tuning asset downloads from GitHub and beyond...
