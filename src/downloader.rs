@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::path::Path;
 use std::process::{ Command, Stdio };
-use std::process;
 use trauma::{
     download::Download,
     downloader::{ DownloaderBuilder, StyleOptions, ProgressBarOpts },
@@ -195,7 +194,6 @@ fn execute_command(mut command: Command) {
 
     if !status.success() {
         eprintln!("Command executed with failing error code: {}", status);
-        process::exit(1);
     }
 }
 
