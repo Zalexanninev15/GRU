@@ -65,6 +65,14 @@ fn main() {
     let _ = console::set_title("Github Release Updater");
     let mut update_now = true;
 
+    if
+        Path::new(&String::from(format!("{}\\7z.exe", current_dir))).exists() == false ||
+        Path::new(&String::from(format!("{}\\7z.dll", current_dir))).exists() == false
+    {
+        println!("7z.exe or 7z.dll not found!");
+        press_btn_continue::wait("Press Enter to exit...").unwrap();
+    }
+
     if arguments.len() >= 3 {
         let arguments = arguments
             ::parse(arguments)
@@ -89,10 +97,11 @@ fn main() {
         let details = arguments.get::<bool>("details").unwrap_or(false);
         let tool = arguments.get::<String>("tool").unwrap_or("gru".to_string());
         let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
+        let mut no_ghost = arguments.get::<bool>("ghost").unwrap_or(false);
         let ua = arguments
             .get::<String>("ua")
             .unwrap_or(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36".to_string()
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36".to_string()
             );
         let wgetrc = arguments.get::<bool>("wgetrc").unwrap_or(false);
         let show_pre = arguments.get::<bool>("pre").unwrap_or(false);
@@ -107,6 +116,8 @@ fn main() {
 
         // Application path
         let app_path = format!("{}\\..\\{}", current_dir, real_app_path_bin).to_string();
+
+        no_ghost = !no_ghost;
 
         let admin = is_admin();
         if debug_mode {
@@ -127,6 +138,7 @@ fn main() {
             println!("[Debug] ua = \"{}\"", ua);
             println!("[Debug] wgetrc = {}", wgetrc);
             println!("[Debug] show_pre = {}", show_pre);
+            println!("[Debug] no_ghost = {}", no_ghost);
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
 
@@ -142,7 +154,12 @@ fn main() {
         }
 
         // Getting the new version release
-        let (v_list_version, mut v_list_asset) = json::parse_data(&repo, &part, show_pre);
+        let (v_list_version, mut v_list_asset) = json::parse_data(
+            &repo,
+            &part,
+            &show_pre,
+            &no_ghost
+        );
 
         if debug_mode {
             println!("\n[Debug] v_list_version = \"{}\"", v_list_version);
@@ -171,7 +188,7 @@ fn main() {
 
         if debug_mode {
             println!("\n[Debug] v_list_asset (after hash(s) deletion) = \"{}\"", v_list_asset);
-            press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
+            press_btn_continue::wait("[Debug] Press Enter to continue...\n").unwrap();
         }
 
         // Checker for сurrent and new version
@@ -332,10 +349,11 @@ OPTIONS:
                                   Default: 'gru'.
     --link <url>                  Direct download URL if release lacks assets. Default: null.
     --ua <user-agent>             Specify a user-agent for better download speed.
-                                  Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36.
+                                  Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36.
     --wgetrc / --no-wgetrc        Use config file for 'wget' (.wgetrc). Default: --no-wgetrc.
     --pre / --no-pre              Use a pre-release instead of a stable release (if there are no stable releases or the unstable release was released after the stable release and is the most recent).
                                   Default: --no-pre.
+    --ghost / --no-ghost          Search for matching assets across multiple recent releases instead of only the latest one. Default: --no-ghost.                                  
     --debug / --no-debug          Enable debug mode. Default: --no-debug.
 
 EXAMPLES:
