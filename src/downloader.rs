@@ -203,7 +203,7 @@ async fn native(application_path: &str, file: &str, asset: &str) -> std::io::Res
         fs::remove_file(&d_file).expect("\n");
     }
     let downloads = vec![Download::try_from(asset).unwrap()];
-    let style_opts = StyleOptions::new(
+    /*  let style_opts = StyleOptions::new(
         ProgressBarOpts::new(
             Some(ProgressBarOpts::TEMPLATE_BAR_WITH_POSITION.into()),
             Some(ProgressBarOpts::CHARS_FINE.into()),
@@ -221,7 +221,8 @@ async fn native(application_path: &str, file: &str, asset: &str) -> std::io::Res
             true,
             false
         )
-    );
+    ); */
+    let style_opts = StyleOptions::default();
     let downloader = DownloaderBuilder::new()
         .directory(PathBuf::from(application_path))
         .style_options(style_opts)
