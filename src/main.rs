@@ -71,6 +71,7 @@ fn main() {
     {
         println!("7z.exe or 7z.dll not found!");
         press_btn_continue::wait("Press Enter to exit...").unwrap();
+        process::exit(1);
     }
 
     if arguments.len() >= 3 {
@@ -327,28 +328,34 @@ License: MIT License
 GitHub: https://github.com/Zalexanninev15/GRU
 
 USAGE:
-    gru.exe --repo <user/repository> --app <application.exe> --with <search_value>
+    gru.exe --repo <user/repository> --app <application.exe> --with <value for search>
 
 ARGUMENTS:
     --repo <user/repository>      Specify the repository (e.g., 'user/repo').
-    --app <application.exe>       Specify the main application executable.
-                                  The executable should be in a higher-level folder.
-                                  Use '--main' if located elsewhere.
-    --with <search_value>         Specify a part of the asset name in the GitHub release
-                                  to download (e.g., 'win-amd64-portable.zip').
+    --app <application.exe>       Set the EXE of launcher/main application.
+                                  The executable file must be located in a folder at a higher level,
+                                  otherwise you need to set the '--main' argument with the correct path to the file
+    --with <alue for search>      Set the part of name of asset in GitHub release for download,
+                                  for example: \"win-amd64-portable.zip\"
 
 OPTIONS:
-    --main <path>                 Path to the main application. Defaults to '--app' value.
-    --extract / --no-extract      Extract archive files or just copy the EXE. Default: --extract.
-    --leave / --no-leave          Keep or delete unnecessary folders (e.g., $PLUGINSDIR). Default: --no-leave.
+    --main <path>                 Set the main part of the application, the path to the application located at the level above.
+                                  Default value: value of the '--app' argument.
+    --extract / --no-extract      Extract archive files or just move the downloaded EXE file. Default: --extract.
+    --leave / --no-leave          Keep or delete unnecessary folders (e.g., $PLUGINSDIR, Other). Default: --no-leave.
     --before / --no-before        Run 'prepare.bat' before download. Default: --no-before.
     --script / --no-script        Run 'script.bat' after download and extraction (or move). Default: --no-script.
     --silent / --no-silent        Hide console after execution. Default: --no-silent.
-    --details / --no-details      Show detailed download information ('curl', 'wget'). Default: --no-details.
+    --details / --no-details      Show detailed download information for curl/wget. Default: --no-details.
     --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'tcpud'). 
+                                  By default, \"curl.exe\" or \"wget.exe\" files are used for 'curl', 'wget' respectively,
+                                  in the path \"C:\\Windows\\System32\". If there are installed utilities, the path to 
+                                  them (to executable files) can be specified in the files \"curl.txt\", \"wget.txt\", \"aria2c.txt\".
+                                  If there is an error finding an executable file, the built-in file downloader will be invoked.
                                   Default: 'gru'.
-    --link <url>                  Direct download URL if release lacks assets. Default: null.
-    --ua <user-agent>             Specify a user-agent for better download speed.
+    --link <url>                  Sometimes releases may not contain assets to download, but just be a place for a list of changes (what's new?). 
+                                  Set the download link (direct) to the release in other place. Default: null.
+    --ua <user-agent>             Specify a user-agent for better download speed. The argument applies only to the 'curl' and 'wget' tools.
                                   Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36.
     --wgetrc / --no-wgetrc        Use config file for 'wget' (.wgetrc). Default: --no-wgetrc.
     --pre / --no-pre              Use a pre-release instead of a stable release (if there are no stable releases or the unstable release was released after the stable release and is the most recent).
