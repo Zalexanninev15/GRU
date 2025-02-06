@@ -23,7 +23,7 @@ pub fn download(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
-
+    let gru1 = downloader.contains("classic");
     let mut asset = String::from(repo);
     if repo.contains("://") == false {
         let formatted_asset = format!(
@@ -66,7 +66,7 @@ pub fn download(
                         } else {
                             downloader = "gru";
                             let rt = tokio::runtime::Runtime::new().unwrap();
-                            let _ = rt.block_on(native(&current_dir, &file, &asset));
+                            let _ = rt.block_on(native(&current_dir, &file, &asset, &gru1));
                         }
                     }
                 }
@@ -117,7 +117,7 @@ pub fn download(
                     } else {
                         downloader = "gru";
                         let rt = tokio::runtime::Runtime::new().unwrap();
-                        let _ = rt.block_on(native(&current_dir, &file, &asset));
+                        let _ = rt.block_on(native(&current_dir, &file, &asset, &gru1));
                     }
                 }
                 if downloader == "wget" {
@@ -153,7 +153,7 @@ pub fn download(
             }
             "gru" => {
                 let rt = tokio::runtime::Runtime::new().unwrap();
-                let _ = rt.block_on(native(&current_dir, &file, &asset));
+                let _ = rt.block_on(native(&current_dir, &file, &asset, &gru1));
             }
             _ => {}
         }
@@ -197,32 +197,40 @@ fn execute_command(mut command: Command) {
     }
 }
 
-async fn native(application_path: &str, file: &str, asset: &str) -> std::io::Result<()> {
+async fn native(
+    application_path: &str,
+    file: &str,
+    asset: &str,
+    is_classic_progressbar: &bool
+) -> std::io::Result<()> {
     let d_file = String::from(format!("{}\\{}", application_path, file));
     if Path::new(&d_file).exists() {
         fs::remove_file(&d_file).expect("\n");
     }
     let downloads = vec![Download::try_from(asset).unwrap()];
-    /*  let style_opts = StyleOptions::new(
-        ProgressBarOpts::new(
-            Some(ProgressBarOpts::TEMPLATE_BAR_WITH_POSITION.into()),
-            Some(ProgressBarOpts::CHARS_FINE.into()),
-            true,
-            false
-        ),
-        ProgressBarOpts::new(
-            Some(
-                format!(
-                    "{{bar:40.cyan}} {{bytes_per_sec:>13.green}} {{percent:>2.cyan}}{} {{bytes:>11.green}}/{{total_bytes:<11.green}}",
-                    style("%").cyan()
-                )
+    let style_opts = if *is_classic_progressbar {
+        StyleOptions::default()
+    } else {
+        StyleOptions::new(
+            ProgressBarOpts::new(
+                Some(ProgressBarOpts::TEMPLATE_BAR_WITH_POSITION.into()),
+                Some(ProgressBarOpts::CHARS_FINE.into()),
+                true,
+                false
             ),
-            Some("████ ".into()),
-            true,
-            false
+            ProgressBarOpts::new(
+                Some(
+                    format!(
+                        "{{bar:40.cyan}} {{bytes_per_sec:>13.green}} {{percent:>2.cyan}}{} {{bytes:>11.green}}/{{total_bytes:<11.green}}",
+                        style("%").cyan()
+                    )
+                ),
+                Some("████ ".into()),
+                true,
+                false
+            )
         )
-    ); */
-    let style_opts = StyleOptions::default();
+    };
     let downloader = DownloaderBuilder::new()
         .directory(PathBuf::from(application_path))
         .style_options(style_opts)

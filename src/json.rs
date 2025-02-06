@@ -116,6 +116,30 @@ fn fetch_and_parse_releases(url: &str) -> Value {
     serde_json::from_str(&json).expect("GitHub API: Error parsing json")
 }
 
+// Version 3.1 ???
+/* extern crate reqwest;
+use reqwest::header;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut headers = header::HeaderMap::new();
+    headers.insert("Accept", "application/vnd.github+json".parse().unwrap());
+    headers.insert("Authorization", "Bearer sssssss".parse().unwrap());
+    headers.insert("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36".parse().unwrap());
+    headers.insert("X-GitHub-Api-Version", "2022-11-28".parse().unwrap());
+
+    let client = reqwest::blocking::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .unwrap();
+    let res = client.get("https://api.github.com/repos/obsproject/obs-studio/releases/latest")
+        .headers(headers)
+        .send()?
+        .text()?;
+    println!("{}", res);
+
+    Ok(())
+} */
+
 fn find_latest_releases(releases: &[Value]) -> (Option<&Value>, Option<&Value>) {
     let mut latest_stable = None;
     let mut latest_prerelease = None;
