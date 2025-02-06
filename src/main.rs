@@ -255,7 +255,7 @@ fn main() {
                 println!("[Debug] State 2");
             }
 
-            // Fix for native downloader
+            // Fix for build-in downloader
             if Path::new(&String::from(format!("{}\\download", &current_dir))).exists() {
                 let _ = std::fs::rename(
                     String::from(format!("{}\\download", &current_dir)),
@@ -335,22 +335,22 @@ ARGUMENTS:
     --app <application.exe>       Set the EXE of launcher/main application.
                                   The executable file must be located in a folder at a higher level,
                                   otherwise you need to set the '--main' argument with the correct path to the file
-    --with <alue for search>      Set the part of name of asset in GitHub release for download,
+    --with <value for search>     Set the part of name of asset in GitHub release for download,
                                   for example: \"win-amd64-portable.zip\"
 
 OPTIONS:
     --main <path>                 Set the main part of the application, the path to the application located at the level above.
-                                  Default value: value of the '--app' argument.
+                                  Default value: value of the '--app' argument.                 
     --extract / --no-extract      Extract archive files or just move the downloaded EXE file. Default: --extract.
     --leave / --no-leave          Keep or delete unnecessary folders (e.g., $PLUGINSDIR, Other). Default: --no-leave.
     --before / --no-before        Run 'prepare.bat' before download. Default: --no-before.
     --script / --no-script        Run 'script.bat' after download and extraction (or move). Default: --no-script.
     --silent / --no-silent        Hide console after execution. Default: --no-silent.
     --details / --no-details      Show detailed download information for curl/wget. Default: --no-details.
-    --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'tcpud'). 
+    --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'gru-classic', 'tcpud'). 
                                   By default, \"curl.exe\" or \"wget.exe\" files are used for 'curl', 'wget' respectively,
                                   in the path \"C:\\Windows\\System32\". If there are installed utilities, the path to 
-                                  them (to executable files) can be specified in the files \"curl.txt\", \"wget.txt\", \"aria2c.txt\".
+                                  them (to executable files) can be specified in the files \"curl.txt\" or \"wget.txt\".
                                   If there is an error finding an executable file, the built-in file downloader will be invoked.
                                   Default: 'gru'.
     --link <url>                  Sometimes releases may not contain assets to download, but just be a place for a list of changes (what's new?). 
@@ -362,6 +362,11 @@ OPTIONS:
                                   Default: --no-pre.
     --ghost / --no-ghost          Search for matching assets across multiple recent releases instead of only the latest one. Default: --no-ghost.                                  
     --debug / --no-debug          Enable debug mode. Default: --no-debug.
+    [Version 3.1 Preview Arguments (not supported now)] 
+    --gh <personal access token>  Use a Personal access token to request access to GitHub if there are problems with access on the GitHub 
+                                  side due to restrictions imposed by them.
+                                  Get personal access token: https://github.com/settings/personal-access-tokens
+    --nuget / --no-nuget          Enabling the correct operation mode with nuget packages, which include the release of the downloaded application itself.
 
 EXAMPLES:
     Detailed examples available at: 
