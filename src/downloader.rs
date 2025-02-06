@@ -23,7 +23,13 @@ pub fn download(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = crate::main_func::current_dir();
     let file_name = String::from(format!("{}\\app.downloaded", current_dir));
-    let gru1 = downloader.contains("classic");
+    let gru1 = if downloader == "gru-classic" {
+        downloader = "gru";
+        true
+    } else {
+        downloader = "gru";
+        false
+    };
     let mut asset = String::from(repo);
     if repo.contains("://") == false {
         let formatted_asset = format!(
