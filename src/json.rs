@@ -1,22 +1,29 @@
-use isahc::ReadResponseExt;
+use isahc::prelude::*;
+use isahc::{ Request, ReadResponseExt };
 use serde_json::Value;
 
 pub fn parse_data(
     repo: &str,
     search_words: &str,
     pre: &bool,
-    one_release: &bool
+    one_release: &bool,
+    ua: &str,
+    api_key: Option<&str>
 ) -> (String, String) {
     if *pre == false {
         return fetch_and_parse_release(
             &format!("https://api.github.com/repos/{}/releases/latest", repo),
             search_words,
-            one_release
+            one_release,
+            ua,
+            api_key
         );
     }
-    // When pre=true, fetch all releases at once
+
     let releases = fetch_and_parse_releases(
-        &format!("https://api.github.com/repos/{}/releases", repo)
+        &format!("https://api.github.com/repos/{}/releases", repo),
+        ua,
+        api_key
     );
 
     let releases_array = match releases.as_array() {
@@ -25,16 +32,16 @@ pub fn parse_data(
             return fetch_and_parse_release(
                 &format!("https://api.github.com/repos/{}/releases/latest", repo),
                 search_words,
-                one_release
+                one_release,
+                ua,
+                api_key
             );
         }
     };
 
     if *one_release {
-        // Original behavior: Find latest stable and pre-release
         let (stable, prerelease) = find_latest_releases(releases_array);
 
-        // Determine which release to use based on dates
         let selected_release = match (stable, prerelease) {
             (Some(stable), Some(pre)) => {
                 let pre_date = pre["published_at"].as_str().unwrap_or("");
@@ -54,7 +61,6 @@ pub fn parse_data(
 
         parse_text(&serde_json::to_string(selected_release).unwrap(), search_words)
     } else {
-        // New behavior: Search through multiple releases
         for release in releases_array {
             if let Some(assets) = release["assets"].as_array() {
                 for asset in assets {
@@ -69,23 +75,41 @@ pub fn parse_data(
                 }
             }
         }
-        // If no matching asset is found in any release
         (String::new(), String::from("app.zip"))
     }
 }
 
-fn fetch_and_parse_release(url: &str, search_words: &str, one_release: &bool) -> (String, String) {
+fn create_github_request(url: &str, ua: &str, api_key: Option<&str>) -> Request<()> {
+    let mut builder = Request::builder().uri(url).header("User-Agent", format!("{}", ua));
+
+    if let Some(key) = api_key {
+        builder = builder
+            .header("Accept", "application/vnd.github+json")
+            .header("Authorization", format!("Bearer {}", key))
+            .header("X-GitHub-Api-Version", "2022-11-28");
+    }
+
+    builder.body(()).expect("Failed to create request")
+}
+
+fn fetch_and_parse_release(
+    url: &str,
+    search_words: &str,
+    one_release: &bool,
+    ua: &str,
+    api_key: Option<&str>
+) -> (String, String) {
     if *one_release {
-        let json = isahc
-            ::get(url)
+        let request = create_github_request(url, ua, api_key);
+        let json = request
+            .send()
             .expect("GitHub API: Error 404")
             .text()
             .expect("GitHub API: Json lost");
         parse_text(&json, search_words)
     } else {
-        // For multi-release search, we need to get all releases
         let releases_url = url.replace("/latest", "");
-        let releases = fetch_and_parse_releases(&releases_url);
+        let releases = fetch_and_parse_releases(&releases_url, ua, api_key);
 
         if let Some(releases_array) = releases.as_array() {
             for release in releases_array {
@@ -107,38 +131,15 @@ fn fetch_and_parse_release(url: &str, search_words: &str, one_release: &bool) ->
     }
 }
 
-fn fetch_and_parse_releases(url: &str) -> Value {
-    let json = isahc
-        ::get(url)
+fn fetch_and_parse_releases(url: &str, ua: &str, api_key: Option<&str>) -> Value {
+    let request = create_github_request(url, ua, api_key);
+    let json = request
+        .send()
         .expect("GitHub API: Error 404")
         .text()
         .expect("GitHub API: Json lost");
     serde_json::from_str(&json).expect("GitHub API: Error parsing json")
 }
-
-// Version 3.1 ???
-/* extern crate reqwest;
-use reqwest::header;
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut headers = header::HeaderMap::new();
-    headers.insert("Accept", "application/vnd.github+json".parse().unwrap());
-    headers.insert("Authorization", "Bearer sssssss".parse().unwrap());
-    headers.insert("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36".parse().unwrap());
-    headers.insert("X-GitHub-Api-Version", "2022-11-28".parse().unwrap());
-
-    let client = reqwest::blocking::Client::builder()
-        .redirect(reqwest::redirect::Policy::none())
-        .build()
-        .unwrap();
-    let res = client.get("https://api.github.com/repos/obsproject/obs-studio/releases/latest")
-        .headers(headers)
-        .send()?
-        .text()?;
-    println!("{}", res);
-
-    Ok(())
-} */
 
 fn find_latest_releases(releases: &[Value]) -> (Option<&Value>, Option<&Value>) {
     let mut latest_stable = None;
