@@ -99,6 +99,7 @@ fn main() {
         let tool = arguments.get::<String>("tool").unwrap_or("gru".to_string());
         let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
         let mut no_ghost = arguments.get::<bool>("ghost").unwrap_or(false);
+        let api_token = arguments.get::<String>("gh").unwrap_or("null".to_string());
         let ua = arguments
             .get::<String>("ua")
             .unwrap_or(
@@ -140,6 +141,7 @@ fn main() {
             println!("[Debug] wgetrc = {}", wgetrc);
             println!("[Debug] show_pre = {}", show_pre);
             println!("[Debug] no_ghost = {}", no_ghost);
+            println!("[Debug] api_token = {}", api_token);
             press_btn_continue::wait("[Debug] Press Enter to continue...").unwrap();
         }
 
@@ -154,13 +156,12 @@ fn main() {
             first_launch = true;
         }
 
+        let (v_list_version, mut v_list_asset) = if api_token == "null" {
+            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, None)
+        } else {
+            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, Some(&api_token))
+        };
         // Getting the new version release
-        let (v_list_version, mut v_list_asset) = json::parse_data(
-            &repo,
-            &part,
-            &show_pre,
-            &no_ghost
-        );
 
         if debug_mode {
             println!("\n[Debug] v_list_version = \"{}\"", v_list_version);
@@ -355,17 +356,17 @@ OPTIONS:
                                   Default: 'gru'.
     --link <url>                  Sometimes releases may not contain assets to download, but just be a place for a list of changes (what's new?). 
                                   Set the download link (direct) to the release in other place. Default: null.
-    --ua <user-agent>             Specify a user-agent for better download speed. The argument applies only to the 'curl' and 'wget' tools.
+    --ua <user-agent>             Specify a user-agent for better download speed. The argument applies to the 'curl' and 'wget' tools and GitHub API requests.
                                   Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36.
+    --gh <personal access token>  Use a Personal access token to request access to GitHub if there are problems with access on the GitHub 
+                                  side due to restrictions imposed by them.
+                                  Get personal access token: https://github.com/settings/personal-access-tokens
     --wgetrc / --no-wgetrc        Use config file for 'wget' (.wgetrc). Default: --no-wgetrc.
     --pre / --no-pre              Use a pre-release instead of a stable release (if there are no stable releases or the unstable release was released after the stable release and is the most recent).
                                   Default: --no-pre.
     --ghost / --no-ghost          Search for matching assets across multiple recent releases instead of only the latest one. Default: --no-ghost.                                  
     --debug / --no-debug          Enable debug mode. Default: --no-debug.
     [Version 3.1 Preview Arguments (not supported now)] 
-    --gh <personal access token>  Use a Personal access token to request access to GitHub if there are problems with access on the GitHub 
-                                  side due to restrictions imposed by them.
-                                  Get personal access token: https://github.com/settings/personal-access-tokens
     --nuget / --no-nuget          Enabling the correct operation mode with nuget packages, which include the release of the downloaded application itself.
 
 EXAMPLES:
