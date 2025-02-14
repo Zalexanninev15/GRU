@@ -100,6 +100,7 @@ fn main() {
         let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
         let mut no_ghost = arguments.get::<bool>("ghost").unwrap_or(false);
         let api_token = arguments.get::<String>("gh").unwrap_or("null".to_string());
+        let is_nuget_package = arguments.get::<bool>("nupkg").unwrap_or(false);
         let ua = arguments
             .get::<String>("ua")
             .unwrap_or(
@@ -135,6 +136,7 @@ fn main() {
             println!("[Debug] silent_mode = {}", silent_mode);
             println!("[Debug] app_path = \"{}\"", app_path.replace("\\\\", "\\"));
             println!("[Debug] details = {}", details);
+            println!("[Debug] is_nuget_package = {}", is_nuget_package);
             println!("[Debug] tool = \"{}\"", tool);
             println!("[Debug] d_link = {}", d_link);
             println!("[Debug] ua = \"{}\"", ua);
@@ -156,12 +158,12 @@ fn main() {
             first_launch = true;
         }
 
+        // Getting the new version release
         let (v_list_version, mut v_list_asset) = if api_token == "null" {
             json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, None)
         } else {
             json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, Some(&api_token))
         };
-        // Getting the new version release
 
         if debug_mode {
             println!("\n[Debug] v_list_version = \"{}\"", v_list_version);
@@ -280,7 +282,7 @@ fn main() {
                         println!("Updating...");
                     }
                     if is_extract {
-                        main_func::extracting(&current_dir);
+                        main_func::extracting(&current_dir, &is_nuget_package);
                     } else {
                         let ue = main_func::updating(&current_dir, &launcher_exe);
                         if ue.is_err() {
@@ -348,6 +350,7 @@ OPTIONS:
     --script / --no-script        Run 'script.bat' after download and extraction (or move). Default: --no-script.
     --silent / --no-silent        Hide console after execution. Default: --no-silent.
     --details / --no-details      Show detailed download information for curl/wget. Default: --no-details.
+    --nupkg / --no-nupkg          Enabling the correct operation mode with nuget packages (.nupkg), which include the release of the downloaded application itself.
     --tool <type>                 File downloader tool ('curl', 'wget', 'gru', 'gru-classic', 'tcpud'). 
                                   By default, \"curl.exe\" or \"wget.exe\" files are used for 'curl', 'wget' respectively,
                                   in the path \"C:\\Windows\\System32\". If there are installed utilities, the path to 
@@ -366,8 +369,6 @@ OPTIONS:
                                   Default: --no-pre.
     --ghost / --no-ghost          Search for matching assets across multiple recent releases instead of only the latest one. Default: --no-ghost.                                  
     --debug / --no-debug          Enable debug mode. Default: --no-debug.
-    [Version 3.1 Preview Arguments (not supported now)] 
-    --nuget / --no-nuget          Enabling the correct operation mode with nuget packages, which include the release of the downloaded application itself.
 
 EXAMPLES:
     Detailed examples available at: 
