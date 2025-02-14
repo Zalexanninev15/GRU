@@ -27,7 +27,6 @@ pub fn download(
         downloader = "gru";
         true
     } else {
-        downloader = "gru";
         false
     };
     let mut asset = String::from(repo);
