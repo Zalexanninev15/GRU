@@ -14,19 +14,43 @@
 
 ## Description
 
-Updater for applications from GitHub. It has a huge number of convenient settings and it supports multiple downloaders, and can also download files not from GitHub based only on the release.
+Updater for applications from GitHub. It has a huge number of convenient settings and supports multiple rockers, and can download files not only from GitHub, but also based only on the release, supports pre-releases and a fairly deep asset search among releases. Lots of arguments.
 
-## Features (version 2.2)
+## Features
 
-- Features of fine-tuning the update process, a huge number of arguments for incredibly fine-tuning asset downloads from GitHub and beyond...
-- Support for releases without assets, the file itself will be downloaded from another site via a direct link ([example](https://github.com/Zalexanninev15/GRU#example-visual-studio-code))
-- Using, at the user's choice, as many as three types of downloader: **curl**, **wget**, **gru**.
-- Using the console **7-Zip** allows you to unpack almost all kinds of release archives.
-- Automatically kill the process of the updated application when updating, which eliminates possible difficulties when updating applications that are already running.
-- Support for a custom script that runs after an application update (`script.bat` file).
-- Clear and sufficiently self-sufficient documentation (run `gru.exe` without arguments).
-- Support for determining the current version when using a specific argument for a more fine-grained application update process.
-- Automatically cleans all temporary files after its work (there may be problems with some, but in most cases everything goes fine).
+- **Fine-Grained Update Customization**: Highly customizable asset download process with numerous arguments to adjust the update flow, making it flexible for a wide range of use cases.
+- **Support for Releases Without Assets**: In cases where no assets are found, the application can directly download the EXE or files from an external URL ([example](https://github.com/Zalexanninev15/GRU#example-visual-studio-code)).
+- **Multiple Downloader Options**: Choose between **curl**, **wget**, the built-in **gru** (**gru-classic**) or **tcpud** downloader for maximum flexibility in downloading assets.
+- **Seamless Archive Extraction**: Leverage **7-Zip** via the command line to handle nearly all types of archive files during the extraction process.
+- **Automatic Process Termination**: Automatically terminates the running application during updates to avoid issues with in-use applications, ensuring smooth updates.
+- **Pre-Update Script Support**: Optionally execute a custom `prepare.bat` file before the update to perform additional tasks.
+- **Post-Update Script Support**: Optionally execute a custom `script.bat` file after the update to perform additional tasks.
+- **Comprehensive and Self-Sufficient Documentation**: View detailed documentation by running `gru.exe` without any arguments to understand every option and its usage.
+- **Version Control for Precise Updates**: Fine-tune the update process by determining the current version and ensuring that the right release is applied based on your setup.
+- **Automatic Cleanup**: Automatically remove temporary files post-update to keep your system clean. Most cases work without issues, but a few may require manual intervention.
+- **Pre-release Support**: Optionally select pre-releases for updates if a stable release is not available or if the latest unstable release is preferred.
+- **Asset Search Across Multiple Releases**: Search for assets across multiple recent releases (not just the latest), ensuring you always get the right version of the file.
+
+## Available arguments
+- `--app <application.exe>` — Set the EXE of the launcher/main application.
+- `--main <path>` — Set the path to the main application located one level above the EXE.
+- `--extract` / `--no-extract` — Decide whether to extract archive files or simply move the downloaded EXE.
+- `--leave` / `--no-leave` — Control whether to keep or remove unnecessary folders.
+- `--before` / `--no-before` — Run a `prepare.bat` script before downloading (optional).
+- `--script` / `--no-script` — Optionally run `script.bat` after the download and extraction.
+- `--silent` / `--no-silent` — Hide the console window during execution for a quieter experience.
+- `--details` / `--no-details` — Show detailed download information using curl/wget.
+- `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud`.
+- `--link <url>` — Use a direct download link when assets are unavailable in the release.
+- `--ua <user-agent>` — Customize the user-agent string for optimized download speeds.
+- `--gh <personal access token>` — Use a GitHub personal access token for improved access if there are restrictions.
+- `--wgetrc` / `--no-wgetrc` — Use the wget configuration file (.wgetrc).
+- `--pre` / `--no-pre` — Use pre-releases if stable versions are unavailable.
+- `--ghost` / `--no-ghost` — Search for assets across multiple recent releases, not just the latest.
+
+This program offers total control over your application updates and downloads, ensuring a smooth, customizable, and clean update process every time.
+
+> A simplified description is provided here, and a more detailed one is provided in the utility itself.
 
 ## System requirements
 
