@@ -18,7 +18,7 @@ pub fn read_downloadtool_config() -> &'static str {
             }
         }
     } else {
-        println!("Error: \"downloadtool.cfg\" not found.");
+        println!("Error: 'downloadtool.cfg' not found.");
         process::exit(1);
     }
 
@@ -60,7 +60,7 @@ pub fn run_script(current_dir: &str, before: &bool) {
     let script = Command::new("cmd")
         .args(&["/C", &script_file])
         .output()
-        .expect("failed to execute process");
+        .expect("Failed to execute process!");
     for out in String::from_utf8(script.stdout).iter() {
         println!("{}", out);
     }
@@ -108,21 +108,21 @@ pub fn extracting(current_dir: &str, is_nuget: &bool) {
     let output = command.execute_output().unwrap();
     if let Some(exit_code) = output.status.code() {
         if exit_code != 0 {
-            eprintln!("Failed.");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Exit code:Failed.");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
     } else {
-        eprintln!("Interrupted!");
-        press_btn_continue::wait("Press any key to exit...").unwrap();
+        eprintln!("The unpacking operation is not completed!");
+        press_btn_continue::wait("Press Enter to exit...").unwrap();
         process::exit(1);
     }
 
     if *is_nuget {
         let lib_path = Path::new(&extract_to).join("lib");
         if !lib_path.exists() {
-            eprintln!("Failed: No lib directory found in NuGet package");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Failed: Not found 'lib' folder with executable file(s)!");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
 
@@ -132,8 +132,8 @@ pub fn extracting(current_dir: &str, is_nuget: &bool) {
         {
             Some(version) => version,
             None => {
-                eprintln!("Failed: No supported .NET framework version found");
-                press_btn_continue::wait("Press any key to exit...").unwrap();
+                eprintln!("Failed: Not found the supported version of the .NET Framework!");
+                press_btn_continue::wait("Press Enter to exit...").unwrap();
                 process::exit(1);
             }
         };
@@ -143,46 +143,46 @@ pub fn extracting(current_dir: &str, is_nuget: &bool) {
 
         // Delete files from nuget package
         if let Err(_) = fs::remove_file(format!("{}..\\[Content_Types].xml", current_dir)) {
-            eprintln!("Failed to clean up '[Content_Types].xml'");
+            eprintln!("Failed to clean up '[Content_Types].xml'!");
         }
         if let Err(_) = fs::remove_dir_all(format!("{}..\\_rels", current_dir)) {
-            eprintln!("Failed to clean up '_rels' directory");
+            eprintln!("Failed to clean up '_rels' directory!");
         }
 
         // Safely create temp directory
         if let Err(_) = fs::create_dir_all(&temp_dir) {
-            eprintln!("Failed to create temporary directory");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Failed to create temporary directory!");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
 
         // Copy framework files to temp
         if let Err(_) = copy_directory(&source_path, Path::new(&temp_dir)) {
-            eprintln!("Failed to copy framework files to temporary directory");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Failed to copy framework files to temporary directory!");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
 
         // Only remove the lib directory
         if let Err(_) = fs::remove_dir_all(lib_path) {
-            eprintln!("Failed to clean up lib directory");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Failed to clean up 'lib' directory!");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
 
         // Move files from temp to destination
         if let Err(_) = copy_directory(Path::new(&temp_dir), Path::new(&extract_to)) {
-            eprintln!("Failed to move files to final location");
-            press_btn_continue::wait("Press any key to exit...").unwrap();
+            eprintln!("Failed to move files to final location!");
+            press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
 
         // Clean up temp directory
         if let Err(_) = fs::remove_dir_all(&temp_dir) {
-            eprintln!("Warning: Failed to clean up temporary directory");
+            eprintln!("Warning: Failed to clean up temporary directory!");
         }
 
-        println!("Extracted from {} framework directory.", target_framework);
+        println!("Extracted from .NET Framework {} directory.", target_framework);
     } else {
         println!("Extracted.");
     }

@@ -69,7 +69,7 @@ fn main() {
         Path::new(&String::from(format!("{}\\7z.exe", current_dir))).exists() == false ||
         Path::new(&String::from(format!("{}\\7z.dll", current_dir))).exists() == false
     {
-        println!("7z.exe or 7z.dll not found!");
+        println!("File '7z.exe' or/and '7z.dll' not found!");
         press_btn_continue::wait("Press Enter to exit...").unwrap();
         process::exit(1);
     }
@@ -226,7 +226,7 @@ fn main() {
         // Updater
         if update_now {
             if is_script_before {
-                println!("Running prepare.bat...");
+                println!("Running 'prepare.bat'...");
                 main_func::run_script(&current_dir, &true);
             }
 
@@ -294,7 +294,7 @@ fn main() {
                     main_func::delete_file(&current_dir, &is_leave_folders);
 
                     if is_script_after {
-                        println!("Running script.bat...");
+                        println!("Running 'script.bat'...");
                         main_func::run_script(&current_dir, &false);
                     }
 
