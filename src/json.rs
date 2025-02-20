@@ -89,7 +89,7 @@ fn create_github_request(url: &str, ua: &str, api_key: Option<&str>) -> Request<
             .header("X-GitHub-Api-Version", "2022-11-28");
     }
 
-    builder.body(()).expect("Failed to create request")
+    builder.body(()).expect("GitHub API: Failed to create request!")
 }
 
 fn fetch_and_parse_release(
@@ -135,10 +135,10 @@ fn fetch_and_parse_releases(url: &str, ua: &str, api_key: Option<&str>) -> Value
     let request = create_github_request(url, ua, api_key);
     let json = request
         .send()
-        .expect("GitHub API: Error 404")
+        .expect("GitHub API: Error 404!")
         .text()
-        .expect("GitHub API: Json lost");
-    serde_json::from_str(&json).expect("GitHub API: Error parsing json")
+        .expect("GitHub API: Json lost!");
+    serde_json::from_str(&json).expect("GitHub API: Error parsing json!")
 }
 
 fn find_latest_releases(releases: &[Value]) -> (Option<&Value>, Option<&Value>) {
@@ -163,7 +163,7 @@ fn find_latest_releases(releases: &[Value]) -> (Option<&Value>, Option<&Value>) 
 }
 
 fn parse_text(json: &str, word: &str) -> (String, String) {
-    let release: Value = serde_json::from_str(json).expect("GitHub API: Error parsing json");
+    let release: Value = serde_json::from_str(json).expect("GitHub API: Error parsing json!");
     let mut asset_name = String::from("app.zip");
 
     if let Some(assets) = release["assets"].as_array() {
