@@ -40,6 +40,7 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 - `--script` / `--no-script` — Optionally run `script.bat` after the download and extraction.
 - `--silent` / `--no-silent` — Hide the console window during execution for a quieter experience.
 - `--details` / `--no-details` — Show detailed download information using curl/wget.
+- `--nupkg` / `--no-nupkg` —  Enabling the correct operation mode with nuget packages (.nupkg), which include the release of the downloaded application itself.
 - `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud`.
 - `--link <url>` — Use a direct download link when assets are unavailable in the release.
 - `--ua <user-agent>` — Customize the user-agent string for optimized download speeds.
