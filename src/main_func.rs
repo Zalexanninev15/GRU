@@ -108,12 +108,12 @@ pub fn extracting(current_dir: &str, is_nuget: &bool) {
     let output = command.execute_output().unwrap();
     if let Some(exit_code) = output.status.code() {
         if exit_code != 0 {
-            eprintln!("Exit code:Failed.");
+            eprintln!("Failed: 7z error!");
             press_btn_continue::wait("Press Enter to exit...").unwrap();
             process::exit(1);
         }
     } else {
-        eprintln!("The unpacking operation is not completed!");
+        eprintln!("Failed: The unpacking operation is not completed!");
         press_btn_continue::wait("Press Enter to exit...").unwrap();
         process::exit(1);
     }
@@ -182,22 +182,30 @@ pub fn extracting(current_dir: &str, is_nuget: &bool) {
             eprintln!("Warning: Failed to clean up temporary directory!");
         }
 
-        println!("Extracted from .NET Framework {} directory.", target_framework);
+        println!("Detected: {}\nExtracted from .NET Framework '{}' directory.", target_framework, target_framework);
     } else {
         println!("Extracted.");
     }
 }
 
-fn copy_directory(source: &Path, destination: &Path) -> std::io::Result<()> {
+fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
+    if !destination.exists() {
+        fs::create_dir_all(destination)?;
+    }
+
     for entry in fs::read_dir(source)? {
         let entry = entry?;
         let path = entry.path();
+        let file_name = path.file_name().unwrap();
+        let dest_path = destination.join(file_name);
+
         if path.is_file() {
-            let file_name = path.file_name().unwrap();
-            let dest_path = destination.join(file_name);
-            fs::copy(path, dest_path)?;
+            fs::copy(&path, &dest_path)?;
+        } else if path.is_dir() {
+            copy_directory(&path, &dest_path)?;
         }
     }
+
     Ok(())
 }
 
