@@ -315,7 +315,7 @@ fn main() {
             );
         }
         if debug_mode {
-            println!("[Debug] State 4");
+            println!("\n[Debug] State 4");
         }
         if !silent_mode || debug_mode {
             press_btn_continue::wait("Press Enter to exit...").unwrap();
