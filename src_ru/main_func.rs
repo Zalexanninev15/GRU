@@ -72,10 +72,19 @@ pub fn task_kill(application_exe: &str, manifest_exists: &bool) {
 
     let mut command = Command::new(killer);
 
-    if *manifest_exists {
-        command.args(&["/F", "/T", "/IM", application_exe]);
+    let exe_name = if *manifest_exists {
+        application_exe
     } else {
-        command.arg(application_exe);
+        Path::new(application_exe)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or(application_exe)
+    };
+
+    if *manifest_exists {
+        command.args(&["/F", "/T", "/IM", exe_name]);
+    } else {
+        command.arg(exe_name);
     }
 
     command.execute().unwrap();
