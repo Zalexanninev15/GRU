@@ -98,6 +98,12 @@ gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.
 gru.exe --repo microsoft/vscode --app Code.exe --with "null" --link "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive"
 ```
 
+### Example, [Insomnia](https://github.com/Kong/insomnia)
+
+```batch
+gru.exe --repo Kong/insomnia --app insomnia.exe --with "-full.nupkg" --nupkg
+```
+
 ## Build
 
 1. Install all dependencies with Administrator rights (it is recommended to use packages from the [Scoop package manager](https://scoop.sh/))
