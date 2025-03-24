@@ -122,10 +122,10 @@ git clone https://github.com/Zalexanninev15/GRU
 cd .\GRU\
 ```
 
-3. Compile the GRU with my script in PowerShell!
+3. Compile the GRU with my script in CMD!
 
-```powershell
-.\build.ps1
+```batch
+build.bat
 ```
 
 4. The resulting file `gru.exe` will be in the project folder, not the release folder.
