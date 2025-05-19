@@ -14,7 +14,7 @@
 
 ## Description
 
-Updater for applications from GitHub. It has a huge number of convenient settings and supports multiple rockers, and can download files not only from GitHub, but also based only on the release, supports pre-releases and a fairly deep asset search among releases. Lots of arguments.
+Updater for applications from GitHub. It has a huge number of convenient settings and supports multiple rockers, and can download files not only from GitHub, but also based only on the release, supports pre-releases and a fairly deep asset search among releases.
 
 ## Features
 
@@ -41,13 +41,13 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 - `--silent` / `--no-silent` — Hide the console window during execution for a quieter experience.
 - `--details` / `--no-details` — Show detailed download information using curl/wget.
 - `--nupkg` / `--no-nupkg` —  Enabling the correct operation mode with nuget packages (.nupkg), which include the release of the downloaded application itself.
-- `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud`.
+- `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud` (curl-only).
 - `--link <url>` — Use a direct download link when assets are unavailable in the release.
 - `--ua <user-agent>` — Customize the user-agent string for optimized download speeds.
 - `--gh <personal access token>` — Use a GitHub personal access token for improved access if there are restrictions.
 - `--wgetrc` / `--no-wgetrc` — Use the wget configuration file (.wgetrc).
 - `--pre` / `--no-pre` — Use pre-releases if stable versions are unavailable.
-- `--ghost` / `--no-ghost` — Search for assets across multiple recent releases, not just the latest.
+- `--ghost` / `--no-ghost` — Search for assets across multiple recent releases, not just the latest. If a developer publishes different applications in the same repository in different releases.
 
 This program offers total control over your application updates and downloads, ensuring a smooth, customizable, and clean update process every time.
 
@@ -63,16 +63,18 @@ This program offers total control over your application updates and downloads, e
 ## Usage
 
 1. Copy the `UpdateTools` folder from the archive to the application folder.
-2. Run the `gru.exe` file with the arguments (the full list of arguments can be obtained by running `gru.exe`, even without console, just launching it.
-3. The file/archive will be downloaded. If it is an archive, then it will be unzipped to a folder a level higher than the current one (i.e. you need to remove `UpdateTools` from the path). If it is a single file, then it will simply be moved (also to a higher level). The archive will be deleted automatically after unpacking.
+2. Run the `gru.exe` file with the arguments (the full list of arguments can be obtained by running `gru.exe`, even without console, just launching it).
+3. The file/archive will be downloaded. If it is an archive, then it will be unzipped to a folder a level higher than the current one (i.e. you need to remove `UpdateTools` from the path). If it is a single file, then it will simply be moved (also to a higher level). The archive will be deleted automatically after unpacking. The actions depend on the user-selected GRU launch arguments.
 
-### Example, [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
+## Examples
+
+### [GitHub Desktop Portable by gek64](https://github.com/gek64/GitHubDesktopPortable)
 
 ```batch
 gru.exe --repo gek64/GitHubDesktopPortable --app GitHubDesktopPortable.exe --with "paf" --main App\GitHubDesktop\GitHubDesktop.exe --tool wget
 ```
 
-### Example, [Flameshot Portable](https://github.com/flameshot-org/flameshot)
+### [Flameshot Portable](https://github.com/flameshot-org/flameshot)
 
 ```batch
 gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --script
@@ -80,25 +82,25 @@ gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --
 
 📜 **Script:** [View](https://github.com/Zalexanninev15/GRU/blob/main/script.bat)
 
-### Example, [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
+### [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
 
 ```batch
 gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-no-installer.exe" --no-extract
 ```
 
-### Example, [ScreenToGif](https://github.com/NickeManarin/ScreenToGif)
+### [ScreenToGif](https://github.com/NickeManarin/ScreenToGif)
 
 ```batch
 gru.exe --repo NickeManarin/ScreenToGif --app ScreenToGif.exe --with ".Portable.x64.zip" --tool curl
 ```
 
-### Example, [Visual Studio Code](https://github.com/microsoft/vscode)
+### [Visual Studio Code](https://github.com/microsoft/vscode)
 
 ```batch
 gru.exe --repo microsoft/vscode --app Code.exe --with "null" --link "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive"
 ```
 
-### Example, [Insomnia](https://github.com/Kong/insomnia)
+### [Insomnia](https://github.com/Kong/insomnia)
 
 ```batch
 gru.exe --repo Kong/insomnia --app insomnia.exe --with "-full.nupkg" --nupkg
