@@ -1,6 +1,7 @@
 use isahc::prelude::*;
 use isahc::{ Request, ReadResponseExt };
 use serde_json::Value;
+use regex::Regex;
 
 pub fn parse_data(
     repo: &str,
@@ -8,7 +9,8 @@ pub fn parse_data(
     pre: &bool,
     one_release: &bool,
     ua: &str,
-    api_key: Option<&str>
+    api_key: Option<&str>,
+    is_regex: &bool
 ) -> (String, String) {
     if *pre == false {
         return fetch_and_parse_release(
@@ -16,7 +18,8 @@ pub fn parse_data(
             search_words,
             one_release,
             ua,
-            api_key
+            api_key,
+            is_regex
         );
     }
 
@@ -34,7 +37,8 @@ pub fn parse_data(
                 search_words,
                 one_release,
                 ua,
-                api_key
+                api_key,
+                is_regex
             );
         }
     };
@@ -59,13 +63,13 @@ pub fn parse_data(
             }
         };
 
-        parse_text(&serde_json::to_string(selected_release).unwrap(), search_words)
+        parse_text(&serde_json::to_string(selected_release).unwrap(), search_words, is_regex)
     } else {
         for release in releases_array {
             if let Some(assets) = release["assets"].as_array() {
                 for asset in assets {
                     if let Some(name) = asset["name"].as_str() {
-                        if name.contains(search_words) {
+                        if matches_search_criteria(name, search_words, is_regex) {
                             return (
                                 release["tag_name"].as_str().unwrap_or("").to_string(),
                                 name.to_string(),
@@ -97,7 +101,8 @@ fn fetch_and_parse_release(
     search_words: &str,
     one_release: &bool,
     ua: &str,
-    api_key: Option<&str>
+    api_key: Option<&str>,
+    is_regex: &bool
 ) -> (String, String) {
     if *one_release {
         let request = create_github_request(url, ua, api_key);
@@ -106,7 +111,7 @@ fn fetch_and_parse_release(
             .expect("GitHub API: Error 404")
             .text()
             .expect("GitHub API: Json lost");
-        parse_text(&json, search_words)
+        parse_text(&json, search_words, is_regex)
     } else {
         let releases_url = url.replace("/latest", "");
         let releases = fetch_and_parse_releases(&releases_url, ua, api_key);
@@ -116,7 +121,7 @@ fn fetch_and_parse_release(
                 if let Some(assets) = release["assets"].as_array() {
                     for asset in assets {
                         if let Some(name) = asset["name"].as_str() {
-                            if name.contains(search_words) {
+                            if matches_search_criteria(name, search_words, is_regex) {
                                 return (
                                     release["tag_name"].as_str().unwrap_or("").to_string(),
                                     name.to_string(),
@@ -162,14 +167,14 @@ fn find_latest_releases(releases: &[Value]) -> (Option<&Value>, Option<&Value>) 
     (latest_stable, latest_prerelease)
 }
 
-fn parse_text(json: &str, word: &str) -> (String, String) {
+fn parse_text(json: &str, word: &str, is_regex: &bool) -> (String, String) {
     let release: Value = serde_json::from_str(json).expect("GitHub API: Error parsing json!");
     let mut asset_name = String::from("app.zip");
 
     if let Some(assets) = release["assets"].as_array() {
         for asset in assets {
             if let Some(name) = asset["name"].as_str() {
-                if name.contains(word) {
+                if matches_search_criteria(name, word, is_regex) {
                     asset_name = name.to_string();
                     break;
                 }
@@ -178,4 +183,18 @@ fn parse_text(json: &str, word: &str) -> (String, String) {
     }
 
     (release["tag_name"].as_str().unwrap_or("").to_string(), asset_name)
+}
+
+fn matches_search_criteria(text: &str, search_pattern: &str, is_regex: &bool) -> bool {
+    if *is_regex {
+        match Regex::new(search_pattern) {
+            Ok(regex) => regex.is_match(text),
+            Err(_) => {
+                eprintln!("Warning: Invalid regex pattern '{}', falling back to substring matching", search_pattern);
+                text.contains(search_pattern)
+            }
+        }
+    } else {
+        text.contains(search_pattern)
+    }
 }
