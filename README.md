@@ -44,6 +44,7 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 - `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud` (curl-only).
 - `--link <url>` — Use a direct download link when assets are unavailable in the release.
 - `--ua <user-agent>` — Customize the user-agent string for optimized download speeds.
+- `--regex` / `--no-regex` — Use `--with` to search using a regular expression instead of a regular match.
 - `--gh <personal access token>` — Use a GitHub personal access token for improved access if there are restrictions.
 - `--wgetrc` / `--no-wgetrc` — Use the wget configuration file (.wgetrc).
 - `--pre` / `--no-pre` — Use pre-releases if stable versions are unavailable.
