@@ -96,7 +96,6 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let details = arguments.get::<bool>("details").unwrap_or(false);
-		let with_as_regex = arguments.get::<bool>("regex").unwrap_or(false);
         let tool = arguments.get::<String>("tool").unwrap_or("gru".to_string());
         let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
         let mut no_ghost = arguments.get::<bool>("ghost").unwrap_or(false);
@@ -107,6 +106,7 @@ fn main() {
             .unwrap_or(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36".to_string()
             );
+		let with_as_regex = arguments.get::<bool>("regex").unwrap_or(false);
         let wgetrc = arguments.get::<bool>("wgetrc").unwrap_or(false);
         let show_pre = arguments.get::<bool>("pre").unwrap_or(false);
         let debug_mode = arguments.get::<bool>("debug").unwrap_or(false);
@@ -141,6 +141,7 @@ fn main() {
             println!("[Debug] tool = \"{}\"", tool);
             println!("[Debug] d_link = {}", d_link);
             println!("[Debug] ua = \"{}\"", ua);
+            println!("[Debug] with_as_regex = \"{}\"", with_as_regex);
             println!("[Debug] wgetrc = {}", wgetrc);
             println!("[Debug] show_pre = {}", show_pre);
             println!("[Debug] no_ghost = {}", no_ghost);
@@ -242,7 +243,7 @@ fn main() {
             // Downloading the file
             println!("Downloading...");
             if v_list_asset.contains(&part) == false && d_link != "null" {
-                repo = d_link;
+                repo = d_link.replace("<version>", &v_list_version);
             }
             let _ = downloader::download(
                 &repo,
@@ -358,8 +359,9 @@ OPTIONS:
                                   them (to executable files) can be specified in the files \"curl.txt\" or \"wget.txt\".
                                   If there is an error finding an executable file, the built-in file downloader will be invoked.
                                   Default: 'gru'.
-    --link <url>                  Sometimes releases may not contain assets to download, but just be a place for a list of changes (what's new?). 
-                                  Set the download link (direct) to the release in other place. Default: null.
+    --link <url>                  Sometimes releases may not contain assets to download, but just be a place for a list of changes (What's new?). Set the download link (direct) to the release in other place.
+                                  Supports version substitution in the link to the version from GitHub, if such a rule is implied by the developer of the downloaded application. To do this, enter the text `<version>`
+								  in the appropriate place, and it will be replaced with the version from GitHub. Default: null.
     --ua <user-agent>             Specify a user-agent for better download speed. The argument applies to the 'curl' and 'wget' tools and GitHub API requests.
                                   Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36.
     --regex / --no-regex	  Use '--with' to search using a regular expression instead of a regular match. Default: --no-regex.
