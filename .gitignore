@@ -5,3 +5,4 @@ target/
 .vscode/launch.json
 new.txt
 ReleaseData/
+/release
