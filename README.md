@@ -32,6 +32,9 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 - **Asset Search Across Multiple Releases**: Search for assets across multiple recent releases (not just the latest), ensuring you always get the right version of the file.
 
 ## Available arguments
+
+> To better understand this, the developer recommends reading the information about arguments in the utility itself, as it contains more details.
+
 - `--app <application.exe>` — Set the EXE of the launcher/main application.
 - `--main <path>` — Set the path to the main application located one level above the EXE.
 - `--extract` / `--no-extract` — Decide whether to extract archive files or simply move the downloaded EXE.
@@ -42,8 +45,9 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 - `--details` / `--no-details` — Show detailed download information using curl/wget.
 - `--nupkg` / `--no-nupkg` —  Enabling the correct operation mode with nuget packages (.nupkg), which include the release of the downloaded application itself.
 - `--tool <type>` — Choose between download tools like `curl`, `wget`, `gru`, `gru-classic`, or `tcpud` (curl-only).
-- `--link <url>` — Use a direct download link when assets are unavailable in the release.
+- `--link <url>` — Use a direct download link when assets are unavailable in the release. Sometimes releases may not contain assets to download, but just be a place for a list of changes (What's new?). Supports version substitution in the link to the version from GitHub, if such a rule is implied by the developer of the downloaded application. To do this, enter the text `<version>` in the appropriate place, and it will be replaced with the version from GitHub.
 - `--ua <user-agent>` — Customize the user-agent string for optimized download speeds.
+- `--regex` / `--no-regex` — Use `--with` to search using a regular expression instead of a regular match.
 - `--gh <personal access token>` — Use a GitHub personal access token for improved access if there are restrictions.
 - `--wgetrc` / `--no-wgetrc` — Use the wget configuration file (.wgetrc).
 - `--pre` / `--no-pre` — Use pre-releases if stable versions are unavailable.
@@ -104,6 +108,12 @@ gru.exe --repo microsoft/vscode --app Code.exe --with "null" --link "https://cod
 
 ```batch
 gru.exe --repo Kong/insomnia --app insomnia.exe --with "-full.nupkg" --nupkg
+```
+
+### [OBS Studio](https://github.com/obsproject/obs-studio)
+
+```batch
+gru.exe --repo obsproject/obs-studio --app obs64.exe --with "^OBS-Studio-(\d+\.\d+\.\d+)-Windows(-(?:x64|amd64|Portable|Portable-x64|x64-Portable))?\.zip$" --regex --main bin\64bit\obs64.exe
 ```
 
 ## Build
