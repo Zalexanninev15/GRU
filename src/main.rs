@@ -96,6 +96,7 @@ fn main() {
         let is_script_after = arguments.get::<bool>("script").unwrap_or(false);
         let silent_mode = arguments.get::<bool>("silent").unwrap_or(false);
         let details = arguments.get::<bool>("details").unwrap_or(false);
+		let with_as_regex = arguments.get::<bool>("regex").unwrap_or(false);
         let tool = arguments.get::<String>("tool").unwrap_or("gru".to_string());
         let d_link = arguments.get::<String>("link").unwrap_or("null".to_string());
         let mut no_ghost = arguments.get::<bool>("ghost").unwrap_or(false);
@@ -160,9 +161,9 @@ fn main() {
 
         // Getting the new version release
         let (v_list_version, mut v_list_asset) = if api_token == "null" {
-            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, None)
+            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, None, &with_as_regex)
         } else {
-            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, Some(&api_token))
+            json::parse_data(&repo, &part, &show_pre, &no_ghost, &ua, Some(&api_token), &with_as_regex)
         };
 
         if debug_mode {
@@ -361,6 +362,7 @@ OPTIONS:
                                   Set the download link (direct) to the release in other place. Default: null.
     --ua <user-agent>             Specify a user-agent for better download speed. The argument applies to the 'curl' and 'wget' tools and GitHub API requests.
                                   Default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36.
+    --regex / --no-regex	  Use '--with' to search using a regular expression instead of a regular match. Default: --no-regex.
     --gh <personal access token>  Use a Personal access token to request access to GitHub if there are problems with access on the GitHub 
                                   side due to restrictions imposed by them.
                                   Get personal access token: https://github.com/settings/personal-access-tokens
