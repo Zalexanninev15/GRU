@@ -89,6 +89,12 @@ gru.exe --repo flameshot-org/flameshot --app flameshot.exe --with "win64.zip" --
 ### [draw.io Desktop](https://github.com/jgraph/drawio-desktop)
 
 ```batch
+gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows.zip"
+```
+
+Old, only download:
+
+```batch
 gru.exe --repo jgraph/drawio-desktop --app app.exe --with "-windows-no-installer.exe" --no-extract
 ```
 
