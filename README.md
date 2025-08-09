@@ -18,6 +18,8 @@ Updater for applications from GitHub. It has a huge number of convenient setting
 
 ## Features
 
+> Here is only a very short list of possibilities. For a more complete understanding of the program, you should study the arguments, because there is much more functionality in the program.
+
 - **Fine-Grained Update Customization**: Highly customizable asset download process with numerous arguments to adjust the update flow, making it flexible for a wide range of use cases.
 - **Support for Releases Without Assets**: In cases where no assets are found, the application can directly download the EXE or files from an external URL ([example](https://github.com/Zalexanninev15/GRU#example-visual-studio-code)).
 - **Multiple Downloader Options**: Choose between **curl**, **wget**, the built-in **gru** (**gru-classic**) or **tcpud** downloader for maximum flexibility in downloading assets.
