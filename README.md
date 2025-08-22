@@ -127,7 +127,7 @@ gru.exe --repo obsproject/obs-studio --app obs64.exe --with "^OBS-Studio-(\d+\.\
 ### [FreeTube](https://github.com/FreeTubeApp/FreeTube)
 
 ```batch
-GRU.exe --repo FreeTubeApp/FreeTube --app FreeTube.exe --with "-win-x64-portable.zip" --pre
+gru.exe --repo FreeTubeApp/FreeTube --app FreeTube.exe --with "-win-x64-portable.7z" --pre
 ```
 
 ## Build
