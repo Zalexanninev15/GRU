@@ -124,6 +124,12 @@ gru.exe --repo Kong/insomnia --app insomnia.exe --with "-full.nupkg" --nupkg
 gru.exe --repo obsproject/obs-studio --app obs64.exe --with "^OBS-Studio-(\d+\.\d+\.\d+)-Windows(-(?:x64|amd64|Portable|Portable-x64|x64-Portable))?\.zip$" --regex --main bin\64bit\obs64.exe
 ```
 
+### [FreeTube](https://github.com/FreeTubeApp/FreeTube)
+
+```batch
+GRU.exe --repo FreeTubeApp/FreeTube --app FreeTube.exe --with "-win-x64-portable.zip" --pre
+```
+
 ## Build
 
 1. Install all dependencies with Administrator rights (it is recommended to use packages from the [Scoop package manager](https://scoop.sh/))
